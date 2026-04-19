@@ -1,4 +1,4 @@
-import { Baby, ChefHat, IceCreamCone, Sparkles, Target } from "lucide-react";
+import { Baby, ChefHat, Sparkles, Target } from "lucide-react";
 import { Card, Chip } from "./Card";
 import type { Briefing } from "@/lib/types";
 
@@ -17,18 +17,21 @@ const STAFFING_TONE: Record<string, "ok" | "warn" | "danger"> = {
 export function MenuSpecialsCard({ briefing }: { briefing: Briefing }) {
   const { recommendation, horoscope, bribe, pivot, cardigan } = briefing;
   return (
-    <Card title="Menu & Specials" subtitle={recommendation.headline} icon={ChefHat}>
+    <Card title="Menu & Specials" subtitle={pivot.mode === "glace" ? "Mode Glace" : "Mode Crêpe"} icon={ChefHat}>
       <div className="grid gap-3 md:grid-cols-3">
-        <div className="rounded-xl border border-seine-border bg-seine-bg/40 px-3 py-3">
+        <div className="rounded-2xl border border-seine-border bg-gradient-to-br from-seine-header/40 to-seine-bg/30 px-3 py-3">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-seine-muted">
             <Target className="h-3 w-3" />
             Topping vedette
           </div>
-          <p className="mt-1 text-base font-semibold text-seine-ink">{recommendation.topping}</p>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="text-2xl">{pivot.mode === "glace" ? "🍦" : "🥞"}</span>
+            <p className="text-base font-semibold text-seine-ink">{recommendation.topping}</p>
+          </div>
           <p className="text-xs text-seine-muted">{pivot.description}</p>
         </div>
 
-        <div className="rounded-xl border border-seine-border bg-seine-bg/40 px-3 py-3">
+        <div className="rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/40 to-seine-bg/30 px-3 py-3">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-seine-muted">
             <Baby className="h-3 w-3" />
             Fenêtre enfants
@@ -38,7 +41,7 @@ export function MenuSpecialsCard({ briefing }: { briefing: Briefing }) {
         </div>
 
         <div
-          className={`rounded-xl border px-3 py-3 ${
+          className={`rounded-2xl border px-3 py-3 ${
             horoscope.roadblock
               ? "border-[#f0d9ad] bg-[#fdf2de]"
               : "border-seine-border bg-seine-bg/40"
@@ -54,10 +57,6 @@ export function MenuSpecialsCard({ briefing }: { briefing: Briefing }) {
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-        <Chip tone="accent">
-          <IceCreamCone className="h-3 w-3" />
-          {Math.round(recommendation.batterVolumePct)} % pâte
-        </Chip>
         <Chip tone={STAFFING_TONE[recommendation.staffing]}>
           {STAFFING_LABEL[recommendation.staffing]}
         </Chip>
