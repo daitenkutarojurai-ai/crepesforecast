@@ -96,6 +96,7 @@ export interface Recommendation {
 
 export interface Briefing {
   generatedAt: string;
+  targetDate: string;
   location: {
     name: string;
     lat: number;

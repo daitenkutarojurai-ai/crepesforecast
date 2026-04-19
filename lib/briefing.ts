@@ -15,26 +15,29 @@ import {
 } from "./engine";
 import { fetchVigicrues, getExternalsStubs } from "./externals";
 import { fetchWeather } from "./weather";
+import { resolveTargetSunday } from "./time";
 import { Briefing, SourceStatus } from "./types";
 
 export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
+  const target = resolveTargetSunday(now);
+
   const [{ weather, hourly, source: weatherSource }, { flow, source: vigicruesSource }] = await Promise.all([
-    fetchWeather(now),
+    fetchWeather(target),
     fetchVigicrues()
   ]);
 
-  const externals = getExternalsStubs();
+  const externals = getExternalsStubs(target);
 
   const cardigan = computeCardigan(weather.tempC, weather.isSunny, weather.windKmh);
   const pivot = computePivot(weather.tempC, weather.isSunny);
-  const bribe = computeBribeOMeter(now);
-  const pulses = buildPulses(now, externals.sncfDelayMin);
+  const bribe = computeBribeOMeter(target);
+  const pulses = buildPulses(target, externals.sncfDelayMin);
 
   const recommendation = buildRecommendation(
     {
       weather,
       hourly,
-      now,
+      now: target,
       seineFlowCubicMS: flow,
       pollenRisk: externals.pollenRisk,
       sncfDelayMin: externals.sncfDelayMin,
@@ -51,6 +54,7 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
 
   return {
     generatedAt: now.toISOString(),
+    targetDate: target.toISOString(),
     location: { name: LOCATION.name, lat: LOCATION.lat, lon: LOCATION.lon, postalCodes: [...LOCATION.postalCodes] },
     mode: pivot.mode,
     weather,
@@ -60,11 +64,11 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     bribe,
     pulses,
     events: externals.localEvents,
-    horoscope: horoscope(now),
+    horoscope: horoscope(target),
     napkinForecast: napkinForecast(externals.pollenRisk),
     lycraCoefficient: lycraCoefficient(weather.tempC, weather.windKmh, weather.isSunny, weather.precipProbPct),
-    poussetteFactor: poussetteFactor(now),
-    nutellaIndex: nutellaIndex(now),
+    poussetteFactor: poussetteFactor(target),
+    nutellaIndex: nutellaIndex(target),
     socialSentiment: socialSentiment(externals.cherryBlossomBuzz),
     competitorProxy: competitorProxy(externals.competitorBusiness),
     recommendation,

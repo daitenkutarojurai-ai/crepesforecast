@@ -1,9 +1,11 @@
-# Glaces en Seine · Mission Control
+# Glaces en Seine · Briefing Dimanche
 
-Sunday-morning operations dashboard for a food caravan (crepes / waffles / ice
-cream) on the Quai de Seine between **La Frette-sur-Seine (95530)** and
-**Cormeilles-en-Parisis (95240)**. Designed to be checked on a phone at 08:00
-while prepping the caravan.
+Sunday-briefing dashboard for a food caravan (crêpes / gaufres / glaces) on
+the Quai de Seine between **La Frette-sur-Seine (95530)** and
+**Cormeilles-en-Parisis (95240)**. Every metric targets the **upcoming
+Sunday**; the briefing is refreshed several times during the week so the
+forecast sharpens as Sunday approaches. Rolls to the next Sunday at Monday
+00:00 local.
 
 Coordinates used: `48.9843, 2.1836`.
 
@@ -12,33 +14,40 @@ Coordinates used: `48.9843, 2.1836`.
 ## Stack
 
 - **Next.js 14** (App Router) + **TypeScript** (strict)
-- **Tailwind CSS** with a dark "mission control" palette (`mission-*`)
+- **Tailwind CSS** with the light "seine" palette (`seine-*`) — cream page,
+  pastel-blue header, rounded white cards with soft shadows
 - **lucide-react** for iconography
 - Server components for the initial briefing, client component for refresh
 - Single `/api/briefing` route returns the full engine output as JSON
+- All copy in **French**
 
 ## Project layout
 
 ```
 app/
-  layout.tsx            # root layout, dark theme, viewport
-  page.tsx              # SSR entrypoint, builds briefing + renders Dashboard
-  globals.css           # Tailwind + grid background
-  api/briefing/route.ts # JSON endpoint, no-store
+  layout.tsx                # root layout, light theme, viewport
+  page.tsx                  # SSR entrypoint, builds briefing + renders Dashboard
+  globals.css               # Tailwind + cream background
+  api/briefing/route.ts     # JSON endpoint, no-store
 components/
-  Dashboard.tsx         # top-level client shell, 5-min auto-refresh
-  Header pieces         # GrandMereLight, ModeToggle
-  WeatherPanel.tsx      # PRIORITÉ 1 — temp / feels / wind / UV / rain / sun
-  BattleSheet.tsx       # Recipe-scaler output + staffing verdict
-  PulseTimeline.tsx     # Ferry / Church / Theater / SNCF pulses
-  SecondaryGrid.tsx     # Horoscope, agenda, social, nutella, lycra, etc.
-  SourcesPanel.tsx      # Data confidence badges (live / simulated / unavailable)
+  Dashboard.tsx             # top-level client shell, 5-min auto-refresh
+  Header.tsx                # pastel-blue band, date, Grand-Mère, Mode toggle, refresh
+  Card.tsx                  # shared rounded-card primitive (+ Chip, Stat helpers)
+  QuickView.tsx             # top "Aperçu · Dimanche" card (5-number snapshot)
+  WeatherCustomerCard.tsx   # Météo & Clientèle (stats + hourly bars + clientèle)
+  EventsCrowdCard.tsx       # Événements & Affluence (pulses + agenda + social)
+  MenuSpecialsCard.tsx      # Menu & Specials (topping, bribe, horoscope)
+  Details.tsx               # Below-the-fold grid: napkin / lycra / poussette / nutella / Vigicrues
+  GrandMereLight.tsx        # Chip with pulsing red indicator when Ct > 15
+  ModeToggle.tsx            # Crêpe / Glace pill toggle
+  SourcesPanel.tsx          # Data confidence badges
 lib/
-  types.ts              # Shared domain types
-  engine.ts             # Ct, Pt, Bm, pulses, napkin/lycra/poussette/horoscope
-  weather.ts            # Open-Meteo fetch + graceful fallback
-  externals.ts          # Vigicrues fetch + stubs for non-free APIs
-  briefing.ts           # Composes the full Briefing object
+  types.ts                  # Shared domain types (+ targetDate)
+  time.ts                   # resolveTargetSunday, French date formatters
+  engine.ts                 # Ct, Pt, Bm, pulses, napkin/lycra/poussette/horoscope
+  weather.ts                # Open-Meteo fetch for the target Sunday
+  externals.ts              # Vigicrues fetch + stubs for non-free APIs
+  briefing.ts               # Composes the full Briefing object (target-Sunday)
 ```
 
 ## Logic engine (implemented)
@@ -60,22 +69,30 @@ lib/
 
 ## UX decisions
 
-- **Weather first.** `WeatherPanel` spans two columns at `lg:` and uses the
-  primary accent ring. Feels-like, wind, UV, rain, sunrise/sunset, hourly bars,
-  daylight-minutes-left. Foot traffic craters at sunset in shoulder seasons —
-  the "daylight remaining" number is always visible.
-- **Battle Sheet** next to it: single glance gives mode, batter %, topping,
-  staffing level, and the rationale bullets.
-- **Pulse Timeline** is a standalone horizontal band — chronologically ordered,
-  fades past entries, highlights the next imminent pulse.
-- **Secondary metrics** (horoscope, agenda, Nutella, social, poussette, lycra,
-  napkin, Vigicrues) live below the fold in a responsive grid so they're part
-  of the report but never compete with weather for attention.
-- **Grand-Mère light** sits in the header with a pulsing red ring when `Ct > 15`.
-- **Mode toggle** (Crepe / Glace) is also in the header; defaults to the engine
-  recommendation but the sister can override.
-- **Data confidence badges** (live / simulated / unavailable) are always
-  visible at the bottom — no silent fake data.
+- **Aperçu first.** `QuickView` is the top card: a 6-stat strip that answers
+  "what should I expect on Sunday?" in 5 seconds — feels-like, mode, cardigan,
+  batter %, staffing, affluence.
+- **Météo & Clientèle** card merges weather stats + hourly temperature bars
+  with a "who's coming" block driven by pivot / bribe / poussette.
+- **Événements & Affluence** card merges the pulse timeline (ferry / church /
+  theater) with the local events list (brocante, régate, marché) and social +
+  concurrence signals — one scroll, one card.
+- **Menu & Specials** card exposes the recipe-scaler output (topping, batter %,
+  staffing), the kid-bribe window, and the celestial special.
+- **Détails** grid holds secondary signals (napkin, lycra, poussette, nutella,
+  Vigicrues) below the fold — part of the report without competing for
+  attention.
+- **Grand-Mère chip** sits in the header with a pulsing red indicator when
+  `Ct > 15`.
+- **Mode toggle** (Crêpe / Glace) sits in the header; defaults to the engine
+  recommendation and can be overridden.
+- **Data confidence badges** (live / simulé / indispo.) are always visible at
+  the bottom — no silent fake data.
+- **Sunday targeting.** `lib/time.ts:resolveTargetSunday` resolves the upcoming
+  Sunday at 10:00 local. Weather is fetched for that specific date via
+  Open-Meteo `start_date=end_date=`, and every engine function (`buildPulses`,
+  `computeBribeOMeter`, `poussetteFactor`, `horoscope`, `nutellaIndex`,
+  `buildCatalog`) is anchored on the target date rather than "now".
 
 ## Getting started
 

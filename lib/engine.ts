@@ -29,16 +29,16 @@ export function computeCardigan(tempC: number, isSunny: boolean, windKmh: number
   const sunFactor = isSunny ? 1.0 : 0.5;
   const value = Math.round(((tempC * sunFactor) - windKmh) * 10) / 10;
   let level: CardiganResult["level"] = "green";
-  let strategy = "Standard cadence. Volume + speed.";
-  let hint = "Run the normal Sunday deck.";
+  let strategy = "Cadence standard. Volume + vitesse.";
+  let hint = "Déroule la routine dominicale classique.";
   if (value > 15) {
     level = "red";
-    strategy = "Quality over Speed.";
-    hint = "Check organic labels. Grand-Mère is watching.";
+    strategy = "Qualité avant tout.";
+    hint = "Vérifie les étiquettes bio. Grand-Mère veille au grain.";
   } else if (value > 8) {
     level = "amber";
-    strategy = "Balanced: presentation matters.";
-    hint = "Wipe the counter between orders.";
+    strategy = "Équilibre : la présentation compte.";
+    hint = "Nettoie le comptoir entre les commandes.";
   }
   return { value, level, strategy, hint };
 }
@@ -49,45 +49,42 @@ export function computePivot(tempC: number, isSunny: boolean): PivotResult {
   const mode = value < 0 ? "crepe" : "glace";
   const heatAlert = value > 2;
   const description = heatAlert
-    ? "Extreme Heat Drink Alert — push cold drinks and sorbets."
+    ? "Alerte canicule — boissons fraîches et sorbets en avant."
     : mode === "crepe"
-      ? "Crepe Mode — warm dough, hot chocolate, Nutella front and center."
-      : "Ice Cream Mode — glace display lit, sorbets forward.";
+      ? "Mode Crêpe — pâte chaude, chocolat chaud, Nutella en vitrine."
+      : "Mode Glace — vitrine réfrigérée allumée, sorbets en vedette.";
   return { value, mode, heatAlert, description };
 }
 
-export function computeBribeOMeter(now: Date): BribeResult {
+export function computeBribeOMeter(target: Date): BribeResult {
   const value =
     Math.round(((DIST_FROM_PARKING_M / AVG_CHILD_AGE_YEARS) * FATIGUE_CONSTANT) * 10) / 10;
-  const start = new Date(now);
+  const start = new Date(target);
   start.setHours(16, 0, 0, 0);
-  const end = new Date(now);
+  const end = new Date(target);
   end.setHours(17, 30, 0, 0);
-  const active = now >= start && now <= end;
   return {
     value,
-    active,
+    active: true,
     window: { startISO: start.toISOString(), endISO: end.toISOString() },
-    recommendation: active
-      ? "Kid-Size Sugar Crepe: push the €2 format, pre-fold 10."
-      : "Pre-position the kid-size menu card for the 16:00 window."
+    recommendation:
+      "Crêpe sucre format enfant : pré-plie 10 à 2 €, fenêtre 16:00–17:30."
   };
 }
 
 const PULSE_SCHEDULE: Array<Omit<Pulse, "minutesFromNow" | "timeISO"> & { hhmm: [number, number] }> = [
-  { id: "ferry-10", kind: "ferry", label: "Bac Traversier — matinée", note: "Human Funnel Landing Imminent.", severity: "watch", hhmm: [10, 0] },
-  { id: "church-1145", kind: "church", label: "Amen Rush — Saint-Nicolas", note: "Mass exit. Check for baptisms/communions — double whipped cream.", severity: "high", hhmm: [11, 45] },
-  { id: "ferry-1230", kind: "ferry", label: "Bac Traversier — midi", note: "Human Funnel Landing Imminent.", severity: "watch", hhmm: [12, 30] },
-  { id: "ferry-14", kind: "ferry", label: "Bac Traversier — après-midi", note: "Human Funnel Landing Imminent.", severity: "watch", hhmm: [14, 0] },
-  { id: "theater-1630", kind: "theater", label: "Le Petit Théâtre — entracte", note: "High-speed preparation. Pre-fold 12 crepes.", severity: "high", hhmm: [16, 30] },
-  { id: "ferry-18", kind: "ferry", label: "Bac Traversier — soir", note: "Human Funnel Landing Imminent.", severity: "watch", hhmm: [18, 0] }
+  { id: "ferry-10", kind: "ferry", label: "Bac Traversier — matinée", note: "Vague de piétons imminente.", severity: "watch", hhmm: [10, 0] },
+  { id: "church-1145", kind: "church", label: "Sortie de messe — Saint-Nicolas", note: "Surveille baptêmes/communions : double crème chantilly.", severity: "high", hhmm: [11, 45] },
+  { id: "ferry-1230", kind: "ferry", label: "Bac Traversier — midi", note: "Vague de piétons imminente.", severity: "watch", hhmm: [12, 30] },
+  { id: "ferry-14", kind: "ferry", label: "Bac Traversier — après-midi", note: "Vague de piétons imminente.", severity: "watch", hhmm: [14, 0] },
+  { id: "theater-1630", kind: "theater", label: "Le Petit Théâtre — entracte", note: "Service ultra-rapide : pré-plie 12 crêpes.", severity: "high", hhmm: [16, 30] },
+  { id: "ferry-18", kind: "ferry", label: "Bac Traversier — soir", note: "Vague de piétons imminente.", severity: "watch", hhmm: [18, 0] }
 ];
 
-export function buildPulses(now: Date, sncfDelayMin = 0): Pulse[] {
+export function buildPulses(target: Date, sncfDelayMin = 0): Pulse[] {
   const pulses: Pulse[] = PULSE_SCHEDULE.map((p) => {
-    const t = new Date(now);
+    const t = new Date(target);
     t.setHours(p.hhmm[0], p.hhmm[1], 0, 0);
-    const minutes = Math.round((t.getTime() - now.getTime()) / 60000);
     return {
       id: p.id,
       kind: p.kind,
@@ -95,24 +92,27 @@ export function buildPulses(now: Date, sncfDelayMin = 0): Pulse[] {
       note: p.note,
       severity: p.severity,
       timeISO: t.toISOString(),
-      minutesFromNow: minutes
+      minutesFromNow: 0
     };
   });
 
   if (sncfDelayMin > 15) {
-    const t = new Date(now.getTime() + 10 * 60000);
+    const t = new Date(target);
+    t.setHours(10, 15, 0, 0);
     pulses.push({
       id: "sncf-captive",
       kind: "sncf",
       label: `SNCF Ligne J — retard ${sncfDelayMin} min`,
-      note: "Captive Audience Marketing — unfold the €3 board toward the station.",
+      note: "Captifs en gare — oriente l'ardoise 3 € vers la gare.",
       severity: "high",
       timeISO: t.toISOString(),
-      minutesFromNow: 10
+      minutesFromNow: 0
     });
   }
 
-  return pulses.sort((a, b) => a.minutesFromNow - b.minutesFromNow);
+  return pulses.sort(
+    (a, b) => new Date(a.timeISO).getTime() - new Date(b.timeISO).getTime()
+  );
 }
 
 export function napkinForecast(risk?: "low" | "moderate" | "high"): NapkinForecast {
@@ -141,30 +141,26 @@ export function lycraCoefficient(tempC: number, windKmh: number, isSunny: boolea
   return { coefficient, note };
 }
 
-export function poussetteFactor(now: Date): PoussetteForecast {
-  const month = now.getMonth();
+export function poussetteFactor(target: Date): PoussetteForecast {
+  const month = target.getMonth();
   const isSeason = month === 2 || month === 3 || month === 4;
-  const hour = now.getHours();
-  const inWindow = hour >= 15 && hour < 17;
-  const density: PoussetteForecast["density"] = isSeason && inWindow ? "high" : isSeason ? "medium" : "low";
+  const density: PoussetteForecast["density"] = isSeason ? "high" : "medium";
   return {
     density,
     window: "15:00 – 17:00",
     note: density === "high"
       ? "Période cerisiers/Pâques. Laisse 1,5 m devant le comptoir pour les poussettes."
-      : density === "medium"
-        ? "Densité moyenne. Garde l'allée dégagée."
-        : "Trafic familial faible."
+      : "Trafic familial normal. Garde l'allée dégagée de 15:00 à 17:00."
   };
 }
 
-export function horoscope(now: Date): HoroscopeCard {
-  const day = now.getUTCDate() + now.getUTCMonth();
+export function horoscope(target: Date): HoroscopeCard {
+  const day = target.getUTCDate() + target.getUTCMonth();
   const roadblock = day % 4 === 0;
   return roadblock
     ? {
-        headline: "Saturn's Roadblock — Aries & Taurus indécis",
-        body: "Mars / Saturne en bras de fer. Propose un combo imposé : 'La Décision' — crepe beurre-sucre + jus pomme à 5 €.",
+        headline: "Blocage de Saturne — Bélier & Taureau indécis",
+        body: "Mars / Saturne en bras de fer. Propose un combo imposé : « La Décision » — crêpe beurre-sucre + jus pomme à 5 €.",
         roadblock: true
       }
     : {
@@ -174,8 +170,8 @@ export function horoscope(now: Date): HoroscopeCard {
       };
 }
 
-export function nutellaIndex(now: Date): NutellaIndex {
-  const weekday = now.getDay();
+export function nutellaIndex(target: Date): NutellaIndex {
+  const weekday = target.getDay();
   const level = weekday === 0 ? "deal" : weekday === 3 ? "shortage" : "neutral";
   const note =
     level === "deal"
@@ -190,7 +186,7 @@ export function socialSentiment(buzz?: number): SocialSignal {
   const spikePct = Math.round((buzz ?? 0) * 100);
   const note =
     spikePct >= 20
-      ? `#QuaiDeSeine en hausse (+${spikePct}%). Attends +20% d'affluence 'influenceurs'.`
+      ? `#QuaiDeSeine en hausse (+${spikePct}%). Prévois +20% d'affluence influenceurs.`
       : spikePct > 0
         ? `Légère hausse sociale (+${spikePct}%).`
         : "Pas de signal viral détecté.";
@@ -201,9 +197,9 @@ export function competitorProxy(status?: "quiet" | "typical" | "busier"): Compet
   const s = status ?? "typical";
   const note =
     s === "busier"
-      ? "High Alert: Prep extra dough. Le café voisin est 'plus fréquenté que d'habitude'."
+      ? "Alerte : prépare de la pâte en plus. Le café voisin est « plus fréquenté que d'habitude »."
       : s === "quiet"
-        ? "Zone calme. Probable fenêtre pour recalibrer la vitrine."
+        ? "Zone calme. Fenêtre idéale pour recalibrer la vitrine."
         : "Fréquentation concurrente normale.";
   return { status: s, note };
 }
@@ -215,27 +211,25 @@ export function buildRecommendation(inputs: EngineInputs, pivot: PivotResult, ca
   const precip = inputs.weather.precipProbPct;
   if (precip < 20) {
     bumps.push(15);
-    rationale.push("Pluie <20% → +15% volume.");
+    rationale.push("Pluie < 20 % → +15 % volume.");
   } else if (precip > 60) {
     bumps.push(-25);
-    rationale.push("Pluie >60% → -25% volume.");
+    rationale.push("Pluie > 60 % → −25 % volume.");
   }
 
   for (const ev of inputs.localEvents) {
     if (ev.distanceKm <= 1.5) {
       bumps.push(ev.expectedBump);
-      rationale.push(`${ev.title} (${ev.distanceKm} km) → +${ev.expectedBump}%.`);
+      rationale.push(`${ev.title} (${ev.distanceKm} km) → +${ev.expectedBump} %.`);
     }
   }
 
   if (cardigan.level === "red") {
     bumps.push(10);
-    rationale.push("Cardigan rouge → +10% (mamies en chasse).");
+    rationale.push("Cardigan rouge → +10 % (mamies en chasse).");
   }
 
-  if (bribe.active) {
-    rationale.push("Fenêtre 16:00–17:30 active : kid-size sugar crepe en tête de gondole.");
-  }
+  rationale.push("Fenêtre 16:00–17:30 : crêpe sucre format enfant en tête de gondole.");
 
   const batterVolumePct = Math.max(60, Math.min(220, 100 + bumps.reduce((a, b) => a + b, 0)));
 
@@ -245,13 +239,13 @@ export function buildRecommendation(inputs: EngineInputs, pivot: PivotResult, ca
       : pivot.mode === "glace"
         ? "Glace vanille-pistache"
         : cardigan.level === "red"
-          ? "Chocolat chaud + crepe beurre-sucre"
+          ? "Chocolat chaud + crêpe beurre-sucre"
           : "Nutella-banane";
 
   const staffing: Recommendation["staffing"] =
     batterVolumePct >= 150 ? "all-hands" : batterVolumePct >= 110 ? "two-hands" : "solo";
 
-  const headline = `${Math.round(batterVolumePct)}% pâte · ${topping} · ${pivot.mode === "glace" ? "Glace" : "Crepe"} mode`;
+  const headline = `${Math.round(batterVolumePct)} % pâte · ${topping} · Mode ${pivot.mode === "glace" ? "Glace" : "Crêpe"}`;
 
   return { headline, batterVolumePct, topping, staffing, rationale };
 }

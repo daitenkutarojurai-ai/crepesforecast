@@ -5,30 +5,32 @@ import type { Mode } from "@/lib/types";
 
 export function ModeToggle({ mode, onChange }: { mode: Mode; onChange: (m: Mode) => void }) {
   return (
-    <div className="inline-flex rounded-lg border border-mission-border bg-mission-panel p-1 shadow-inner">
+    <div className="inline-flex rounded-full border border-seine-border bg-seine-card p-1 shadow-inner">
       <button
         type="button"
         onClick={() => onChange("crepe")}
-        className={`inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition ${
-          mode === "crepe"
-            ? "bg-mission-crepe/15 text-mission-crepe ring-1 ring-mission-crepe/40"
-            : "text-mission-muted hover:text-mission-ink"
-        }`}
         aria-pressed={mode === "crepe"}
+        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition ${
+          mode === "crepe"
+            ? "bg-seine-accent text-white shadow"
+            : "text-seine-muted hover:text-seine-ink"
+        }`}
       >
-        <Cookie className="h-4 w-4" /> Crepe
+        <Cookie className="h-3.5 w-3.5" />
+        Crêpe
       </button>
       <button
         type="button"
         onClick={() => onChange("glace")}
-        className={`inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition ${
-          mode === "glace"
-            ? "bg-mission-glace/15 text-mission-glace ring-1 ring-mission-glace/40"
-            : "text-mission-muted hover:text-mission-ink"
-        }`}
         aria-pressed={mode === "glace"}
+        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition ${
+          mode === "glace"
+            ? "bg-seine-accent text-white shadow"
+            : "text-seine-muted hover:text-seine-ink"
+        }`}
       >
-        <IceCreamCone className="h-4 w-4" /> Glace
+        <IceCreamCone className="h-3.5 w-3.5" />
+        Glace
       </button>
     </div>
   );
