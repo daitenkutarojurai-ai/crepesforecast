@@ -1,5 +1,6 @@
 import { Baby, Bike, CloudRain, Sun, ThermometerSun, Users, Wind } from "lucide-react";
 import { Card, Chip, Stat } from "./Card";
+import { CrepeDot, GlaceDot } from "./Illustration";
 import { TempSparkline } from "./Sparkline";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
 import type { Briefing } from "@/lib/types";
@@ -59,7 +60,14 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
         <TempSparkline points={window} />
       </div>
 
-      <div className="mt-4 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/40 to-seine-bg/30 px-4 py-4">
+      <div className="relative mt-4 overflow-hidden rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/40 to-seine-bg/30 px-4 py-4">
+        <div className="pointer-events-none absolute right-3 top-2 flex items-center gap-1 opacity-70">
+          {pivot.mode === "glace" ? (
+            <GlaceDot className="h-8 w-8" />
+          ) : (
+            <CrepeDot className="h-8 w-8" />
+          )}
+        </div>
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-seine-muted">
           <Users className="h-3.5 w-3.5" />
           Clientèle attendue

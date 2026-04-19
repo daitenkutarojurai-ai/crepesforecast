@@ -154,20 +154,86 @@ export function poussetteFactor(target: Date): PoussetteForecast {
   };
 }
 
+const HOROSCOPE_WEEKS: Array<{ headline: string; body: string; roadblock: boolean }> = [
+  {
+    headline: "Lune en Poissons · semaine gourmande",
+    body: "Les clients hésitent longtemps. Propose un duo sucré-salé pour trancher.",
+    roadblock: false
+  },
+  {
+    headline: "Vénus en Taureau · douceurs en vedette",
+    body: "Semaine propice aux crêpes beurre-sucre et aux glaces vanille. Valeur refuge.",
+    roadblock: false
+  },
+  {
+    headline: "Mars rétrograde · clients pressés",
+    body: "Tout le monde veut sa commande en 2 min. Pré-plie 10 crêpes sucre avant 11h.",
+    roadblock: true
+  },
+  {
+    headline: "Mercure en Gémeaux · paroles qui débordent",
+    body: "Les groupes bavardent au comptoir. Garde l'allée fluide, prévois des formats enfant.",
+    roadblock: false
+  },
+  {
+    headline: "Jupiter bienveillant · pourboires généreux",
+    body: "Énergie d'abondance. Soigne la vitrine, les gros formats se vendent tout seuls.",
+    roadblock: false
+  },
+  {
+    headline: "Saturne en aspect dur · patience courte",
+    body: "Clients impatients dans la file. Annonce les délais à voix haute.",
+    roadblock: true
+  },
+  {
+    headline: "Soleil en Lion · théâtralité attendue",
+    body: "Les enfants veulent le flambage. Propose la crêpe Suzette démo.",
+    roadblock: false
+  },
+  {
+    headline: "Neptune en Poissons · imagination haute",
+    body: "Les gens essaient des combinaisons bizarres. Note les plus fréquentes, future specials.",
+    roadblock: false
+  },
+  {
+    headline: "Pluton direct · transformation du menu",
+    body: "Bonne semaine pour tester un topping saisonnier. Demande l'avis de trois clients.",
+    roadblock: false
+  },
+  {
+    headline: "Uranus en Taureau · imprévus matériels",
+    body: "Vérifie la bonbonne de gaz et la batterie du terminal. Plan B prêt.",
+    roadblock: true
+  },
+  {
+    headline: "Lune noire · familles hésitantes",
+    body: "Beaucoup de regards, peu d'achats avant 11h. Patiente, la vague arrive vers midi.",
+    roadblock: false
+  },
+  {
+    headline: "Vénus en Cancer · nostalgie sucrée",
+    body: "Les grands-parents commandent pour les petits. Mets les classiques en avant.",
+    roadblock: false
+  },
+  {
+    headline: "Trigone d'eau · beau temps pour la chantilly",
+    body: "Journée douce, pousse les crêpes chantilly-fraise et les milkshakes légers.",
+    roadblock: false
+  }
+];
+
+function isoWeek(target: Date): number {
+  const d = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), target.getUTCDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+}
+
 export function horoscope(target: Date): HoroscopeCard {
-  const day = target.getUTCDate() + target.getUTCMonth();
-  const roadblock = day % 4 === 0;
-  return roadblock
-    ? {
-        headline: "Blocage de Saturne — Bélier & Taureau indécis",
-        body: "Mars / Saturne en bras de fer. Propose un combo imposé : « La Décision » — crêpe beurre-sucre + jus pomme à 5 €.",
-        roadblock: true
-      }
-    : {
-        headline: "Ciel dégagé — Vénus en Gémeaux",
-        body: "Trigone favorable aux gourmandises partagées. Pousse la formule duo.",
-        roadblock: false
-      };
+  const week = isoWeek(target);
+  const idx = (week + target.getUTCFullYear()) % HOROSCOPE_WEEKS.length;
+  return HOROSCOPE_WEEKS[idx];
 }
 
 export function nutellaIndex(target: Date): NutellaIndex {

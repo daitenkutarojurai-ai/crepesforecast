@@ -13,31 +13,47 @@ import {
   poussetteFactor,
   socialSentiment
 } from "./engine";
-import { getExternalsStubs } from "./externals";
-import { fetchWeather } from "./weather";
+import { fetchExternals } from "./externals";
+import { fetchSeineLevel } from "./hubeau";
 import { resolveTargetSunday } from "./time";
-import { Briefing, SourceStatus } from "./types";
+import { fetchWeather } from "./weather";
+import { Briefing, SeineLevelView, SourceStatus } from "./types";
+
+function seineView(heightM: number, timestamp: string): SeineLevelView {
+  let mood: SeineLevelView["mood"] = "calme";
+  let note = "Seine calme, quai praticable.";
+  if (heightM >= 3 && heightM < 4) {
+    mood = "surveillé";
+    note = "Montée modérée — jette un œil au chemin de halage.";
+  } else if (heightM >= 4) {
+    mood = "haut";
+    note = "Seine haute — accès quai réduit, prévois un plan B.";
+  }
+  return { heightM, mood, note, timestamp };
+}
 
 export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
   const target = resolveTargetSunday(now);
 
-  const { weather, hourly, source: weatherSource } = await fetchWeather(target);
-  const externals = getExternalsStubs(target);
+  const [weatherBundle, externals, seine] = await Promise.all([
+    fetchWeather(target),
+    fetchExternals(target),
+    fetchSeineLevel()
+  ]);
+
+  const { weather, hourly, source: weatherSource } = weatherBundle;
 
   const cardigan = computeCardigan(weather.tempC, weather.isSunny, weather.windKmh);
   const pivot = computePivot(weather.tempC, weather.isSunny);
   const bribe = computeBribeOMeter(target);
-  const pulses = buildPulses(target, externals.sncfDelayMin);
+  const pulses = buildPulses(target);
 
   const recommendation = buildRecommendation(
     {
       weather,
       hourly,
       now: target,
-      pollenRisk: externals.pollenRisk,
-      sncfDelayMin: externals.sncfDelayMin,
-      cherryBlossomBuzz: externals.cherryBlossomBuzz,
-      competitorBusiness: externals.competitorBusiness,
+      competitorBusiness: "typical",
       localEvents: externals.localEvents
     },
     pivot,
@@ -45,14 +61,21 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     bribe
   );
 
-  // Only expose sources whose data actually drives something visible on the
-  // dashboard right now — everything else is unused or hidden.
-  const sources: SourceStatus[] = [weatherSource];
+  const seineLevel = seine.level
+    ? seineView(seine.level.heightM, seine.level.timestamp)
+    : undefined;
+
+  const sources: SourceStatus[] = [weatherSource, seine.source, ...externals.sources];
 
   return {
     generatedAt: now.toISOString(),
     targetDate: target.toISOString(),
-    location: { name: LOCATION.name, lat: LOCATION.lat, lon: LOCATION.lon, postalCodes: [...LOCATION.postalCodes] },
+    location: {
+      name: LOCATION.name,
+      lat: LOCATION.lat,
+      lon: LOCATION.lon,
+      postalCodes: [...LOCATION.postalCodes]
+    },
     mode: pivot.mode,
     weather,
     hourly,
@@ -62,13 +85,14 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     pulses,
     events: externals.localEvents,
     horoscope: horoscope(target),
-    napkinForecast: napkinForecast(externals.pollenRisk),
+    napkinForecast: napkinForecast(),
     lycraCoefficient: lycraCoefficient(weather.tempC, weather.windKmh, weather.isSunny, weather.precipProbPct),
     poussetteFactor: poussetteFactor(target),
     nutellaIndex: nutellaIndex(target),
-    socialSentiment: socialSentiment(externals.cherryBlossomBuzz),
-    competitorProxy: competitorProxy(externals.competitorBusiness),
+    socialSentiment: socialSentiment(),
+    competitorProxy: competitorProxy(),
     recommendation,
+    seineLevel,
     sources
   };
 }

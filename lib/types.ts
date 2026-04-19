@@ -94,6 +94,13 @@ export interface Recommendation {
   rationale: string[];
 }
 
+export interface SeineLevelView {
+  heightM: number;
+  mood: "calme" | "surveillé" | "haut";
+  note: string;
+  timestamp: string;
+}
+
 export interface Briefing {
   generatedAt: string;
   targetDate: string;
@@ -119,6 +126,7 @@ export interface Briefing {
   socialSentiment: SocialSignal;
   competitorProxy: CompetitorSignal;
   recommendation: Recommendation;
+  seineLevel?: SeineLevelView;
   sources: SourceStatus[];
 }
 
