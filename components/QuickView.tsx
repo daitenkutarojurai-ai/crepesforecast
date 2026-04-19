@@ -1,7 +1,7 @@
-import { Baby, Bike, Sparkles, Users } from "lucide-react";
+import { Baby, Bike, Clock, Sparkles, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Card, Chip } from "./Card";
-import { ArcGauge, LinearGauge, PivotSlider } from "./Gauge";
+import { ArcGauge, PivotSlider } from "./Gauge";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
 import type { Briefing } from "@/lib/types";
 
@@ -29,18 +29,6 @@ const CARDIGAN_LABEL: Record<string, string> = {
   red: "Rouge"
 };
 
-function totalBump(briefing: Briefing): number {
-  return briefing.events
-    .filter((e) => e.distanceKm <= 1.5)
-    .reduce((sum, e) => sum + e.expectedBump, 0);
-}
-
-function affluenceLabel(bump: number): { label: string; tone: "ok" | "warn" | "danger"; pct: number } {
-  if (bump >= 40) return { label: "Très forte", tone: "danger", pct: 95 };
-  if (bump >= 20) return { label: "Soutenue", tone: "warn", pct: 65 };
-  return { label: "Normale", tone: "ok", pct: 35 };
-}
-
 function audienceTags(briefing: Briefing): Array<{ label: string; icon: LucideIcon }> {
   const tags: Array<{ label: string; icon: LucideIcon }> = [];
   tags.push({ label: "Grand-mères & petits-enfants", icon: Users });
@@ -53,10 +41,15 @@ function audienceTags(briefing: Briefing): Array<{ label: string; icon: LucideIc
   return tags;
 }
 
+function daylightLabel(weather: Briefing["weather"]): string {
+  const sunrise = timeOf(weather.sunrise);
+  const sunset = timeOf(weather.sunset);
+  const total = hoursBetween(weather.sunrise, weather.sunset);
+  return `${sunrise} → ${sunset} · ${total}h de jour`;
+}
+
 export function QuickView({ briefing }: { briefing: Briefing }) {
   const { weather, pivot, cardigan, recommendation } = briefing;
-  const bump = totalBump(briefing);
-  const affluence = affluenceLabel(bump);
   const Icon = pickWeatherIcon(weather.cloudCoverPct, weather.precipProbPct);
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
   const audiences = audienceTags(briefing);
@@ -64,7 +57,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
   return (
     <Card title="Aperçu · Dimanche" subtitle="L'essentiel en un coup d'œil" icon={Sparkles} tone="accent">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="flex flex-col items-center justify-center gap-1 rounded-2xl border border-seine-border bg-gradient-to-b from-seine-header/40 to-transparent p-4 text-center">
+        <div className="flex flex-col items-center justify-center gap-1 rounded-2xl border border-seine-border bg-gradient-to-b from-seine-header/50 to-transparent p-4 text-center">
           <Icon className="h-10 w-10 text-seine-accent" strokeWidth={1.6} />
           <div className="font-mono text-3xl font-semibold text-seine-ink">
             {Math.round(weather.tempC)}°
@@ -111,28 +104,15 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
         <div className="flex flex-col gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-4">
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
-              Affluence
+              Jour & équipe
             </div>
-            <div className="mt-1 text-lg font-semibold text-seine-ink">
-              {affluence.label}
+            <div className="mt-1 flex items-center gap-2 text-lg font-semibold text-seine-ink">
+              <Clock className="h-4 w-4 text-seine-accent" />
+              {daylightLabel(weather)}
             </div>
             <div className="text-xs text-seine-muted">
-              {bump > 0 ? `+${bump} % d'événements proches` : "Pas d'événement majeur"}
+              Pluie {weather.precipProbPct}% · vent {Math.round(weather.windKmh)} km/h
             </div>
-          </div>
-          <LinearGauge
-            value={affluence.pct}
-            color={
-              affluence.tone === "danger"
-                ? "bg-seine-danger"
-                : affluence.tone === "warn"
-                  ? "bg-seine-warn"
-                  : "bg-seine-ok"
-            }
-          />
-          <div className="flex items-center justify-between text-[10px] text-seine-muted">
-            <span>Calme</span>
-            <span>Bondé</span>
           </div>
           <Chip tone={STAFFING_TONE[recommendation.staffing]}>
             <Users className="h-3 w-3" />
@@ -156,4 +136,13 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
       </div>
     </Card>
   );
+}
+
+function timeOf(iso: string): string {
+  return new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+}
+
+function hoursBetween(isoA: string, isoB: string): number {
+  const diff = new Date(isoB).getTime() - new Date(isoA).getTime();
+  return Math.round((diff / 3_600_000) * 10) / 10;
 }

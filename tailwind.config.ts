@@ -23,11 +23,11 @@ const config: Config = {
       },
       colors: {
         seine: {
-          bg: "#f6efe3",
+          bg: "#fbf1dc",
           card: "#ffffff",
           ink: "#1f2a3a",
           muted: "#6b7a90",
-          border: "#e8dfd0",
+          border: "#ead9b9",
           header: "#cfe4f0",
           headerInk: "#1a3a52",
           accent: "#3d8ab3",
@@ -37,7 +37,8 @@ const config: Config = {
           warn: "#c98a2a",
           danger: "#c04545",
           chip: "#bfe0c8",
-          chipInk: "#2f5d3a"
+          chipInk: "#2f5d3a",
+          peach: "#f5d8b8"
         }
       },
       boxShadow: {
