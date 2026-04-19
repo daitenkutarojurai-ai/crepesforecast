@@ -1,25 +1,7 @@
-import { Bike, Flower2, Leaf } from "lucide-react";
+import { Baby, Bike } from "lucide-react";
 import { Card } from "./Card";
 import { LinearGauge } from "./Gauge";
 import type { Briefing } from "@/lib/types";
-
-const POLLEN_LABEL: Record<"low" | "moderate" | "high", string> = {
-  low: "bas",
-  moderate: "modéré",
-  high: "élevé"
-};
-
-const POLLEN_PCT: Record<"low" | "moderate" | "high", number> = {
-  low: 25,
-  moderate: 60,
-  high: 92
-};
-
-const POLLEN_COLOR: Record<"low" | "moderate" | "high", string> = {
-  low: "bg-seine-ok",
-  moderate: "bg-seine-warn",
-  high: "bg-seine-danger"
-};
 
 const POUSSETTE_PCT: Record<"low" | "medium" | "high", number> = {
   low: 25,
@@ -34,39 +16,22 @@ const POUSSETTE_LABEL: Record<"low" | "medium" | "high", string> = {
 };
 
 export function Details({ briefing }: { briefing: Briefing }) {
-  const { napkinForecast, lycraCoefficient, poussetteFactor } = briefing;
+  const { lycraCoefficient, poussetteFactor } = briefing;
   const lycraPct = Math.min(100, (lycraCoefficient.coefficient / 15) * 100);
 
   return (
     <section className="space-y-3">
       <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-seine-muted">
-        Détails complémentaires
+        Détails dérivés de la météo & du calendrier
       </h2>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card title="Serviettes" icon={Leaf}>
-          <p className="text-sm font-semibold capitalize text-seine-ink">
-            Pollen {POLLEN_LABEL[napkinForecast.risk]}
-          </p>
-          <div className="mt-2">
-            <LinearGauge
-              value={POLLEN_PCT[napkinForecast.risk]}
-              color={POLLEN_COLOR[napkinForecast.risk]}
-              label="Risque"
-              sublabel={POLLEN_LABEL[napkinForecast.risk]}
-            />
-          </div>
-          <p className="mt-2 text-xs text-seine-muted">{napkinForecast.recommendation}</p>
-        </Card>
-
-        <Card title="Coefficient Lycra" icon={Bike}>
-          <p className="text-sm font-semibold text-seine-ink">
-            Indice {lycraCoefficient.coefficient}
-          </p>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card title="Coefficient Lycra" subtitle="Dérivé météo" icon={Bike}>
+          <p className="text-sm font-semibold text-seine-ink">Indice {lycraCoefficient.coefficient}</p>
           <div className="mt-2">
             <LinearGauge
               value={lycraPct}
               color="bg-seine-accent"
-              label="Cyclistes"
+              label="Cyclistes attendus"
               sublabel={
                 lycraCoefficient.coefficient > 10
                   ? "saturé"
@@ -79,7 +44,7 @@ export function Details({ briefing }: { briefing: Briefing }) {
           <p className="mt-2 text-xs text-seine-muted">{lycraCoefficient.note}</p>
         </Card>
 
-        <Card title="Facteur Poussette" icon={Flower2}>
+        <Card title="Facteur Poussette" subtitle="Saison & créneau" icon={Baby}>
           <p className="text-sm font-semibold text-seine-ink">
             Densité {POUSSETTE_LABEL[poussetteFactor.density]} · {poussetteFactor.window}
           </p>

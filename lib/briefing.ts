@@ -13,7 +13,7 @@ import {
   poussetteFactor,
   socialSentiment
 } from "./engine";
-import { fetchVigicrues, getExternalsStubs } from "./externals";
+import { getExternalsStubs } from "./externals";
 import { fetchWeather } from "./weather";
 import { resolveTargetSunday } from "./time";
 import { Briefing, SourceStatus } from "./types";
@@ -21,11 +21,7 @@ import { Briefing, SourceStatus } from "./types";
 export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
   const target = resolveTargetSunday(now);
 
-  const [{ weather, hourly, source: weatherSource }, { flow, source: vigicruesSource }] = await Promise.all([
-    fetchWeather(target),
-    fetchVigicrues()
-  ]);
-
+  const { weather, hourly, source: weatherSource } = await fetchWeather(target);
   const externals = getExternalsStubs(target);
 
   const cardigan = computeCardigan(weather.tempC, weather.isSunny, weather.windKmh);
@@ -38,7 +34,6 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
       weather,
       hourly,
       now: target,
-      seineFlowCubicMS: flow,
       pollenRisk: externals.pollenRisk,
       sncfDelayMin: externals.sncfDelayMin,
       cherryBlossomBuzz: externals.cherryBlossomBuzz,
@@ -50,7 +45,9 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     bribe
   );
 
-  const sources: SourceStatus[] = [weatherSource, vigicruesSource, ...externals.sources];
+  // Only expose sources whose data actually drives something visible on the
+  // dashboard right now — everything else is unused or hidden.
+  const sources: SourceStatus[] = [weatherSource];
 
   return {
     generatedAt: now.toISOString(),
