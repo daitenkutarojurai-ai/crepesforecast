@@ -6,46 +6,52 @@ const config: Config = {
     "./components/**/*.{ts,tsx}",
     "./lib/**/*.{ts,tsx}"
   ],
-  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
+        sans: [
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
       },
       colors: {
-        mission: {
-          bg: "#05070b",
-          panel: "#0b1018",
-          panel2: "#101723",
-          border: "#1b2433",
-          ink: "#e6edf7",
-          muted: "#8a97ac",
-          accent: "#22d3ee",
-          warn: "#f59e0b",
-          danger: "#ef4444",
-          ok: "#10b981",
-          crepe: "#f59e0b",
-          glace: "#38bdf8"
+        seine: {
+          bg: "#f6efe3",
+          card: "#ffffff",
+          ink: "#1f2a3a",
+          muted: "#6b7a90",
+          border: "#e8dfd0",
+          header: "#cfe4f0",
+          headerInk: "#1a3a52",
+          accent: "#3d8ab3",
+          crepe: "#d98e46",
+          glace: "#7ec1de",
+          ok: "#4a8f5a",
+          warn: "#c98a2a",
+          danger: "#c04545",
+          chip: "#bfe0c8",
+          chipInk: "#2f5d3a"
         }
       },
       boxShadow: {
-        glow: "0 0 0 1px rgba(34,211,238,0.25), 0 0 24px rgba(34,211,238,0.15)",
-        danger: "0 0 0 1px rgba(239,68,68,0.35), 0 0 24px rgba(239,68,68,0.2)"
+        card: "0 1px 2px rgba(31,42,58,0.04), 0 8px 24px rgba(31,42,58,0.06)"
       },
       keyframes: {
         pulseRing: {
-          "0%": { boxShadow: "0 0 0 0 rgba(239,68,68,0.55)" },
-          "70%": { boxShadow: "0 0 0 14px rgba(239,68,68,0)" },
-          "100%": { boxShadow: "0 0 0 0 rgba(239,68,68,0)" }
-        },
-        ticker: {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(-50%)" }
+          "0%": { boxShadow: "0 0 0 0 rgba(192,69,69,0.55)" },
+          "70%": { boxShadow: "0 0 0 12px rgba(192,69,69,0)" },
+          "100%": { boxShadow: "0 0 0 0 rgba(192,69,69,0)" }
         }
       },
       animation: {
-        pulseRing: "pulseRing 1.8s cubic-bezier(0.4,0,0.6,1) infinite",
-        ticker: "ticker 40s linear infinite"
+        pulseRing: "pulseRing 1.8s cubic-bezier(0.4,0,0.6,1) infinite"
       }
     }
   },
