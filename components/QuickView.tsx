@@ -1,6 +1,6 @@
-import { CalendarHeart, Sparkles, Waves } from "lucide-react";
+import { CalendarHeart, Croissant, Sparkles, Waves } from "lucide-react";
 import { Card, Chip } from "./Card";
-import { CrepeDot, GlaceDot, SeineIllustration, SparkleFleurs } from "./Illustration";
+import { QuaiScene } from "./Illustration";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
 import type { Briefing, LocalEvent } from "@/lib/types";
 
@@ -25,7 +25,7 @@ function crowdMood(top: LocalEvent | undefined, eventsCount: number): string {
 }
 
 export function QuickView({ briefing }: { briefing: Briefing }) {
-  const { weather, pivot, events, horoscope, seineLevel } = briefing;
+  const { weather, events, horoscope, seineLevel } = briefing;
   const Icon = pickWeatherIcon(weather.cloudCoverPct, weather.precipProbPct);
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
   const vibe = weatherMood(weather.precipProbPct, weather.tempC, weather.isSunny);
@@ -39,13 +39,12 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
       icon={Sparkles}
       tone="accent"
     >
-      <div className="relative mb-4 overflow-hidden rounded-2xl border border-seine-border">
-        <SeineIllustration className="h-20 w-full" />
-        <SparkleFleurs className="absolute right-3 top-2 h-6 w-14" />
+      <div className="relative mb-4 aspect-[6/1] w-full overflow-hidden rounded-2xl border border-seine-border">
+        <QuaiScene className="absolute inset-0 h-full w-full" />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-header/40 to-transparent p-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/50 to-transparent p-4">
           <Icon className="h-10 w-10 text-seine-accent" strokeWidth={1.5} />
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
@@ -58,26 +57,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/30 to-transparent p-4">
-          {pivot.mode === "glace" ? (
-            <GlaceDot className="h-12 w-12" />
-          ) : (
-            <CrepeDot className="h-12 w-12" />
-          )}
-          <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
-              Mode recommandé
-            </div>
-            <div className="text-lg font-semibold text-seine-ink">
-              {pivot.mode === "glace" ? "Mode Glace" : "Mode Crêpe"}
-            </div>
-            <div className="text-xs text-seine-muted">
-              {pivot.heatAlert ? "Sorbets et boissons fraîches en avant" : pivot.description}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-[#f5d8b8]/50 to-transparent p-4">
+        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-sage/40 to-transparent p-4">
           <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-seine-card">
             <CalendarHeart className="h-6 w-6 text-seine-crepe" />
           </span>
@@ -86,7 +66,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
               Événement phare
             </div>
             <div className="truncate text-lg font-semibold text-seine-ink">
-              {headline ? headline.title : "Aucun événement majeur"}
+              {headline ? headline.title : "Dimanche sans événement majeur"}
             </div>
             <div className="text-xs text-seine-muted">{crowd}</div>
             {headline ? (
@@ -101,12 +81,12 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-header text-seine-headerInk">
-            <Sparkles className="h-4 w-4" />
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-headerInk">
+            <Croissant className="h-4 w-4" />
           </span>
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
-              Ambiance de la semaine
+              Idée du jour
             </div>
             <p className="text-sm font-semibold text-seine-ink">{horoscope.headline}</p>
             <p className="text-xs text-seine-muted">{horoscope.body}</p>
@@ -114,7 +94,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
         </div>
 
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#dceff7] text-[#1a3a52]">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-sage text-seine-chipInk">
             <Waves className="h-4 w-4" />
           </span>
           <div>

@@ -2,20 +2,15 @@
 
 import { Anchor, Caravan, RefreshCcw } from "lucide-react";
 import { GrandMereLight } from "./GrandMereLight";
-import { ModeToggle } from "./ModeToggle";
 import { formatRefreshedAt, formatSundayLong } from "@/lib/time";
-import type { Briefing, Mode } from "@/lib/types";
+import type { Briefing } from "@/lib/types";
 
 export function Header({
   briefing,
-  mode,
-  onMode,
   onRefresh,
   refreshing
 }: {
   briefing: Briefing;
-  mode: Mode;
-  onMode: (m: Mode) => void;
   onRefresh: () => void;
   refreshing: boolean;
 }) {
@@ -39,7 +34,6 @@ export function Header({
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <GrandMereLight cardigan={briefing.cardigan} />
-          <ModeToggle mode={mode} onChange={onMode} />
           <button
             type="button"
             onClick={onRefresh}

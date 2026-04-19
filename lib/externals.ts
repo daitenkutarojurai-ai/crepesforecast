@@ -1,4 +1,5 @@
 import { fetchAgendaScrapes } from "./agenda-scrapers";
+import { getKnownEvents } from "./known-events";
 import { fetchOpenAgendaEvents } from "./openagenda";
 import { LocalEvent, SourceStatus } from "./types";
 
@@ -16,9 +17,7 @@ function dedupe(events: LocalEvent[]): LocalEvent[] {
       seen.set(key, e);
     }
   }
-  return Array.from(seen.values()).sort(
-    (a, b) => b.expectedBump - a.expectedBump
-  );
+  return Array.from(seen.values()).sort((a, b) => b.expectedBump - a.expectedBump);
 }
 
 export async function fetchExternals(target: Date): Promise<ExternalsBundle> {
@@ -27,8 +26,12 @@ export async function fetchExternals(target: Date): Promise<ExternalsBundle> {
     fetchAgendaScrapes(target)
   ]);
 
+  const known = getKnownEvents(target);
+
+  const merged = dedupe([...openAgenda.events, ...scrapes.events, ...known.events]);
+
   return {
-    localEvents: dedupe([...openAgenda.events, ...scrapes.events]),
-    sources: [openAgenda.source, ...scrapes.sources]
+    localEvents: merged,
+    sources: [openAgenda.source, ...scrapes.sources, known.source]
   };
 }

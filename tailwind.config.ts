@@ -24,21 +24,23 @@ const config: Config = {
       colors: {
         seine: {
           bg: "#fbf1dc",
-          card: "#ffffff",
-          ink: "#1f2a3a",
-          muted: "#6b7a90",
-          border: "#ead9b9",
-          header: "#cfe4f0",
-          headerInk: "#1a3a52",
-          accent: "#3d8ab3",
-          crepe: "#d98e46",
-          glace: "#7ec1de",
-          ok: "#4a8f5a",
-          warn: "#c98a2a",
-          danger: "#c04545",
-          chip: "#bfe0c8",
-          chipInk: "#2f5d3a",
-          peach: "#f5d8b8"
+          card: "#fffcf5",
+          ink: "#3a2a1a",
+          muted: "#8a7258",
+          border: "#ecd9b3",
+          header: "#f5d8b8",
+          headerInk: "#6a3a12",
+          accent: "#c07a2a",
+          crepe: "#c98a2a",
+          glace: "#e6a36b",
+          ok: "#6a8f4a",
+          warn: "#c07a2a",
+          danger: "#b84a3a",
+          chip: "#d8e3b8",
+          chipInk: "#4a5a2a",
+          peach: "#f5d8b8",
+          sage: "#c9d7b0",
+          rose: "#f2c7b8"
         }
       },
       boxShadow: {

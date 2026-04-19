@@ -156,68 +156,68 @@ export function poussetteFactor(target: Date): PoussetteForecast {
 
 const HOROSCOPE_WEEKS: Array<{ headline: string; body: string; roadblock: boolean }> = [
   {
-    headline: "Lune en Poissons · semaine gourmande",
-    body: "Les clients hésitent longtemps. Propose un duo sucré-salé pour trancher.",
+    headline: "Mise en avant : chantilly-fraise",
+    body: "Les fraises reviennent au marché. Petite ardoise à 4 € pour le combo du dimanche.",
     roadblock: false
   },
   {
-    headline: "Vénus en Taureau · douceurs en vedette",
-    body: "Semaine propice aux crêpes beurre-sucre et aux glaces vanille. Valeur refuge.",
+    headline: "Tester un topping saisonnier",
+    body: "Bonne semaine pour essayer un nouveau topping. Garde trois avis clients avant de valider.",
     roadblock: false
   },
   {
-    headline: "Mars rétrograde · clients pressés",
-    body: "Tout le monde veut sa commande en 2 min. Pré-plie 10 crêpes sucre avant 11h.",
+    headline: "Pré-plier 10 crêpes avant 11h",
+    body: "Les gens sont pressés le matin. Une pile prête coupe la file en deux.",
     roadblock: true
   },
   {
-    headline: "Mercure en Gémeaux · paroles qui débordent",
-    body: "Les groupes bavardent au comptoir. Garde l'allée fluide, prévois des formats enfant.",
+    headline: "Soigner le sucré-salé",
+    body: "Propose une crêpe jambon-fromage + un goûter sucré en combo à 7 €.",
     roadblock: false
   },
   {
-    headline: "Jupiter bienveillant · pourboires généreux",
-    body: "Énergie d'abondance. Soigne la vitrine, les gros formats se vendent tout seuls.",
-    roadblock: false
-  },
-  {
-    headline: "Saturne en aspect dur · patience courte",
-    body: "Clients impatients dans la file. Annonce les délais à voix haute.",
+    headline: "Verifier la bonbonne de gaz",
+    body: "Recharge avant dimanche, check la batterie du terminal. Plan B cash si panne.",
     roadblock: true
   },
   {
-    headline: "Soleil en Lion · théâtralité attendue",
-    body: "Les enfants veulent le flambage. Propose la crêpe Suzette démo.",
+    headline: "Mettre les classiques en vitrine",
+    body: "Beurre-sucre, Nutella, citron — les valeurs refuge font le chiffre quand il fait frais.",
     roadblock: false
   },
   {
-    headline: "Neptune en Poissons · imagination haute",
-    body: "Les gens essaient des combinaisons bizarres. Note les plus fréquentes, future specials.",
+    headline: "Crêpe Suzette en démo",
+    body: "Les enfants adorent le flambage. Fais-en une par heure pour attirer les regards.",
     roadblock: false
   },
   {
-    headline: "Pluton direct · transformation du menu",
-    body: "Bonne semaine pour tester un topping saisonnier. Demande l'avis de trois clients.",
+    headline: "Format enfant à 2 €",
+    body: "Entre 16h et 17h30, les petits fatigués. Pré-plie 10 formats enfants au sucre.",
     roadblock: false
   },
   {
-    headline: "Uranus en Taureau · imprévus matériels",
-    body: "Vérifie la bonbonne de gaz et la batterie du terminal. Plan B prêt.",
+    headline: "Annoncer les délais à voix haute",
+    body: "Semaine où la patience est courte. Dis le temps d'attente, ça calme la file.",
     roadblock: true
   },
   {
-    headline: "Lune noire · familles hésitantes",
-    body: "Beaucoup de regards, peu d'achats avant 11h. Patiente, la vague arrive vers midi.",
+    headline: "Duo glace + crêpe à 6 €",
+    body: "Dès qu'il fait plus de 22°, le combo boule-crêpe se vend tout seul.",
     roadblock: false
   },
   {
-    headline: "Vénus en Cancer · nostalgie sucrée",
-    body: "Les grands-parents commandent pour les petits. Mets les classiques en avant.",
+    headline: "Chantilly maison en test",
+    body: "Ajoute une touche vanille Bourbon. Les grands-parents sentent la différence.",
     roadblock: false
   },
   {
-    headline: "Trigone d'eau · beau temps pour la chantilly",
-    body: "Journée douce, pousse les crêpes chantilly-fraise et les milkshakes légers.",
+    headline: "Fraîcheur : milkshake banane",
+    body: "Quand il fait chaud, propose un milkshake banane-caramel à 5 €.",
+    roadblock: false
+  },
+  {
+    headline: "Menu brunch 10h–12h",
+    body: "Crêpe œuf-bacon + jus frais à 8 €. Parfait pour la sortie du bac.",
     roadblock: false
   }
 ];

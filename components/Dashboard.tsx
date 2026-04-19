@@ -5,14 +5,15 @@ import { DecorativeBackground } from "./DecorativeBackground";
 import { Details } from "./Details";
 import { EventsCrowdCard } from "./EventsCrowdCard";
 import { Header } from "./Header";
+import { IdealWindowCard } from "./IdealWindowCard";
 import { QuickView } from "./QuickView";
+import { ShoppingListCard } from "./ShoppingListCard";
 import { SourcesPanel } from "./SourcesPanel";
 import { WeatherCustomerCard } from "./WeatherCustomerCard";
-import type { Briefing, Mode } from "@/lib/types";
+import type { Briefing } from "@/lib/types";
 
 export function Dashboard({ initial }: { initial: Briefing }) {
   const [briefing, setBriefing] = useState<Briefing>(initial);
-  const [mode, setMode] = useState<Mode>(initial.mode);
   const [refreshing, setRefreshing] = useState(false);
 
   const refresh = useCallback(async () => {
@@ -22,7 +23,6 @@ export function Dashboard({ initial }: { initial: Briefing }) {
       if (res.ok) {
         const data = (await res.json()) as Briefing;
         setBriefing(data);
-        setMode(data.mode);
       }
     } finally {
       setRefreshing(false);
@@ -37,19 +37,18 @@ export function Dashboard({ initial }: { initial: Briefing }) {
   return (
     <div className="relative min-h-screen">
       <DecorativeBackground />
-      <Header
-        briefing={briefing}
-        mode={mode}
-        onMode={setMode}
-        onRefresh={refresh}
-        refreshing={refreshing}
-      />
+      <Header briefing={briefing} onRefresh={refresh} refreshing={refreshing} />
       <main className="relative mx-auto max-w-6xl space-y-4 px-4 py-5">
         <QuickView briefing={briefing} />
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <WeatherCustomerCard briefing={briefing} />
           <EventsCrowdCard briefing={briefing} />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <IdealWindowCard briefing={briefing} />
+          <ShoppingListCard briefing={briefing} />
         </div>
 
         <Details briefing={briefing} />
