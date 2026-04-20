@@ -9,7 +9,7 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
   const { weather, hourly, pivot, poussetteFactor, lycraCoefficient } = briefing;
   const window = hourly.filter((h) => {
     const d = new Date(h.time).getHours();
-    return d >= 8 && d <= 21;
+    return d >= 12 && d <= 20;
   });
   const minT = Math.min(...window.map((h) => h.tempC));
   const maxT = Math.max(...window.map((h) => h.tempC));
@@ -54,7 +54,7 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
 
       <div className="mt-4 rounded-2xl border border-seine-border bg-seine-bg/30 px-3 py-3">
         <div className="mb-1 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.12em] text-seine-muted">
-          <span>Courbe horaire (8h → 21h)</span>
+          <span>Courbe horaire (12h → 20h · service 14h–19h)</span>
           <span className="font-mono normal-case text-seine-ink">{Math.round(weather.tempC)}°</span>
         </div>
         <TempSparkline points={window} />

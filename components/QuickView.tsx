@@ -1,4 +1,4 @@
-import { CalendarHeart, ExternalLink, Flower2, Sparkles, Stars, Waves } from "lucide-react";
+import { CalendarHeart, ChefHat, ExternalLink, Flower2, Sparkles, Stars, Waves } from "lucide-react";
 import { Banner } from "./Banner";
 import { Card, Chip } from "./Card";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
@@ -31,18 +31,21 @@ const POLLEN_STYLES = {
 } as const;
 
 export function QuickView({ briefing }: { briefing: Briefing }) {
-  const { weather, events, horoscope, seineLevel, pollen } = briefing;
+  const { weather, events, horoscope, seineLevel, pollen, recommendation, targetLabel, targetHolidayName } = briefing;
   const pollenStyle = POLLEN_STYLES[pollen.level];
   const Icon = pickWeatherIcon(weather.cloudCoverPct, weather.precipProbPct);
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
   const vibe = weatherMood(weather.precipProbPct, weather.tempC, weather.isSunny);
   const headline = topEvent(events);
   const crowd = crowdMood(headline, events.length);
+  const displayLabel = targetLabel
+    ? targetLabel.charAt(0).toUpperCase() + targetLabel.slice(1)
+    : "Aperçu";
 
   return (
     <Card
-      title="Aperçu · Dimanche"
-      subtitle="L'essentiel en un coup d'œil"
+      title={`Aperçu · ${displayLabel}`}
+      subtitle={targetHolidayName ? `Férié · service 14h–19h` : "Service 14h–19h"}
       icon={Sparkles}
       tone="accent"
     >
@@ -95,20 +98,42 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/40 to-transparent p-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-card text-seine-crepe">
+            <ChefHat className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+              Carte du jour · à mettre en avant
+            </div>
+            <p className="text-sm font-semibold text-seine-ink">
+              {recommendation.menuSpotlight.hero}
+            </p>
+            <p className="text-xs text-seine-muted">{recommendation.menuSpotlight.combo}</p>
+            {recommendation.menuSpotlight.avoid ? (
+              <p className="mt-1 text-[11px] text-seine-muted italic">
+                À retirer : {recommendation.menuSpotlight.avoid}
+              </p>
+            ) : null}
+          </div>
+        </div>
+
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-peachInk">
             <Stars className="h-4 w-4" />
           </span>
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
-              Horoscope · clientèle du dimanche
+              Horoscope · clientèle
             </div>
             <p className="text-sm font-semibold text-seine-ink">{horoscope.headline}</p>
             <p className="text-xs text-seine-muted">{horoscope.body}</p>
           </div>
         </div>
+      </div>
 
+      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-sage text-seine-chipInk">
             <Waves className="h-4 w-4" />

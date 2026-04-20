@@ -1,9 +1,13 @@
+import { SHIFT_END_HOUR, SHIFT_START_HOUR } from "./schedule";
 import {
   BribeResult,
   CardiganResult,
+  DrinkStock,
   EngineInputs,
   HoroscopeCard,
+  LocalEvent,
   LycraForecast,
+  MenuSpotlight,
   NapkinForecast,
   NutellaIndex,
   PivotResult,
@@ -11,7 +15,8 @@ import {
   Pulse,
   Recommendation,
   SocialSignal,
-  CompetitorSignal
+  CompetitorSignal,
+  TerrasseCapacity
 } from "./types";
 
 export const LOCATION = {
@@ -73,12 +78,11 @@ export function computeBribeOMeter(target: Date): BribeResult {
 }
 
 const PULSE_SCHEDULE: Array<Omit<Pulse, "minutesFromNow" | "timeISO"> & { hhmm: [number, number] }> = [
-  { id: "ferry-10", kind: "ferry", label: "Bac Traversier — matinée", note: "Vague de piétons imminente.", severity: "watch", hhmm: [10, 0] },
-  { id: "church-1145", kind: "church", label: "Sortie de messe — Saint-Nicolas", note: "Surveille baptêmes/communions : double crème chantilly.", severity: "high", hhmm: [11, 45] },
-  { id: "ferry-1230", kind: "ferry", label: "Bac Traversier — midi", note: "Vague de piétons imminente.", severity: "watch", hhmm: [12, 30] },
-  { id: "ferry-14", kind: "ferry", label: "Bac Traversier — après-midi", note: "Vague de piétons imminente.", severity: "watch", hhmm: [14, 0] },
+  { id: "ferry-14", kind: "ferry", label: "Bac Traversier — ouverture", note: "Premier flux piétons à l'ouverture 14h.", severity: "watch", hhmm: [14, 0] },
+  { id: "gouter-1530", kind: "church", label: "Goûter des familles", note: "Fenêtre gaufre Nutella / chocolat chaud. Pré-chauffe le gaufrier.", severity: "watch", hhmm: [15, 30] },
   { id: "theater-1630", kind: "theater", label: "Le Petit Théâtre — entracte", note: "Service ultra-rapide : pré-plie 12 crêpes.", severity: "high", hhmm: [16, 30] },
-  { id: "ferry-18", kind: "ferry", label: "Bac Traversier — soir", note: "Vague de piétons imminente.", severity: "watch", hhmm: [18, 0] }
+  { id: "apero-1730", kind: "competitor", label: "Promeneurs apéro quai", note: "Demande boissons et glaces à emporter : remonte la vitrine.", severity: "watch", hhmm: [17, 30] },
+  { id: "ferry-18", kind: "ferry", label: "Bac Traversier — soir", note: "Dernière vague avant fermeture : garde 15 crêpes d'avance.", severity: "high", hhmm: [18, 0] }
 ];
 
 export function buildPulses(target: Date, sncfDelayMin = 0): Pulse[] {
@@ -94,11 +98,14 @@ export function buildPulses(target: Date, sncfDelayMin = 0): Pulse[] {
       timeISO: t.toISOString(),
       minutesFromNow: 0
     };
+  }).filter((p) => {
+    const h = new Date(p.timeISO).getHours();
+    return h >= SHIFT_START_HOUR && h < SHIFT_END_HOUR;
   });
 
   if (sncfDelayMin > 15) {
     const t = new Date(target);
-    t.setHours(10, 15, 0, 0);
+    t.setHours(SHIFT_START_HOUR, 15, 0, 0);
     pulses.push({
       id: "sncf-captive",
       kind: "sncf",
@@ -248,7 +255,145 @@ export function competitorProxy(status?: "quiet" | "typical" | "busier"): Compet
   return { status: s, note };
 }
 
-export function buildRecommendation(inputs: EngineInputs, pivot: PivotResult, cardigan: CardiganResult, bribe: BribeResult): Recommendation {
+export function menuSpotlight(
+  pivot: PivotResult,
+  cardigan: CardiganResult,
+  weather: EngineInputs["weather"]
+): MenuSpotlight {
+  if (pivot.heatAlert) {
+    return {
+      hero: "Sorbet citron maison + citronnade fraîche",
+      heroCategory: "glace",
+      combo: "Combo canicule : sorbet 2 boules + grand verre citronnade 6 €.",
+      avoid: "Mets les gaufres en retrait : trop lourdes par ≥ 25°."
+    };
+  }
+  if (pivot.mode === "glace") {
+    return {
+      hero: "Glace vanille-pistache + gaufre de Liège tiède",
+      heroCategory: "glace",
+      combo: "Gaufre + boule glace à 5,50 € en tête de vitrine.",
+      avoid: undefined
+    };
+  }
+  if (cardigan.level === "red") {
+    return {
+      hero: "Crêpe beurre-sucre + chocolat chaud maison",
+      heroCategory: "crepe",
+      combo: "Formule Grand-Mère : crêpe + choc chaud 5 €.",
+      avoid: "Évite de sortir les glaces — vitrine crêpes/gaufres en priorité."
+    };
+  }
+  if (weather.precipProbPct > 50) {
+    return {
+      hero: "Gaufre Nutella + chocolat chaud",
+      heroCategory: "gaufre",
+      combo: "Abri + gaufre tiède : formule pluie 4,50 €.",
+      avoid: undefined
+    };
+  }
+  return {
+    hero: "Crêpe Nutella-banane",
+    heroCategory: "crepe",
+    combo: "Duo crêpe + boisson fraîche à 6 € en ardoise.",
+    avoid: undefined
+  };
+}
+
+export function computeTerrasse(
+  weather: EngineInputs["weather"],
+  pivot: PivotResult,
+  events: LocalEvent[]
+): TerrasseCapacity {
+  const tables = 6;
+  const seats = tables * 4;
+  let fill = 40;
+  if (weather.isSunny) fill += 25;
+  if (weather.tempC >= 22) fill += 15;
+  else if (weather.tempC >= 16) fill += 8;
+  else if (weather.tempC < 10) fill -= 25;
+  if (weather.precipProbPct > 60) fill -= 45;
+  else if (weather.precipProbPct > 35) fill -= 20;
+  if (weather.windKmh > 30) fill -= 10;
+  if (pivot.heatAlert) fill -= 8;
+  const nearbyBump = events
+    .filter((e) => e.distanceKm <= 1.5)
+    .reduce((a, e) => a + Math.min(e.expectedBump, 25), 0);
+  fill += Math.min(nearbyBump * 0.6, 20);
+
+  const expectedFillPct = Math.max(0, Math.min(100, Math.round(fill)));
+  const peakWindow = pivot.mode === "glace" ? "15:30 – 18:00" : "16:00 – 18:30";
+  const note =
+    expectedFillPct >= 85
+      ? `Terrasse saturée · pré-bus les tables ${tables}/${tables} dès 15:00.`
+      : expectedFillPct >= 60
+        ? `Rotation soutenue · ~${Math.round((expectedFillPct / 100) * tables)} tables sur ${tables} en simultané.`
+        : expectedFillPct >= 30
+          ? `Fréquentation douce · quelques tables libres, idéal pour familles.`
+          : `Terrasse calme · prévois une carte "à emporter" en avant.`;
+
+  return { tables, seats, expectedFillPct, peakWindow, note };
+}
+
+export function computeDrinkStock(
+  weather: EngineInputs["weather"],
+  pivot: PivotResult,
+  terrasseFillPct: number
+): DrinkStock {
+  const heat = pivot.heatAlert || weather.tempC >= 25;
+  const warm = !heat && (weather.tempC >= 20 || weather.uvIndex >= 6);
+  const crowded = terrasseFillPct >= 70;
+
+  const tier: DrinkStock["tier"] = heat ? "canicule" : warm || crowded ? "renforcé" : "base";
+  const loadoutPct = tier === "canicule" ? 180 : tier === "renforcé" ? 130 : 100;
+
+  const priorities: DrinkStock["priorities"] =
+    tier === "canicule"
+      ? [
+          { emoji: "💧", label: "Eau plate 50 cl", units: "3 packs" },
+          { emoji: "🍋", label: "Citronnade maison", units: "10 L" },
+          { emoji: "🧊", label: "Sac de glaçons 5 kg", units: "2 sacs" },
+          { emoji: "🥤", label: "Sodas (Orangina / Coca)", units: "2 packs" }
+        ]
+      : tier === "renforcé"
+        ? [
+            { emoji: "💧", label: "Eau plate 50 cl", units: "2 packs" },
+            { emoji: "🍋", label: "Citronnade maison", units: "6 L" },
+            { emoji: "🥤", label: "Sodas variés", units: "1,5 pack" },
+            { emoji: "🧊", label: "Glaçons", units: "1 sac" }
+          ]
+        : pivot.mode === "crepe"
+          ? [
+              { emoji: "☕", label: "Café + chocolat chaud", units: "1,5x base" },
+              { emoji: "🍵", label: "Thés (menthe, verveine)", units: "base" },
+              { emoji: "💧", label: "Eau plate", units: "1 pack" },
+              { emoji: "🧃", label: "Jus de pomme artisanal", units: "base" }
+            ]
+          : [
+              { emoji: "💧", label: "Eau plate 50 cl", units: "1,5 pack" },
+              { emoji: "🥤", label: "Sodas variés", units: "1 pack" },
+              { emoji: "🍋", label: "Citronnade maison", units: "4 L" },
+              { emoji: "☕", label: "Café glacé", units: "base" }
+            ];
+
+  const note =
+    tier === "canicule"
+      ? "Alerte chaleur : double le frais, eau fraîche offerte aux enfants, garde 2 bouteilles au congélo."
+      : tier === "renforcé"
+        ? "Temps doux + terrasse animée : pousse la citronnade et garde les sodas fraîches."
+        : pivot.mode === "crepe"
+          ? "Mode crêpe : boissons chaudes en avant, minimum vital côté frais."
+          : "Charge standard : équilibre chaud/froid, vérifie le stock jus.";
+
+  return { tier, loadoutPct, priorities, note };
+}
+
+export function buildRecommendation(
+  inputs: EngineInputs,
+  pivot: PivotResult,
+  cardigan: CardiganResult,
+  bribe: BribeResult
+): Recommendation {
   const bumps: number[] = [];
   const rationale: string[] = [];
 
@@ -274,24 +419,25 @@ export function buildRecommendation(inputs: EngineInputs, pivot: PivotResult, ca
   }
 
   rationale.push("Fenêtre 16:00–17:30 : crêpe sucre format enfant en tête de gondole.");
+  rationale.push(`Service 14h–19h : cadence le pic sur ${pivot.mode === "glace" ? "15:30–18:00" : "16:00–18:30"}.`);
 
   const batterVolumePct = Math.max(60, Math.min(220, 100 + bumps.reduce((a, b) => a + b, 0)));
 
-  const topping =
-    pivot.heatAlert
-      ? "Sorbet citron + limonade maison"
-      : pivot.mode === "glace"
-        ? "Glace vanille-pistache"
-        : cardigan.level === "red"
-          ? "Chocolat chaud + crêpe beurre-sucre"
-          : "Nutella-banane";
+  const spotlight = menuSpotlight(pivot, cardigan, inputs.weather);
 
   const staffing: Recommendation["staffing"] =
     batterVolumePct >= 150 ? "all-hands" : batterVolumePct >= 110 ? "two-hands" : "solo";
 
-  const headline = `${Math.round(batterVolumePct)} % pâte · ${topping} · Mode ${pivot.mode === "glace" ? "Glace" : "Crêpe"}`;
+  const headline = `${Math.round(batterVolumePct)} % pâte · ${spotlight.hero} · Mode ${pivot.mode === "glace" ? "Glace" : "Crêpe"}`;
 
-  return { headline, batterVolumePct, topping, staffing, rationale };
+  return {
+    headline,
+    batterVolumePct,
+    topping: spotlight.hero,
+    staffing,
+    rationale,
+    menuSpotlight: spotlight
+  };
 }
 
 export function daylightMinutesLeft(now: Date, sunsetISO: string): number {

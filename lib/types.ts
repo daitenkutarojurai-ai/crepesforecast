@@ -94,6 +94,35 @@ export interface Recommendation {
   topping: string;
   staffing: "solo" | "two-hands" | "all-hands";
   rationale: string[];
+  menuSpotlight: MenuSpotlight;
+}
+
+export interface MenuSpotlight {
+  hero: string;
+  heroCategory: "crepe" | "gaufre" | "glace" | "boisson";
+  combo: string;
+  avoid?: string;
+}
+
+export interface TerrasseCapacity {
+  tables: number;
+  seats: number;
+  expectedFillPct: number;
+  peakWindow: string;
+  note: string;
+}
+
+export interface DrinkStock {
+  tier: "base" | "renforcé" | "canicule";
+  loadoutPct: number;
+  priorities: DrinkPriority[];
+  note: string;
+}
+
+export interface DrinkPriority {
+  label: string;
+  units: string;
+  emoji: string;
 }
 
 export interface SeineLevelView {
@@ -110,9 +139,16 @@ export interface PollenView {
   note: string;
 }
 
+export type TargetKind = "saturday" | "sunday" | "holiday";
+
 export interface Briefing {
   generatedAt: string;
   targetDate: string;
+  targetKind: TargetKind;
+  targetLabel: string;
+  targetHolidayName?: string;
+  shiftStartISO: string;
+  shiftEndISO: string;
   location: {
     name: string;
     lat: number;
@@ -135,8 +171,32 @@ export interface Briefing {
   socialSentiment: SocialSignal;
   competitorProxy: CompetitorSignal;
   recommendation: Recommendation;
+  terrasse: TerrasseCapacity;
+  drinks: DrinkStock;
   seineLevel?: SeineLevelView;
   pollen: PollenView;
+  sources: SourceStatus[];
+}
+
+export interface WeekBriefingDay {
+  targetDate: string;
+  targetKind: TargetKind;
+  targetLabel: string;
+  targetHolidayName?: string;
+  weather: WeatherNow;
+  mode: Mode;
+  affluenceTier: "peak" | "high" | "steady" | "quiet";
+  affluenceLabel: string;
+  topEvent?: { title: string; bump: number };
+  terrasseFillPct: number;
+  drinksTier: DrinkStock["tier"];
+  menuHero: string;
+  batterVolumePct: number;
+}
+
+export interface WeekBriefing {
+  generatedAt: string;
+  days: WeekBriefingDay[];
   sources: SourceStatus[];
 }
 

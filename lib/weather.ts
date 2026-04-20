@@ -58,12 +58,19 @@ export async function fetchWeather(target: Date): Promise<{
       cloudCoverPct: data.hourly.cloud_cover[i]
     }));
 
-    const middayIdx = pickMiddayIndex(hourly);
+    const middayIdx = pickShiftCenterIndex(hourly);
     const midday = hourly[middayIdx];
-    const windowAvgRain = avg(hourly.slice(2, 20).map((h) => h.precipProbPct));
+    const windowAvgRain = avg(
+      hourly
+        .filter((h) => {
+          const hr = new Date(h.time).getHours();
+          return hr >= 14 && hr < 19;
+        })
+        .map((h) => h.precipProbPct)
+    );
 
     const anchor = new Date(target);
-    anchor.setHours(10, 0, 0, 0);
+    anchor.setHours(14, 0, 0, 0);
 
     const weather: WeatherNow = {
       tempC: midday.tempC,
@@ -102,13 +109,13 @@ export async function fetchWeather(target: Date): Promise<{
   }
 }
 
-function pickMiddayIndex(hourly: HourlyPoint[]): number {
+function pickShiftCenterIndex(hourly: HourlyPoint[]): number {
   let best = 0;
   let bestDelta = Infinity;
   for (let i = 0; i < hourly.length; i++) {
     const d = new Date(hourly[i].time);
     const hour = d.getHours();
-    const delta = Math.abs(hour - 13);
+    const delta = Math.abs(hour - 16);
     if (delta < bestDelta) {
       bestDelta = delta;
       best = i;
@@ -128,7 +135,7 @@ function mockWeather(target: Date): { weather: WeatherNow; hourly: HourlyPoint[]
   const sunset = new Date(target);
   sunset.setHours(20, 45, 0, 0);
   const anchor = new Date(target);
-  anchor.setHours(10, 0, 0, 0);
+  anchor.setHours(14, 0, 0, 0);
 
   const hourly: HourlyPoint[] = Array.from({ length: 24 }, (_, i) => {
     const t = new Date(target);
