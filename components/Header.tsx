@@ -39,7 +39,7 @@ export function Header({
             type="button"
             onClick={onRefresh}
             disabled={refreshing}
-            className="inline-flex items-center gap-2 rounded-full border border-seine-border bg-seine-card/90 px-3 py-1 text-xs font-medium text-seine-ink hover:bg-seine-card disabled:opacity-60"
+            className="inline-flex min-h-[40px] items-center gap-2 rounded-full border border-seine-border bg-seine-card/90 px-3 py-2 text-xs font-medium text-seine-ink hover:bg-seine-card disabled:opacity-60"
             title="Rafraîchir le briefing"
           >
             <RefreshCcw className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`} />

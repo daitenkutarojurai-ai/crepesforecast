@@ -17,11 +17,15 @@ export function Dashboard({ initial }: { initial: Briefing }) {
   const refresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      const res = await fetch("/api/briefing", { cache: "no-store" });
-      if (res.ok) {
-        const data = (await res.json()) as Briefing;
-        setBriefing(data);
-      }
+      const res = await fetch("/api/briefing", {
+        cache: "no-store",
+        signal: AbortSignal.timeout(10000)
+      });
+      if (!res.ok) return;
+      const data = (await res.json()) as Briefing;
+      setBriefing(data);
+    } catch (err) {
+      console.error("Briefing refresh failed", err);
     } finally {
       setRefreshing(false);
     }

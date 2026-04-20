@@ -8,7 +8,7 @@ export function TempSparkline({
   className?: string;
 }) {
   if (points.length === 0) return null;
-  const width = Math.max(280, points.length * 22);
+  const width = Math.max(240, points.length * 22);
   const padX = 18;
   const padY = 16;
   const temps = points.map((p) => p.tempC);
@@ -33,7 +33,7 @@ export function TempSparkline({
 
   return (
     <div className={`overflow-x-auto ${className}`}>
-      <svg viewBox={`0 0 ${width} ${height}`} className="h-24 w-full min-w-[280px]">
+      <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" className="block h-24 w-full">
         <defs>
           <linearGradient id="tempArea" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stopColor="#3d8ab3" stopOpacity="0.35" />
