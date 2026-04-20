@@ -1,6 +1,6 @@
 import { CalendarHeart, ExternalLink, Sparkles, Stars, Waves } from "lucide-react";
+import { Banner } from "./Banner";
 import { Card, Chip } from "./Card";
-import { QuaiScene } from "./Illustration";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
 import type { Briefing, LocalEvent } from "@/lib/types";
 
@@ -39,9 +39,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
       icon={Sparkles}
       tone="accent"
     >
-      <div className="relative mb-4 aspect-[6/1] w-full overflow-hidden rounded-2xl border border-seine-border">
-        <QuaiScene className="absolute inset-0 h-full w-full" />
-      </div>
+      <Banner className="mb-4 aspect-[16/6] w-full" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/50 to-transparent p-4">

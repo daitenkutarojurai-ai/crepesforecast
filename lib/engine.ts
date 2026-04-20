@@ -154,86 +154,64 @@ export function poussetteFactor(target: Date): PoussetteForecast {
   };
 }
 
-const HOROSCOPE_WEEKS: Array<{ headline: string; body: string; roadblock: boolean }> = [
-  {
-    headline: "Troupeau de grands-parents attendu",
-    body: "Beaucoup de Ct > 15 cette semaine. Les mamies arrivent en cardigan, commandent beurre-sucre et restent 20 min à papoter.",
-    roadblock: false
-  },
-  {
-    headline: "Familles avec poussettes en embuscade",
-    body: "Weekend en mode parc. Poussettes et petits fatigués dès 15h30. Pré-plie 10 formats enfants à 2 €.",
-    roadblock: false
-  },
-  {
-    headline: "Joggers et cyclistes EuroVelo 3",
-    body: "Sportifs du dimanche matin en file : 9h–11h ils veulent du rapide. Formule crêpe-banane + jus à 5 €.",
-    roadblock: false
-  },
-  {
-    headline: "Couples en balade romantique",
-    body: "Les amoureux se baladent main dans la main. Ils partagent une crêpe pour deux, propose la chantilly-fraise à partager.",
-    roadblock: false
-  },
-  {
-    headline: "Bande d'ados du théâtre",
-    body: "Sortie de répétition vers 16h30 : une meute affamée qui veut du sucré pas cher. Crêpe Nutella à 3,50 €.",
-    roadblock: false
-  },
-  {
-    headline: "Touristes parisiens venus en Transilien",
-    body: "Ligne J amène les curieux du centre. Ils photographient la caravane. Soigne la vitrine, ils posteront.",
-    roadblock: false
-  },
-  {
-    headline: "Sortie de messe Saint-Nicolas",
-    body: "Dès 11h45, les paroissiens descendent en groupe. Double chantilly pour les baptêmes/communions.",
-    roadblock: true
-  },
-  {
-    headline: "Promeneurs de chien & retraités",
-    body: "Clientèle habituée, calme, fidèle. Ils veulent le même classique chaque dimanche. Offre la deuxième au 5e achat.",
-    roadblock: false
-  },
-  {
-    headline: "Brocanteurs et chineurs matinaux",
-    body: "Levés à 7h, ils cherchent du carburant à 10h. Grande crêpe complète salée + café à 6 €.",
-    roadblock: false
-  },
-  {
-    headline: "Familles nombreuses en vélo",
-    body: "4 enfants + 2 parents = 6 crêpes rapide. Prévois du stock, et un carton pour le plus petit qui va en faire tomber.",
-    roadblock: false
-  },
-  {
-    headline: "Influenceurs locaux en repérage",
-    body: "Les 20–25 ans en quête du bon cliché. Mets la chantilly en spirale haute, filme-les qui filment.",
-    roadblock: false
-  },
-  {
-    headline: "Rameurs après régate",
-    body: "Vers 13h, les avirons reviennent affamés. Glucides rapides : crêpe sucre + banane x3 par client.",
-    roadblock: false
-  },
-  {
-    headline: "Marcheurs nordiques & lycra",
-    body: "Coefficient Lycra au taquet. Ils passent sans s'arrêter… sauf si tu proposes le format à emporter en 30 s.",
-    roadblock: false
-  }
+const MOON_PHASES: Array<{ label: string; emoji: string; vibe: string }> = [
+  { label: "Nouvelle Lune", emoji: "🌑", vibe: "Ciel discret : clientèle timide, ils regardent deux fois avant d'entrer. Interpelle-les d'un sourire." },
+  { label: "Premier croissant", emoji: "🌒", vibe: "Énergie qui monte : la file gonflera après 11h. Pré-plie les classiques tôt." },
+  { label: "Premier quartier", emoji: "🌓", vibe: "Journée équilibrée : flux régulier sans gros pic. Bon jour pour tester une nouveauté." },
+  { label: "Lune gibbeuse croissante", emoji: "🌔", vibe: "Les gens ont la langue bien pendue. Prévois des bavardages aux caisses." },
+  { label: "Pleine Lune", emoji: "🌕", vibe: "Foule imprévisible et gourmande : double les portions et les sourires." },
+  { label: "Lune gibbeuse décroissante", emoji: "🌖", vibe: "Les pourboires pleuvent. Soigne la présentation des grandes parts." },
+  { label: "Dernier quartier", emoji: "🌗", vibe: "Clients pressés en fin d'après-midi. Formules à 30 secondes." },
+  { label: "Dernier croissant", emoji: "🌘", vibe: "Rythme qui retombe. Fenêtre idéale pour préparer la semaine." }
 ];
 
-function isoWeek(target: Date): number {
-  const d = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), target.getUTCDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+const ZODIACS: Array<{
+  sign: string;
+  emoji: string;
+  range: [number, number];
+  trait: string;
+  tip: string;
+}> = [
+  { sign: "Capricorne", emoji: "♑", range: [1222, 119], trait: "négocient le prix et comptent leurs pièces", tip: "sors ta formule à 5 € bien visible." },
+  { sign: "Verseau", emoji: "♒", range: [120, 218], trait: "veulent du jamais-vu — tapenade-banane ?", tip: "prépare deux toppings déroutants." },
+  { sign: "Poissons", emoji: "♓", range: [219, 320], trait: "ont les yeux plus grands que le ventre", tip: "propose le format enfant en porte de sortie." },
+  { sign: "Bélier", emoji: "♈", range: [321, 419], trait: "débarquent enthousiastes et veulent tout tester", tip: "mets le combo découverte à 7 € en avant." },
+  { sign: "Taureau", emoji: "♉", range: [420, 520], trait: "reviennent pour leur beurre-sucre habituel", tip: "offre la deuxième au 5e achat pour fidéliser." },
+  { sign: "Gémeaux", emoji: "♊", range: [521, 620], trait: "commandent puis changent d'avis deux fois", tip: "reste patiente, propose deux options max." },
+  { sign: "Cancer", emoji: "♋", range: [621, 722], trait: "sont nostalgiques et veulent la recette d'antan", tip: "pousse la crêpe beurre-sucre à l'ancienne." },
+  { sign: "Lion", emoji: "♌", range: [723, 822], trait: "veulent être vus et commandent la plus grosse", tip: "monte la chantilly en spirale haute pour les stories." },
+  { sign: "Vierge", emoji: "♍", range: [823, 922], trait: "demandent la liste exacte des ingrédients", tip: "affiche le panneau allergènes lisible." },
+  { sign: "Balance", emoji: "♎", range: [923, 1022], trait: "arrivent en couple et partagent tout en deux", tip: "propose la crêpe duo à 6 € avec deux fourchettes." },
+  { sign: "Scorpion", emoji: "♏", range: [1023, 1121], trait: "goûtent le piquant et le salé inattendu", tip: "ressors la crêpe chèvre-miel-piment d'Espelette." },
+  { sign: "Sagittaire", emoji: "♐", range: [1122, 1221], trait: "testent les combos bizarres sans broncher", tip: "laisse-leur ton ardoise blanche à personnaliser." }
+];
+
+function moonPhase(target: Date): { label: string; emoji: string; vibe: string } {
+  const ref = Date.UTC(2000, 0, 6, 18, 14);
+  const daysSince = (target.getTime() - ref) / 86400000;
+  const synodic = 29.53058867;
+  const phase = ((daysSince % synodic) + synodic) % synodic;
+  const idx = Math.floor((phase / synodic) * 8) % 8;
+  return MOON_PHASES[idx];
+}
+
+function zodiacOfDay(target: Date): (typeof ZODIACS)[number] {
+  const token = (target.getMonth() + 1) * 100 + target.getDate();
+  for (const z of ZODIACS) {
+    const [from, to] = z.range;
+    if (from <= to ? token >= from && token <= to : token >= from || token <= to) return z;
+  }
+  return ZODIACS[0];
 }
 
 export function horoscope(target: Date): HoroscopeCard {
-  const week = isoWeek(target);
-  const idx = (week + target.getUTCFullYear()) % HOROSCOPE_WEEKS.length;
-  return HOROSCOPE_WEEKS[idx];
+  const moon = moonPhase(target);
+  const z = zodiacOfDay(target);
+  return {
+    headline: `${moon.emoji} ${moon.label} · clients ${z.sign} ${z.emoji}`,
+    body: `${moon.vibe} Les ${z.sign} ${z.trait} : ${z.tip}`,
+    roadblock: moon.label === "Pleine Lune"
+  };
 }
 
 export function nutellaIndex(target: Date): NutellaIndex {
