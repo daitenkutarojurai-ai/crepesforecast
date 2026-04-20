@@ -19,8 +19,8 @@ import { fetchExternals } from "./externals";
 import { fetchSeineLevel } from "./hubeau";
 import { fetchPollen } from "./pollen";
 import {
+  availableWorkingDays,
   formatWorkingDayLabel,
-  nextWorkingDays,
   resolveNextWorkingDay,
   SHIFT_END_HOUR,
   SHIFT_START_HOUR,
@@ -28,12 +28,10 @@ import {
 } from "./schedule";
 import { fetchWeather } from "./weather";
 import {
+  AvailableDaysSummary,
   Briefing,
-  LocalEvent,
   SeineLevelView,
-  SourceStatus,
-  WeekBriefing,
-  WeekBriefingDay
+  SourceStatus
 } from "./types";
 
 function seineView(heightM: number, timestamp: string): SeineLevelView {
@@ -57,28 +55,29 @@ function shiftBounds(target: Date): { start: Date; end: Date } {
   return { start, end };
 }
 
-function affluenceScore(
-  weather: { tempC: number; isSunny: boolean; precipProbPct: number; windKmh: number },
-  topBump: number
-): number {
-  let weatherScore = 0;
-  if (weather.isSunny && weather.tempC >= 22) weatherScore += 15;
-  else if (weather.isSunny && weather.tempC >= 18) weatherScore += 8;
-  if (weather.precipProbPct > 60) weatherScore -= 20;
-  else if (weather.precipProbPct > 35) weatherScore -= 8;
-  if (weather.windKmh > 30) weatherScore -= 5;
-  return topBump + weatherScore;
+export function summarizeAvailableDays(now: Date = new Date()): AvailableDaysSummary {
+  const avail = availableWorkingDays(now);
+  const encode = (d: ReturnType<typeof availableWorkingDays>["saturday"]) =>
+    d
+      ? {
+          date: d.date.toISOString(),
+          kind: d.kind,
+          label: formatWorkingDayLabel(d),
+          holidayName: d.holidayName
+        }
+      : null;
+  return {
+    saturday: encode(avail.saturday),
+    sunday: encode(avail.sunday),
+    holiday: encode(avail.holiday)
+  };
 }
 
-function affluenceFrom(score: number): { tier: WeekBriefingDay["affluenceTier"]; label: string } {
-  if (score >= 25) return { tier: "peak", label: "Pic d'affluence" };
-  if (score >= 12) return { tier: "high", label: "Forte affluence" };
-  if (score >= 0) return { tier: "steady", label: "Affluence stable" };
-  return { tier: "quiet", label: "Quai calme" };
-}
-
-export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
-  const workingDay = resolveNextWorkingDay(now);
+export async function buildBriefing(
+  now: Date = new Date(),
+  override?: WorkingDay
+): Promise<Briefing> {
+  const workingDay = override ?? resolveNextWorkingDay(now);
   const target = workingDay.date;
 
   const [weatherBundle, externals, seine, pollenBundle] = await Promise.all([
@@ -157,64 +156,3 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
   };
 }
 
-async function buildWorkingDaySummary(day: WorkingDay): Promise<WeekBriefingDay & { _sources: SourceStatus[] }> {
-  const [weatherBundle, externals] = await Promise.all([
-    fetchWeather(day.date),
-    fetchExternals(day.date)
-  ]);
-  const { weather, source: weatherSource } = weatherBundle;
-  const pivot = computePivot(weather.tempC, weather.isSunny);
-  const cardigan = computeCardigan(weather.tempC, weather.isSunny, weather.windKmh);
-  const terrasse = computeTerrasse(weather, pivot, externals.localEvents);
-  const drinks = computeDrinkStock(weather, pivot, terrasse.expectedFillPct);
-  const spotlight = buildRecommendation(
-    {
-      weather,
-      hourly: weatherBundle.hourly,
-      now: day.date,
-      competitorBusiness: "typical",
-      localEvents: externals.localEvents
-    },
-    pivot,
-    cardigan,
-    computeBribeOMeter(day.date)
-  );
-  const topEvent: LocalEvent | undefined = externals.localEvents
-    .slice()
-    .sort((a, b) => b.expectedBump - a.expectedBump)[0];
-  const score = affluenceScore(weather, topEvent?.expectedBump ?? 0);
-  const affluence = affluenceFrom(score);
-
-  return {
-    targetDate: day.date.toISOString(),
-    targetKind: day.kind,
-    targetLabel: formatWorkingDayLabel(day),
-    targetHolidayName: day.holidayName,
-    weather,
-    mode: pivot.mode,
-    affluenceTier: affluence.tier,
-    affluenceLabel: affluence.label,
-    topEvent: topEvent ? { title: topEvent.title, bump: topEvent.expectedBump } : undefined,
-    terrasseFillPct: terrasse.expectedFillPct,
-    drinksTier: drinks.tier,
-    menuHero: spotlight.menuSpotlight.hero,
-    batterVolumePct: spotlight.batterVolumePct,
-    _sources: [weatherSource, ...externals.sources]
-  };
-}
-
-export async function buildWeekBriefing(now: Date = new Date()): Promise<WeekBriefing> {
-  const days = nextWorkingDays(now, 8);
-  const summaries = await Promise.all(days.map(buildWorkingDaySummary));
-  const seen = new Map<string, SourceStatus>();
-  for (const s of summaries) {
-    for (const src of s._sources) {
-      if (!seen.has(src.id)) seen.set(src.id, src);
-    }
-  }
-  return {
-    generatedAt: now.toISOString(),
-    days: summaries.map(({ _sources, ...rest }) => rest),
-    sources: Array.from(seen.values())
-  };
-}

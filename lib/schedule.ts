@@ -98,6 +98,37 @@ export function resolveNextWorkingDay(now: Date): WorkingDay {
   return build(start, "sunday");
 }
 
+export function nextWorkingDayOfKind(
+  now: Date,
+  kind: WorkingDayKind,
+  horizonDays = 14
+): WorkingDay | null {
+  const cutoff = new Date(now);
+  cutoff.setHours(SHIFT_END_HOUR, 0, 0, 0);
+  const start = now.getTime() < cutoff.getTime() ? new Date(now) : addDays(now, 1);
+  for (let i = 0; i < horizonDays; i++) {
+    const d = addDays(start, i);
+    const actual = kindFor(d);
+    if (!actual) continue;
+    if (actual === kind) return build(d, actual);
+  }
+  return null;
+}
+
+export interface AvailableDays {
+  saturday: WorkingDay | null;
+  sunday: WorkingDay | null;
+  holiday: WorkingDay | null;
+}
+
+export function availableWorkingDays(now: Date, horizonDays = 14): AvailableDays {
+  return {
+    saturday: nextWorkingDayOfKind(now, "saturday", horizonDays),
+    sunday: nextWorkingDayOfKind(now, "sunday", horizonDays),
+    holiday: nextWorkingDayOfKind(now, "holiday", horizonDays)
+  };
+}
+
 export function nextWorkingDays(now: Date, horizonDays = 8): WorkingDay[] {
   const out: WorkingDay[] = [];
   const cutoff = new Date(now);

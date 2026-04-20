@@ -4,68 +4,77 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { DecorativeBackground } from "./DecorativeBackground";
 import { Details } from "./Details";
 import { EventsCrowdCard } from "./EventsCrowdCard";
-import { Header, type DashboardTab } from "./Header";
+import { Header } from "./Header";
 import { QuickView } from "./QuickView";
 import { SourcesPanel } from "./SourcesPanel";
 import { WeatherCustomerCard } from "./WeatherCustomerCard";
-import { WeekView } from "./WeekView";
-import type { Briefing, WeekBriefing } from "@/lib/types";
+import type { AvailableDaysSummary, Briefing, TargetKind } from "@/lib/types";
 
-export function Dashboard({ initial }: { initial: Briefing }) {
+export function Dashboard({
+  initial,
+  availableDays
+}: {
+  initial: Briefing;
+  availableDays: AvailableDaysSummary;
+}) {
+  const [selectedKind, setSelectedKind] = useState<TargetKind>(initial.targetKind);
   const [briefing, setBriefing] = useState<Briefing>(initial);
-  const [week, setWeek] = useState<WeekBriefing | null>(null);
-  const [tab, setTab] = useState<DashboardTab>("day");
   const [refreshing, setRefreshing] = useState(false);
-  const [weekLoading, setWeekLoading] = useState(false);
-  const weekFetched = useRef(false);
+  const [switching, setSwitching] = useState(false);
+  const cache = useRef<Partial<Record<TargetKind, Briefing>>>({ [initial.targetKind]: initial });
 
-  const loadWeek = useCallback(async () => {
-    setWeekLoading(true);
+  const fetchFor = useCallback(async (kind: TargetKind): Promise<Briefing | null> => {
     try {
-      const res = await fetch("/api/briefing/week", {
-        cache: "no-store",
-        signal: AbortSignal.timeout(15000)
-      });
-      if (!res.ok) return;
-      const data = (await res.json()) as WeekBriefing;
-      setWeek(data);
-      weekFetched.current = true;
-    } catch (err) {
-      console.error("Week briefing fetch failed", err);
-    } finally {
-      setWeekLoading(false);
-    }
-  }, []);
-
-  const refresh = useCallback(async () => {
-    setRefreshing(true);
-    try {
-      const res = await fetch("/api/briefing", {
+      const res = await fetch(`/api/briefing?day=${kind}`, {
         cache: "no-store",
         signal: AbortSignal.timeout(10000)
       });
-      if (res.ok) {
-        const data = (await res.json()) as Briefing;
-        setBriefing(data);
-      }
-      if (weekFetched.current) await loadWeek();
+      if (!res.ok) return null;
+      return (await res.json()) as Briefing;
     } catch (err) {
-      console.error("Briefing refresh failed", err);
-    } finally {
-      setRefreshing(false);
+      console.error(`Briefing fetch failed for ${kind}`, err);
+      return null;
     }
-  }, [loadWeek]);
+  }, []);
+
+  const handleSelect = useCallback(
+    async (kind: TargetKind) => {
+      if (kind === selectedKind) return;
+      if (!availableDays[kind]) return;
+      setSelectedKind(kind);
+      const cached = cache.current[kind];
+      if (cached) {
+        setBriefing(cached);
+        return;
+      }
+      setSwitching(true);
+      const fresh = await fetchFor(kind);
+      if (fresh) {
+        cache.current[kind] = fresh;
+        setBriefing(fresh);
+      }
+      setSwitching(false);
+    },
+    [selectedKind, availableDays, fetchFor]
+  );
+
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    const fresh = await fetchFor(selectedKind);
+    if (fresh) {
+      cache.current[selectedKind] = fresh;
+      setBriefing(fresh);
+      for (const other of ["saturday", "sunday", "holiday"] as TargetKind[]) {
+        if (other !== selectedKind && cache.current[other]) delete cache.current[other];
+      }
+    }
+    setRefreshing(false);
+  }, [fetchFor, selectedKind]);
 
   useEffect(() => {
     const id = setInterval(refresh, 5 * 60 * 1000);
     return () => clearInterval(id);
   }, [refresh]);
-
-  useEffect(() => {
-    if (tab === "week" && !weekFetched.current && !weekLoading) {
-      loadWeek();
-    }
-  }, [tab, weekLoading, loadWeek]);
 
   return (
     <div className="relative min-h-screen">
@@ -74,24 +83,20 @@ export function Dashboard({ initial }: { initial: Briefing }) {
         briefing={briefing}
         onRefresh={refresh}
         refreshing={refreshing}
-        tab={tab}
-        onTabChange={setTab}
+        selectedKind={selectedKind}
+        onSelect={handleSelect}
+        availableDays={availableDays}
+        switching={switching}
       />
       <main className="relative mx-auto max-w-6xl space-y-4 px-4 py-5">
-        {tab === "day" ? (
-          <>
-            <QuickView briefing={briefing} />
+        <QuickView briefing={briefing} />
 
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <WeatherCustomerCard briefing={briefing} />
-              <EventsCrowdCard briefing={briefing} />
-            </div>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <WeatherCustomerCard briefing={briefing} />
+          <EventsCrowdCard briefing={briefing} />
+        </div>
 
-            <Details briefing={briefing} />
-          </>
-        ) : (
-          <WeekView week={week} loading={weekLoading} />
-        )}
+        <Details briefing={briefing} />
 
         <SourcesPanel sources={briefing.sources} />
 

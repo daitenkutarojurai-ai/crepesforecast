@@ -178,26 +178,17 @@ export interface Briefing {
   sources: SourceStatus[];
 }
 
-export interface WeekBriefingDay {
-  targetDate: string;
-  targetKind: TargetKind;
-  targetLabel: string;
-  targetHolidayName?: string;
-  weather: WeatherNow;
-  mode: Mode;
-  affluenceTier: "peak" | "high" | "steady" | "quiet";
-  affluenceLabel: string;
-  topEvent?: { title: string; bump: number };
-  terrasseFillPct: number;
-  drinksTier: DrinkStock["tier"];
-  menuHero: string;
-  batterVolumePct: number;
+export interface AvailableDaySummary {
+  date: string;
+  kind: TargetKind;
+  label: string;
+  holidayName?: string;
 }
 
-export interface WeekBriefing {
-  generatedAt: string;
-  days: WeekBriefingDay[];
-  sources: SourceStatus[];
+export interface AvailableDaysSummary {
+  saturday: AvailableDaySummary | null;
+  sunday: AvailableDaySummary | null;
+  holiday: AvailableDaySummary | null;
 }
 
 export interface HoroscopeCard {

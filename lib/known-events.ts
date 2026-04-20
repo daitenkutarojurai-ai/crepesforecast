@@ -154,7 +154,7 @@ export function getKnownEvents(target: Date): { events: LocalEvent[]; source: So
       id: "known-events",
       label: "Catalogue local récurrent",
       confidence: "cached",
-      note: `${events.length} évén. connus pour ce dimanche`,
+      note: `${events.length} évén. connus pour ce jour`,
       fetchedAt: new Date().toISOString()
     }
   };

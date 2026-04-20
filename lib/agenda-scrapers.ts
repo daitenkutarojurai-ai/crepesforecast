@@ -168,7 +168,7 @@ export async function fetchAgendaScrapes(
             id: t.id,
             label: t.label,
             confidence: "live" as const,
-            note: `${events.length} évén. le dimanche ciblé`,
+            note: `${events.length} évén. le jour ciblé`,
             fetchedAt: new Date().toISOString()
           }
         };

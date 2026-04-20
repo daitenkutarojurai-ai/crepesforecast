@@ -1,33 +1,40 @@
 "use client";
 
-import { Anchor, RefreshCcw } from "lucide-react";
+import { Anchor, CalendarX, RefreshCcw } from "lucide-react";
 import { AffluenceLight } from "./AffluenceLight";
 import { BrandLogo } from "./Illustration";
 import { formatRefreshedAt } from "@/lib/time";
-import type { Briefing } from "@/lib/types";
+import type { AvailableDaySummary, AvailableDaysSummary, Briefing, TargetKind } from "@/lib/types";
 
-export type DashboardTab = "day" | "week";
+const KIND_SHORT: Record<TargetKind, string> = {
+  saturday: "Samedi",
+  sunday: "Dimanche",
+  holiday: "Férié"
+};
+
+function formatShortDate(d: Date): string {
+  return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+}
 
 export function Header({
   briefing,
   onRefresh,
   refreshing,
-  tab,
-  onTabChange
+  selectedKind,
+  onSelect,
+  availableDays,
+  switching
 }: {
   briefing: Briefing;
   onRefresh: () => void;
   refreshing: boolean;
-  tab: DashboardTab;
-  onTabChange: (t: DashboardTab) => void;
+  selectedKind: TargetKind;
+  onSelect: (k: TargetKind) => void;
+  availableDays: AvailableDaysSummary;
+  switching: boolean;
 }) {
   const refreshedAt = formatRefreshedAt(briefing.generatedAt);
-  const title =
-    briefing.targetKind === "saturday"
-      ? "Briefing Samedi"
-      : briefing.targetKind === "holiday"
-        ? "Briefing Férié"
-        : "Briefing Dimanche";
+  const title = `Briefing ${KIND_SHORT[briefing.targetKind]}`;
   const subtitle = `${briefing.targetLabel.charAt(0).toUpperCase() + briefing.targetLabel.slice(1)} · ${briefing.location.postalCodes.join(" / ")}`;
 
   return (
@@ -41,38 +48,6 @@ export function Header({
           </div>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          <div
-            role="tablist"
-            aria-label="Vue du briefing"
-            className="inline-flex rounded-full border border-seine-border bg-seine-card/80 p-0.5 text-xs font-semibold"
-          >
-            <button
-              type="button"
-              role="tab"
-              aria-selected={tab === "day"}
-              onClick={() => onTabChange("day")}
-              className={`min-h-[32px] rounded-full px-3 transition ${
-                tab === "day"
-                  ? "bg-seine-accent text-white shadow-sm"
-                  : "text-seine-ink/80 hover:text-seine-ink"
-              }`}
-            >
-              Jour
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={tab === "week"}
-              onClick={() => onTabChange("week")}
-              className={`min-h-[32px] rounded-full px-3 transition ${
-                tab === "week"
-                  ? "bg-seine-accent text-white shadow-sm"
-                  : "text-seine-ink/80 hover:text-seine-ink"
-              }`}
-            >
-              Semaine
-            </button>
-          </div>
           <AffluenceLight briefing={briefing} />
           <button
             type="button"
@@ -88,6 +63,88 @@ export function Header({
           <Anchor className="hidden h-4 w-4 opacity-60 sm:block" aria-hidden />
         </div>
       </div>
+      <div className="border-t border-seine-headerInk/15 bg-seine-header/60">
+        <div
+          role="tablist"
+          aria-label="Jour de service"
+          className="mx-auto flex max-w-6xl items-stretch gap-1.5 px-2 py-2 sm:px-4"
+        >
+          <DayButton
+            kind="saturday"
+            day={availableDays.saturday}
+            selected={selectedKind === "saturday"}
+            switching={switching && selectedKind === "saturday"}
+            onSelect={onSelect}
+          />
+          <DayButton
+            kind="sunday"
+            day={availableDays.sunday}
+            selected={selectedKind === "sunday"}
+            switching={switching && selectedKind === "sunday"}
+            onSelect={onSelect}
+          />
+          <DayButton
+            kind="holiday"
+            day={availableDays.holiday}
+            selected={selectedKind === "holiday"}
+            switching={switching && selectedKind === "holiday"}
+            onSelect={onSelect}
+          />
+        </div>
+      </div>
     </header>
+  );
+}
+
+function DayButton({
+  kind,
+  day,
+  selected,
+  switching,
+  onSelect
+}: {
+  kind: TargetKind;
+  day: AvailableDaySummary | null;
+  selected: boolean;
+  switching: boolean;
+  onSelect: (k: TargetKind) => void;
+}) {
+  const available = day !== null;
+  const baseName = KIND_SHORT[kind];
+  const subtitle = day
+    ? day.holidayName
+      ? `${formatShortDate(new Date(day.date))} · ${day.holidayName}`
+      : formatShortDate(new Date(day.date))
+    : kind === "holiday"
+      ? "Aucun férié à venir"
+      : "Indisponible";
+
+  const cls = selected
+    ? "bg-seine-card text-seine-ink shadow-card ring-2 ring-seine-accent/40"
+    : available
+      ? "bg-seine-card/70 text-seine-ink hover:bg-seine-card"
+      : "bg-seine-card/40 text-seine-muted cursor-not-allowed";
+
+  return (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={selected}
+      disabled={!available || switching}
+      onClick={() => onSelect(kind)}
+      className={`flex-1 rounded-xl border border-seine-border px-3 py-2 text-left transition ${cls}`}
+      title={available ? `Voir le briefing ${baseName.toLowerCase()}` : subtitle}
+    >
+      <div className="flex items-center gap-2">
+        {kind === "holiday" && !available ? (
+          <CalendarX className="h-3.5 w-3.5 shrink-0 opacity-60" />
+        ) : null}
+        <span className="text-xs font-semibold uppercase tracking-[0.12em]">{baseName}</span>
+        {switching ? (
+          <span className="ml-auto h-1.5 w-1.5 animate-pulse rounded-full bg-seine-accent" aria-hidden />
+        ) : null}
+      </div>
+      <div className="mt-0.5 truncate text-[11px] text-seine-muted">{subtitle}</div>
+    </button>
   );
 }
