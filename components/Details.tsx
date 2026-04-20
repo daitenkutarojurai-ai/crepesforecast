@@ -24,7 +24,7 @@ export function Details({ briefing }: { briefing: Briefing }) {
       <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-seine-muted">
         Détails dérivés de la météo & du calendrier
       </h2>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card title="Coefficient Lycra" subtitle="Dérivé météo" icon={Bike} tone="rose">
           <p className="text-sm font-semibold text-seine-ink">Indice {lycraCoefficient.coefficient}</p>
           <div className="mt-2">

@@ -41,7 +41,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
     >
       <Banner className="mb-4 aspect-[16/6] w-full" />
 
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/50 to-transparent p-3 sm:p-4">
           <Icon className="h-9 w-9 shrink-0 text-seine-accent sm:h-10 sm:w-10" strokeWidth={1.5} />
           <div className="min-w-0 flex-1">
@@ -88,7 +88,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
         </div>
       </div>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-peachInk">
             <Stars className="h-4 w-4" />

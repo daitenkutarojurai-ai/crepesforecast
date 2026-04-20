@@ -79,7 +79,7 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
         </p>
         <p className="text-xs text-seine-muted">{pivot.description}</p>
 
-        <ul className="mt-3 grid gap-2 sm:grid-cols-3">
+        <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
           <AudienceCard
             icon={Users}
             title="Sortie de messe"
