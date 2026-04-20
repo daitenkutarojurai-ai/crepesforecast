@@ -1,4 +1,4 @@
-import { CalendarHeart, Croissant, ExternalLink, Sparkles, Waves } from "lucide-react";
+import { CalendarHeart, ExternalLink, Sparkles, Stars, Waves } from "lucide-react";
 import { Card, Chip } from "./Card";
 import { QuaiScene } from "./Illustration";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
@@ -92,12 +92,12 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-headerInk">
-            <Croissant className="h-4 w-4" />
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-peachInk">
+            <Stars className="h-4 w-4" />
           </span>
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
-              Idée du jour
+              Horoscope · clientèle du dimanche
             </div>
             <p className="text-sm font-semibold text-seine-ink">{horoscope.headline}</p>
             <p className="text-xs text-seine-muted">{horoscope.body}</p>

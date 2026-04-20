@@ -156,68 +156,68 @@ export function poussetteFactor(target: Date): PoussetteForecast {
 
 const HOROSCOPE_WEEKS: Array<{ headline: string; body: string; roadblock: boolean }> = [
   {
-    headline: "Vénus en cocotte-minute · crêpes qui gonflent",
-    body: "La pâte est d'humeur joyeuse. Un client va sûrement commander quatre Nutella-banane d'affilée. Résiste au fou rire.",
+    headline: "Troupeau de grands-parents attendu",
+    body: "Beaucoup de Ct > 15 cette semaine. Les mamies arrivent en cardigan, commandent beurre-sucre et restent 20 min à papoter.",
     roadblock: false
   },
   {
-    headline: "Mercure en chantilly · les langues fondent",
-    body: "Semaine bavarde : les mamies racontent leur vie. Pose trois chaises, distribue des stickers aux petits.",
+    headline: "Familles avec poussettes en embuscade",
+    body: "Weekend en mode parc. Poussettes et petits fatigués dès 15h30. Pré-plie 10 formats enfants à 2 €.",
     roadblock: false
   },
   {
-    headline: "Mars en spatule · tout se fait vite",
-    body: "Pré-plie 10 beurre-sucre avant 11h, sinon la file va déborder jusqu'au bac.",
+    headline: "Joggers et cyclistes EuroVelo 3",
+    body: "Sportifs du dimanche matin en file : 9h–11h ils veulent du rapide. Formule crêpe-banane + jus à 5 €.",
+    roadblock: false
+  },
+  {
+    headline: "Couples en balade romantique",
+    body: "Les amoureux se baladent main dans la main. Ils partagent une crêpe pour deux, propose la chantilly-fraise à partager.",
+    roadblock: false
+  },
+  {
+    headline: "Bande d'ados du théâtre",
+    body: "Sortie de répétition vers 16h30 : une meute affamée qui veut du sucré pas cher. Crêpe Nutella à 3,50 €.",
+    roadblock: false
+  },
+  {
+    headline: "Touristes parisiens venus en Transilien",
+    body: "Ligne J amène les curieux du centre. Ils photographient la caravane. Soigne la vitrine, ils posteront.",
+    roadblock: false
+  },
+  {
+    headline: "Sortie de messe Saint-Nicolas",
+    body: "Dès 11h45, les paroissiens descendent en groupe. Double chantilly pour les baptêmes/communions.",
     roadblock: true
   },
   {
-    headline: "Jupiter à volonté · portefeuilles généreux",
-    body: "Les pourboires pleuvent. Lève le menton, propose la grande formule avec chantilly.",
+    headline: "Promeneurs de chien & retraités",
+    body: "Clientèle habituée, calme, fidèle. Ils veulent le même classique chaque dimanche. Offre la deuxième au 5e achat.",
     roadblock: false
   },
   {
-    headline: "Saturne grincheux · patience courte",
-    body: "Un client va se plaindre du temps d'attente. Offre-lui un sucre en poudre supplémentaire, il fondra.",
-    roadblock: true
-  },
-  {
-    headline: "Soleil en caramel · flambage obligatoire",
-    body: "Les enfants veulent du spectacle. Une crêpe Suzette par heure, même pour les grands.",
+    headline: "Brocanteurs et chineurs matinaux",
+    body: "Levés à 7h, ils cherchent du carburant à 10h. Grande crêpe complète salée + café à 6 €.",
     roadblock: false
   },
   {
-    headline: "Lune gourmande · poussettes en embuscade",
-    body: "Prépare ton stock de formats enfants à 2 €. Fenêtre 16h–17h30 = dessert de dimanche.",
+    headline: "Familles nombreuses en vélo",
+    body: "4 enfants + 2 parents = 6 crêpes rapide. Prévois du stock, et un carton pour le plus petit qui va en faire tomber.",
     roadblock: false
   },
   {
-    headline: "Neptune en fraise · créativité débordante",
-    body: "Un client proposera une combinaison louche (tapenade-banane ?). Teste si tu es d'humeur.",
+    headline: "Influenceurs locaux en repérage",
+    body: "Les 20–25 ans en quête du bon cliché. Mets la chantilly en spirale haute, filme-les qui filment.",
     roadblock: false
   },
   {
-    headline: "Pluton au piston · imprévu matériel",
-    body: "Check la bonbonne, check la batterie du terminal. La caravane a ses humeurs aussi.",
-    roadblock: true
-  },
-  {
-    headline: "Vénus en boule vanille · nostalgie sucrée",
-    body: "Les grands-parents commandent ce qu'ils mangeaient enfants. Mets le classique beurre-sucre en vedette.",
+    headline: "Rameurs après régate",
+    body: "Vers 13h, les avirons reviennent affamés. Glucides rapides : crêpe sucre + banane x3 par client.",
     roadblock: false
   },
   {
-    headline: "Uranus en fouet · semaine imprévisible",
-    body: "Soit pluie à 11h, soit foule à 15h. Garde une bâche et un sourire sous le coude.",
-    roadblock: true
-  },
-  {
-    headline: "Mercure en sirop d'érable · exotisme qui plaît",
-    body: "Sors le sirop d'érable et les myrtilles. Ardoise « Glace en Seine goes Canada » à 5 €.",
-    roadblock: false
-  },
-  {
-    headline: "Trigone d'eau · soleil timide, chantilly forte",
-    body: "Parfaite journée pour les crêpes chantilly-fraise. Double la commande de fraises Gariguettes.",
+    headline: "Marcheurs nordiques & lycra",
+    body: "Coefficient Lycra au taquet. Ils passent sans s'arrêter… sauf si tu proposes le format à emporter en 30 s.",
     roadblock: false
   }
 ];

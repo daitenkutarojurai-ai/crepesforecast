@@ -1,7 +1,8 @@
 "use client";
 
-import { Anchor, Caravan, RefreshCcw } from "lucide-react";
+import { Anchor, RefreshCcw } from "lucide-react";
 import { GrandMereLight } from "./GrandMereLight";
+import { BrandLogo } from "./Illustration";
 import { formatRefreshedAt, formatSundayLong } from "@/lib/time";
 import type { Briefing } from "@/lib/types";
 
@@ -20,11 +21,11 @@ export function Header({
   return (
     <header className="sticky top-0 z-20 bg-seine-header text-seine-headerInk shadow-sm">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <Caravan className="h-5 w-5" />
-          <div className="leading-tight">
-            <h1 className="text-base font-semibold tracking-tight">
-              Glaces en Seine <span className="opacity-50">|</span> Briefing Dimanche
+        <div className="flex items-center gap-3">
+          <BrandLogo className="h-10 w-auto" />
+          <div className="leading-tight border-l border-seine-headerInk/20 pl-3">
+            <h1 className="text-sm font-semibold tracking-tight">
+              Briefing Dimanche
             </h1>
             <p className="text-[11px] font-medium opacity-75">
               {targetLabel.charAt(0).toUpperCase() + targetLabel.slice(1)} ·{" "}

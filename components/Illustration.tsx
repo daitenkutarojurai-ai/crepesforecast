@@ -1,41 +1,145 @@
 export function QuaiScene({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 600 100"
+      viewBox="0 0 1200 360"
       preserveAspectRatio="xMidYMid slice"
       className={className}
       aria-hidden
     >
       <defs>
-        <linearGradient id="qsky" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#fdeecf" />
-          <stop offset="1" stopColor="#f5d8b8" />
+        <linearGradient id="qs-sky" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor="#fce9c6" />
+          <stop offset="0.6" stopColor="#e9e3d0" />
+          <stop offset="1" stopColor="#cfe4f0" />
+        </linearGradient>
+        <linearGradient id="qs-water" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor="#b8d6e6" />
+          <stop offset="1" stopColor="#7ea8be" />
+        </linearGradient>
+        <linearGradient id="qs-ground" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor="#f5e5c5" />
+          <stop offset="1" stopColor="#e9d3a2" />
         </linearGradient>
       </defs>
-      <rect width="600" height="100" fill="url(#qsky)" />
-      <circle cx="510" cy="28" r="14" fill="#f2b26b" />
-      <g fill="#fff" opacity="0.7">
-        <ellipse cx="120" cy="26" rx="22" ry="6" />
-        <ellipse cx="280" cy="18" rx="30" ry="7" />
-        <ellipse cx="440" cy="32" rx="20" ry="5.5" />
+      <rect width="1200" height="360" fill="url(#qs-sky)" />
+
+      <g fill="#ffffff" opacity="0.8">
+        <ellipse cx="260" cy="80" rx="60" ry="12" />
+        <ellipse cx="540" cy="60" rx="75" ry="14" />
+        <ellipse cx="820" cy="90" rx="55" ry="11" />
       </g>
-      <path d="M0 70 Q80 60 160 70 T320 70 T480 70 T600 70 V100 H0 Z" fill="#e6a36b" opacity="0.4" />
-      <path d="M0 78 Q80 70 160 78 T320 78 T480 78 T600 78 V100 H0 Z" fill="#c98a2a" opacity="0.55" />
-      <g transform="translate(60 52)">
-        <path d="M0 18 L60 18 L54 6 L6 6 Z" fill="#fff" stroke="#3a2a1a" strokeWidth="1.5" />
-        <rect x="14" y="10" width="10" height="5" rx="1" fill="#f5d8b8" stroke="#3a2a1a" strokeWidth="0.9" />
-        <rect x="30" y="10" width="14" height="5" rx="1" fill="#f5d8b8" stroke="#3a2a1a" strokeWidth="0.9" />
-        <circle cx="14" cy="20" r="3" fill="#3a2a1a" />
-        <circle cx="46" cy="20" r="3" fill="#3a2a1a" />
+
+      <path
+        d="M0 230 Q300 220 600 230 T1200 230 V330 H0 Z"
+        fill="url(#qs-water)"
+      />
+
+      <g transform="translate(1000 110)">
+        <rect x="0" y="60" width="200" height="70" fill="#e9d8b3" />
+        <path d="M0 130 L200 130 L220 160 L-20 160 Z" fill="#d6c18f" />
+        <g fill="#a0876a">
+          <rect x="30" y="70" width="20" height="30" />
+          <rect x="90" y="70" width="20" height="30" />
+          <rect x="150" y="70" width="20" height="30" />
+        </g>
+        <path d="M60 60 L40 60 L30 45 L70 45 Z" fill="#a87650" />
+        <rect x="46" y="20" width="6" height="25" fill="#a87650" />
+        <rect x="44" y="10" width="10" height="10" fill="#a87650" />
+        <path d="M50 8 L50 -2" stroke="#a87650" strokeWidth="2" />
       </g>
-      <g transform="translate(360 50)">
-        <path d="M0 0 Q8 -8 16 0 L16 8 L0 8 Z" fill="#fffcf5" stroke="#3a2a1a" strokeWidth="1.2" />
-        <rect x="4" y="8" width="8" height="10" fill="#c98a2a" />
-        <path d="M10 -4 L10 -10 L16 -10" fill="none" stroke="#3a2a1a" strokeWidth="1" />
+
+      <g transform="translate(720 200)">
+        <path d="M0 40 L120 40 L110 20 L10 20 Z" fill="#ffffff" stroke="#3a2a1a" strokeWidth="2" />
+        <path d="M10 20 L30 5 L90 5 L110 20 Z" fill="#eef6fa" stroke="#3a2a1a" strokeWidth="2" />
+        <rect x="36" y="12" width="14" height="10" fill="#cfe4f0" stroke="#3a2a1a" strokeWidth="1" />
+        <rect x="66" y="12" width="14" height="10" fill="#cfe4f0" stroke="#3a2a1a" strokeWidth="1" />
+        <circle cx="30" cy="42" r="4" fill="#3a2a1a" />
+        <circle cx="90" cy="42" r="4" fill="#3a2a1a" />
+        <path d="M55 5 L55 -8 L80 -8 L80 5" stroke="#3a2a1a" strokeWidth="2" fill="#ffffff" />
       </g>
-      <g fill="#6a8f4a" opacity="0.7">
-        <path d="M200 66 q4 -8 8 0" fill="none" stroke="#6a8f4a" strokeWidth="1" />
-        <path d="M250 68 q4 -6 8 0" fill="none" stroke="#6a8f4a" strokeWidth="1" />
+
+      <g transform="translate(480 230)">
+        <path d="M0 20 L70 20 L64 6 L6 6 Z" fill="#ffffff" stroke="#1a3a52" strokeWidth="1.5" />
+        <rect x="12" y="8" width="10" height="8" fill="#cfe4f0" stroke="#1a3a52" strokeWidth="0.8" />
+        <rect x="36" y="8" width="18" height="8" fill="#cfe4f0" stroke="#1a3a52" strokeWidth="0.8" />
+        <rect x="26" y="-6" width="8" height="16" fill="#ffffff" stroke="#1a3a52" strokeWidth="1" />
+        <path d="M30 -6 L30 -14" stroke="#b84a3a" strokeWidth="1.2" />
+        <path d="M30 -14 L40 -10 L30 -8 Z" fill="#b84a3a" />
+      </g>
+
+      <path d="M0 320 L1200 320 L1200 360 L0 360 Z" fill="url(#qs-ground)" />
+
+      <g transform="translate(190 235)">
+        <ellipse cx="15" cy="85" rx="12" ry="3" fill="#3a2a1a" opacity="0.2" />
+        <rect x="5" y="45" width="20" height="35" fill="#d6b088" />
+        <rect x="3" y="40" width="24" height="10" rx="2" fill="#ffffff" />
+        <circle cx="15" cy="25" r="9" fill="#f2c7a3" />
+        <rect x="11" y="30" width="8" height="6" fill="#f2c7a3" />
+        <path d="M7 18 Q15 10 23 18 L23 28 L7 28 Z" fill="#6a4a2a" />
+      </g>
+
+      <g transform="translate(240 240)">
+        <ellipse cx="12" cy="80" rx="10" ry="3" fill="#3a2a1a" opacity="0.2" />
+        <path d="M2 42 L22 42 L26 78 L -2 78 Z" fill="#c07a6a" />
+        <rect x="5" y="30" width="14" height="15" fill="#ffffff" />
+        <circle cx="12" cy="22" r="7" fill="#e6c7a3" />
+        <path d="M5 15 Q12 8 19 15 L19 24 L5 24 Z" fill="#3a2a1a" />
+      </g>
+
+      <g transform="translate(310 230)">
+        <ellipse cx="14" cy="90" rx="12" ry="3" fill="#3a2a1a" opacity="0.2" />
+        <rect x="4" y="48" width="20" height="40" fill="#6a8a9a" />
+        <rect x="3" y="42" width="22" height="10" rx="2" fill="#e8d6a8" />
+        <circle cx="14" cy="28" r="8" fill="#f2c7a3" />
+        <path d="M6 20 Q14 12 22 20 L22 30 L6 30 Z" fill="#3a2a1a" />
+      </g>
+
+      <g transform="translate(70 270)">
+        <ellipse cx="15" cy="40" rx="14" ry="3" fill="#3a2a1a" opacity="0.2" />
+        <ellipse cx="15" cy="28" rx="12" ry="7" fill="#b07a4a" />
+        <rect x="4" y="25" width="22" height="12" rx="3" fill="#b07a4a" />
+        <circle cx="8" cy="26" r="1" fill="#3a2a1a" />
+        <path d="M2 25 L-4 22 L-2 28 Z" fill="#b07a4a" />
+        <path d="M26 35 L32 38" stroke="#3a2a1a" strokeWidth="1" />
+      </g>
+
+      <g fill="#ffffff" opacity="0.9">
+        <circle cx="760" cy="320" r="3" />
+        <circle cx="820" cy="325" r="3" />
+        <circle cx="900" cy="322" r="3" />
+      </g>
+
+      <g transform="translate(50 40)">
+        <path d="M0 0 L40 -10 L55 20 L10 30 Z" fill="#f5d8b8" stroke="#b07a4a" strokeWidth="2" />
+        <circle cx="18" cy="8" r="3" fill="#c04545" />
+        <circle cx="34" cy="12" r="3" fill="#6a8f4a" />
+        <circle cx="25" cy="20" r="2" fill="#c04545" />
+      </g>
+      <g transform="translate(150 20)">
+        <rect x="0" y="0" width="40" height="40" rx="3" fill="#e6a36b" stroke="#7a4b10" strokeWidth="1.8" />
+        <g stroke="#7a4b10" strokeWidth="0.9" opacity="0.7">
+          <line x1="10" y1="0" x2="10" y2="40" />
+          <line x1="20" y1="0" x2="20" y2="40" />
+          <line x1="30" y1="0" x2="30" y2="40" />
+          <line x1="0" y1="10" x2="40" y2="10" />
+          <line x1="0" y1="20" x2="40" y2="20" />
+          <line x1="0" y1="30" x2="40" y2="30" />
+        </g>
+      </g>
+      <g transform="translate(40 130)">
+        <path d="M0 0 L35 -8 L45 22 L10 30 Z" fill="#f5d8b8" stroke="#b07a4a" strokeWidth="2" />
+        <circle cx="15" cy="8" r="2.5" fill="#6a8f4a" />
+        <circle cx="30" cy="12" r="2.5" fill="#c04545" />
+      </g>
+
+      <g stroke="#3a5a6a" strokeWidth="2" fill="none" opacity="0.6">
+        <path d="M220 80 L220 110 M210 95 L230 95" />
+        <path d="M220 110 Q215 120 220 125 Q225 120 220 110" />
+      </g>
+
+      <g fill="#c07a2a" opacity="0.8">
+        <path d="M220 50 L222 55 L227 55 L223 58 L225 63 L220 60 L215 63 L217 58 L213 55 L218 55 Z" />
+        <path d="M500 40 L502 44 L506 44 L503 47 L504 51 L500 49 L496 51 L497 47 L494 44 L498 44 Z" />
       </g>
     </svg>
   );
@@ -109,6 +213,33 @@ export function SparkleFleurs({ className = "" }: { className?: string }) {
       <g fill="#6a8f4a" opacity="0.7">
         <circle cx="28" cy="18" r="1.2" />
         <circle cx="42" cy="6" r="1.2" />
+      </g>
+    </svg>
+  );
+}
+
+export function BrandLogo({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 180 48" className={className} aria-hidden>
+      <g transform="translate(4 8)">
+        <rect x="8" y="12" width="34" height="18" rx="4" fill="#ffffff" stroke="#1a3a52" strokeWidth="1.6" />
+        <rect x="12" y="16" width="8" height="6" rx="1" fill="#cfe4f0" stroke="#1a3a52" strokeWidth="0.9" />
+        <rect x="24" y="16" width="12" height="6" rx="1" fill="#cfe4f0" stroke="#1a3a52" strokeWidth="0.9" />
+        <path d="M8 14 L42 14" stroke="#c07a2a" strokeWidth="1.2" />
+        <circle cx="14" cy="32" r="3.2" fill="#1a3a52" />
+        <circle cx="36" cy="32" r="3.2" fill="#1a3a52" />
+        <path d="M20 12 L30 4 L38 12 Z" fill="#c07a2a" />
+        <path d="M30 5 L30 -1" stroke="#b84a3a" strokeWidth="1" />
+        <path d="M30 -1 L36 2 L30 4 Z" fill="#b84a3a" />
+      </g>
+      <g transform="translate(54 14)" fill="#1a3a52" fontFamily="Georgia, 'Times New Roman', serif">
+        <text x="0" y="12" fontSize="15" fontWeight="700" letterSpacing="-0.3">Glaces</text>
+        <text x="0" y="26" fontSize="11" fontStyle="italic" fill="#c07a2a">en Seine</text>
+      </g>
+      <g fill="#c07a2a" opacity="0.8">
+        <circle cx="132" cy="16" r="1.6" />
+        <circle cx="140" cy="24" r="1.2" />
+        <circle cx="148" cy="14" r="1" />
       </g>
     </svg>
   );
