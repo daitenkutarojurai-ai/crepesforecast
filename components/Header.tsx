@@ -39,7 +39,7 @@ export function Header({
 
   return (
     <header className="sticky top-0 z-20 bg-seine-header text-seine-headerInk shadow-sm">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
         <div className="flex items-center gap-3">
           <BrandLogo className="h-10 w-auto" />
           <div className="leading-tight border-l border-seine-headerInk/20 pl-3">
@@ -132,7 +132,7 @@ function DayButton({
       aria-selected={selected}
       disabled={!available || switching}
       onClick={() => onSelect(kind)}
-      className={`flex-1 rounded-xl border border-seine-border px-3 py-2 text-left transition ${cls}`}
+      className={`min-h-[44px] flex-1 rounded-xl border border-seine-border px-2.5 py-1.5 text-left transition sm:px-3 sm:py-2 ${cls}`}
       title={available ? `Voir le briefing ${baseName.toLowerCase()}` : subtitle}
     >
       <div className="flex items-center gap-2">

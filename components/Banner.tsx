@@ -12,7 +12,7 @@ export function Banner({ className = "" }: { className?: string }) {
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src="/newbanner.png"
+          src="/bannerup.png"
           alt="Caravane Glaces en Seine sur le quai"
           className="absolute inset-0 h-full w-full object-cover"
           onError={() => setBroken(true)}
