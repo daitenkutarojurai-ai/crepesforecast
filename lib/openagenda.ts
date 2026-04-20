@@ -1,7 +1,8 @@
+import { LOCATION } from "./engine";
 import type { LocalEvent, SourceStatus } from "./types";
 
 const KEY = "08b058313d04488086059187a8a1cd4c";
-const LAT_LNG = "48.9728,2.1936";
+const LAT_LNG = `${LOCATION.lat},${LOCATION.lon}`;
 const RADIUS_KM = 10;
 
 interface OAEvent {
@@ -112,7 +113,7 @@ export async function fetchOpenAgendaEvents(
     });
     if (!res.ok) throw new Error(`OpenAgenda ${res.status}`);
     const data = (await res.json()) as { events?: OAEvent[] };
-    const origin: [number, number] = [48.9728, 2.1936];
+    const origin: [number, number] = [LOCATION.lat, LOCATION.lon];
     const mapped: LocalEvent[] = [];
     for (let idx = 0; idx < (data.events?.length ?? 0); idx++) {
       const ev = data.events![idx];

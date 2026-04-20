@@ -15,10 +15,10 @@ import {
 } from "./types";
 
 export const LOCATION = {
-  name: "Quai de Seine — La Frette / Cormeilles-en-Parisis",
-  lat: 48.9843,
-  lon: 2.1836,
-  postalCodes: ["95240", "95530"]
+  name: "55 Quai de Seine — Mairie de La Frette-sur-Seine",
+  lat: 48.9745,
+  lon: 2.1777,
+  postalCodes: ["95530", "95240"]
 } as const;
 
 const FATIGUE_CONSTANT = 1.4;
