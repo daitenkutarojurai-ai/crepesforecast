@@ -274,12 +274,7 @@ function moonPhase(target: Date): { label: string; emoji: string; vibe: string }
 }
 
 function zodiacOfDay(target: Date): (typeof ZODIACS)[number] {
-  const token = (target.getMonth() + 1) * 100 + target.getDate();
-  for (const z of ZODIACS) {
-    const [from, to] = z.range;
-    if (from <= to ? token >= from && token <= to : token >= from || token <= to) return z;
-  }
-  return ZODIACS[0];
+  return pickFrom(ZODIACS, target, 7);
 }
 
 export function horoscope(target: Date): HoroscopeCard {
