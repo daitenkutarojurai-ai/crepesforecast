@@ -1,7 +1,7 @@
 "use client";
 
 import { Anchor, RefreshCcw } from "lucide-react";
-import { GrandMereLight } from "./GrandMereLight";
+import { AffluenceLight } from "./AffluenceLight";
 import { BrandLogo } from "./Illustration";
 import { formatRefreshedAt, formatSundayLong } from "@/lib/time";
 import type { Briefing } from "@/lib/types";
@@ -34,7 +34,7 @@ export function Header({
           </div>
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          <GrandMereLight cardigan={briefing.cardigan} />
+          <AffluenceLight briefing={briefing} />
           <button
             type="button"
             onClick={onRefresh}

@@ -1,4 +1,4 @@
-import { Baby, Bike, CloudRain, Sun, ThermometerSun, Users, Wind } from "lucide-react";
+import { Baby, Bike, CloudRain, Sun, ThermometerSun, Users } from "lucide-react";
 import { Card, Chip, Stat } from "./Card";
 import { CrepeDot, GlaceDot } from "./Illustration";
 import { TempSparkline } from "./Sparkline";
@@ -6,7 +6,7 @@ import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
 import type { Briefing } from "@/lib/types";
 
 export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
-  const { weather, hourly, pivot, bribe, poussetteFactor, lycraCoefficient } = briefing;
+  const { weather, hourly, pivot, poussetteFactor, lycraCoefficient } = briefing;
   const window = hourly.filter((h) => {
     const d = new Date(h.time).getHours();
     return d >= 8 && d <= 21;
@@ -98,11 +98,6 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
             sub={`Coefficient ${lycraCoefficient.coefficient}`}
           />
         </ul>
-
-        <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-seine-chip bg-seine-chip/60 px-3 py-1 text-xs font-semibold text-seine-chipInk">
-          <Wind className="h-3 w-3" />
-          Format enfant {timeOf(bribe.window.startISO)}–{timeOf(bribe.window.endISO)} à 2 €
-        </div>
       </div>
     </Card>
   );
