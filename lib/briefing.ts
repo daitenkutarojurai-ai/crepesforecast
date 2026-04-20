@@ -15,6 +15,7 @@ import {
 } from "./engine";
 import { fetchExternals } from "./externals";
 import { fetchSeineLevel } from "./hubeau";
+import { fetchPollen } from "./pollen";
 import { resolveTargetSunday } from "./time";
 import { fetchWeather } from "./weather";
 import { Briefing, SeineLevelView, SourceStatus } from "./types";
@@ -35,10 +36,11 @@ function seineView(heightM: number, timestamp: string): SeineLevelView {
 export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
   const target = resolveTargetSunday(now);
 
-  const [weatherBundle, externals, seine] = await Promise.all([
+  const [weatherBundle, externals, seine, pollenBundle] = await Promise.all([
     fetchWeather(target),
     fetchExternals(target),
-    fetchSeineLevel()
+    fetchSeineLevel(),
+    fetchPollen(target)
   ]);
 
   const { weather, hourly, source: weatherSource } = weatherBundle;
@@ -65,7 +67,7 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     ? seineView(seine.level.heightM, seine.level.timestamp)
     : undefined;
 
-  const sources: SourceStatus[] = [weatherSource, seine.source, ...externals.sources];
+  const sources: SourceStatus[] = [weatherSource, seine.source, pollenBundle.source, ...externals.sources];
 
   return {
     generatedAt: now.toISOString(),
@@ -85,7 +87,7 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     pulses,
     events: externals.localEvents,
     horoscope: horoscope(target),
-    napkinForecast: napkinForecast(),
+    napkinForecast: napkinForecast(pollenBundle.pollen.level),
     lycraCoefficient: lycraCoefficient(weather.tempC, weather.windKmh, weather.isSunny, weather.precipProbPct),
     poussetteFactor: poussetteFactor(target),
     nutellaIndex: nutellaIndex(target),
@@ -93,6 +95,7 @@ export async function buildBriefing(now: Date = new Date()): Promise<Briefing> {
     competitorProxy: competitorProxy(),
     recommendation,
     seineLevel,
+    pollen: pollenBundle.pollen,
     sources
   };
 }

@@ -1,4 +1,4 @@
-import { CalendarHeart, ExternalLink, Sparkles, Stars, Waves } from "lucide-react";
+import { CalendarHeart, ExternalLink, Flower2, Sparkles, Stars, Waves } from "lucide-react";
 import { Banner } from "./Banner";
 import { Card, Chip } from "./Card";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
@@ -24,8 +24,15 @@ function crowdMood(top: LocalEvent | undefined, eventsCount: number): string {
   return "Petit bonus d'affluence prévu";
 }
 
+const POLLEN_STYLES = {
+  low: { tint: "bg-seine-chip/50", dot: "bg-seine-ok", label: "bas" },
+  moderate: { tint: "bg-[#f7e6cc]/60", dot: "bg-seine-warn", label: "modéré" },
+  high: { tint: "bg-[#f7d5d5]/60", dot: "bg-seine-danger", label: "élevé" }
+} as const;
+
 export function QuickView({ briefing }: { briefing: Briefing }) {
-  const { weather, events, horoscope, seineLevel } = briefing;
+  const { weather, events, horoscope, seineLevel, pollen } = briefing;
+  const pollenStyle = POLLEN_STYLES[pollen.level];
   const Icon = pickWeatherIcon(weather.cloudCoverPct, weather.precipProbPct);
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
   const vibe = weatherMood(weather.precipProbPct, weather.tempC, weather.isSunny);
@@ -88,7 +95,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
         <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-peachInk">
             <Stars className="h-4 w-4" />
@@ -128,6 +135,22 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
                 <p className="text-xs text-seine-muted">Hubeau injoignable pour l'instant.</p>
               </>
             )}
+          </div>
+        </div>
+
+        <div className={`flex items-start gap-3 rounded-2xl border border-seine-border ${pollenStyle.tint} p-3`}>
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-card text-seine-crepe">
+            <Flower2 className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+              Pollen · serviettes
+            </div>
+            <p className="flex items-center gap-1.5 text-sm font-semibold text-seine-ink">
+              <span className={`inline-block h-2 w-2 shrink-0 rounded-full ${pollenStyle.dot}`} aria-hidden />
+              {pollen.dominant} · {pollenStyle.label}
+            </p>
+            <p className="text-xs text-seine-muted">{pollen.note}</p>
           </div>
         </div>
       </div>

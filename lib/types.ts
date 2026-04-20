@@ -103,6 +103,13 @@ export interface SeineLevelView {
   timestamp: string;
 }
 
+export interface PollenView {
+  level: "low" | "moderate" | "high";
+  dominant: string;
+  score: number;
+  note: string;
+}
+
 export interface Briefing {
   generatedAt: string;
   targetDate: string;
@@ -129,6 +136,7 @@ export interface Briefing {
   competitorProxy: CompetitorSignal;
   recommendation: Recommendation;
   seineLevel?: SeineLevelView;
+  pollen: PollenView;
   sources: SourceStatus[];
 }
 
