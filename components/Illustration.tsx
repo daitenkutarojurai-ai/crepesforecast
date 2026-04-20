@@ -222,7 +222,7 @@ export function BrandLogo({ className = "" }: { className?: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/glace.jpg"
+      src="/glaceup.png"
       alt="Glaces en Seine"
       className={`object-contain ${className}`}
     />
