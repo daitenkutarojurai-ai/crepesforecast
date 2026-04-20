@@ -62,10 +62,10 @@ export function holidayNameFor(d: Date): string | undefined {
 }
 
 function kindFor(d: Date): WorkingDayKind | null {
+  if (holidayNameFor(d)) return "holiday";
   const wd = d.getDay();
   if (wd === 6) return "saturday";
   if (wd === 0) return "sunday";
-  if (holidayNameFor(d)) return "holiday";
   return null;
 }
 

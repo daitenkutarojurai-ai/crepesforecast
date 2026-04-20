@@ -220,27 +220,11 @@ export function SparkleFleurs({ className = "" }: { className?: string }) {
 
 export function BrandLogo({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 180 48" className={className} aria-hidden>
-      <g transform="translate(4 8)">
-        <rect x="8" y="12" width="34" height="18" rx="4" fill="#ffffff" stroke="#1a3a52" strokeWidth="1.6" />
-        <rect x="12" y="16" width="8" height="6" rx="1" fill="#cfe4f0" stroke="#1a3a52" strokeWidth="0.9" />
-        <rect x="24" y="16" width="12" height="6" rx="1" fill="#cfe4f0" stroke="#1a3a52" strokeWidth="0.9" />
-        <path d="M8 14 L42 14" stroke="#c07a2a" strokeWidth="1.2" />
-        <circle cx="14" cy="32" r="3.2" fill="#1a3a52" />
-        <circle cx="36" cy="32" r="3.2" fill="#1a3a52" />
-        <path d="M20 12 L30 4 L38 12 Z" fill="#c07a2a" />
-        <path d="M30 5 L30 -1" stroke="#b84a3a" strokeWidth="1" />
-        <path d="M30 -1 L36 2 L30 4 Z" fill="#b84a3a" />
-      </g>
-      <g transform="translate(54 14)" fill="#1a3a52" fontFamily="Georgia, 'Times New Roman', serif">
-        <text x="0" y="12" fontSize="15" fontWeight="700" letterSpacing="-0.3">Glaces</text>
-        <text x="0" y="26" fontSize="11" fontStyle="italic" fill="#c07a2a">en Seine</text>
-      </g>
-      <g fill="#c07a2a" opacity="0.8">
-        <circle cx="132" cy="16" r="1.6" />
-        <circle cx="140" cy="24" r="1.2" />
-        <circle cx="148" cy="14" r="1" />
-      </g>
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/glace.jpg"
+      alt="Glaces en Seine"
+      className={`object-contain ${className}`}
+    />
   );
 }

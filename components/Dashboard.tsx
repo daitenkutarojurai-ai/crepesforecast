@@ -22,6 +22,7 @@ export function Dashboard({
   const [refreshing, setRefreshing] = useState(false);
   const [switching, setSwitching] = useState(false);
   const cache = useRef<Partial<Record<TargetKind, Briefing>>>({ [initial.targetKind]: initial });
+  const reqId = useRef(0);
 
   const fetchFor = useCallback(async (kind: TargetKind): Promise<Briefing | null> => {
     try {
@@ -47,8 +48,10 @@ export function Dashboard({
         setBriefing(cached);
         return;
       }
+      const id = ++reqId.current;
       setSwitching(true);
       const fresh = await fetchFor(kind);
+      if (id !== reqId.current) return;
       if (fresh) {
         cache.current[kind] = fresh;
         setBriefing(fresh);
