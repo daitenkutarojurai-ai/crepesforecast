@@ -41,34 +41,34 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
     >
       <Banner className="mb-4 aspect-[16/6] w-full" />
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/50 to-transparent p-4">
-          <Icon className="h-10 w-10 text-seine-accent" strokeWidth={1.5} />
-          <div>
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/50 to-transparent p-3 sm:p-4">
+          <Icon className="h-9 w-9 shrink-0 text-seine-accent sm:h-10 sm:w-10" strokeWidth={1.5} />
+          <div className="min-w-0 flex-1">
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
               Météo
             </div>
-            <div className="text-lg font-semibold text-seine-ink">
+            <div className="text-base font-semibold text-seine-ink sm:text-lg">
               {Math.round(weather.tempC)}° · {sky}
             </div>
             <div className="text-xs text-seine-muted">{vibe}</div>
           </div>
         </div>
 
-        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-sage/40 to-transparent p-4">
-          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-seine-card">
-            <CalendarHeart className="h-6 w-6 text-seine-crepe" />
+        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-sage/40 to-transparent p-3 sm:p-4">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-seine-card sm:h-12 sm:w-12">
+            <CalendarHeart className="h-5 w-5 text-seine-crepe sm:h-6 sm:w-6" />
           </span>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
               Événement phare
             </div>
-            <div className="truncate text-lg font-semibold text-seine-ink">
+            <div className="truncate text-base font-semibold text-seine-ink sm:text-lg">
               {headline ? headline.title : "Dimanche sans événement majeur"}
             </div>
             <div className="text-xs text-seine-muted">{crowd}</div>
             {headline ? (
-              <div className="mt-1 flex flex-wrap items-center gap-1.5">
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                 <Chip tone="ok">+{headline.expectedBump}% affluence</Chip>
                 <Chip>{headline.distanceKm} km</Chip>
                 {headline.sourceUrl ? (
