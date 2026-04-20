@@ -31,7 +31,7 @@ const POLLEN_STYLES = {
 } as const;
 
 export function QuickView({ briefing }: { briefing: Briefing }) {
-  const { weather, events, horoscope, seineLevel, pollen, recommendation, targetLabel, targetHolidayName } = briefing;
+  const { weather, hourly, events, horoscope, seineLevel, pollen, recommendation, targetLabel, targetHolidayName } = briefing;
   const pollenStyle = POLLEN_STYLES[pollen.level];
   const Icon = pickWeatherIcon(weather.cloudCoverPct, weather.precipProbPct);
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
@@ -41,6 +41,18 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
   const displayLabel = targetLabel
     ? targetLabel.charAt(0).toUpperCase() + targetLabel.slice(1)
     : "Aperçu";
+  const shiftTemps = hourly
+    .filter((h) => {
+      const hr = new Date(h.time).getHours();
+      return hr >= 14 && hr < 19;
+    })
+    .map((h) => h.tempC);
+  const minT = shiftTemps.length ? Math.min(...shiftTemps) : weather.tempC;
+  const maxT = shiftTemps.length ? Math.max(...shiftTemps) : weather.tempC;
+  const tempDisplay =
+    Math.round(minT) === Math.round(maxT)
+      ? `${weather.tempC.toFixed(1).replace(".", ",")}°`
+      : `${Math.round(minT)}–${Math.round(maxT)}°`;
 
   return (
     <Card
@@ -59,7 +71,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
               Météo
             </div>
             <div className="text-base font-semibold text-seine-ink sm:text-lg">
-              {Math.round(weather.tempC)}° · {sky}
+              {tempDisplay} · {sky}
             </div>
             <div className="text-xs text-seine-muted">{vibe}</div>
           </div>
