@@ -112,7 +112,7 @@ export function EventsCrowdCard({ briefing }: { briefing: Briefing }) {
         </ul>
       ) : (
         <p className="rounded-xl border border-dashed border-seine-border bg-seine-bg/40 px-3 py-4 text-center text-sm text-seine-muted">
-          Aucun événement détecté dans la zone pour ce dimanche.
+          Aucun événement détecté dans la zone pour ce service.
         </p>
       )}
 

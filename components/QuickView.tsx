@@ -18,7 +18,7 @@ function topEvent(events: LocalEvent[]): LocalEvent | undefined {
 }
 
 function crowdMood(top: LocalEvent | undefined, eventsCount: number): string {
-  if (!top) return "Dimanche calme, rythme habituel";
+  if (!top) return "Journée calme, rythme habituel";
   if (top.expectedBump >= 25) return "Gros pic attendu sur le quai";
   if (eventsCount >= 3) return "Quai animé, plusieurs événements";
   return "Petit bonus d'affluence prévu";
@@ -74,7 +74,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
               Événement phare
             </div>
             <div className="truncate text-base font-semibold text-seine-ink sm:text-lg">
-              {headline ? headline.title : "Dimanche sans événement majeur"}
+              {headline ? headline.title : "Pas d'événement majeur ce jour"}
             </div>
             <div className="text-xs text-seine-muted">{crowd}</div>
             {headline ? (

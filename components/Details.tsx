@@ -1,7 +1,7 @@
-import { Armchair, Baby, Bike, CupSoda } from "lucide-react";
+import { Armchair, Baby, Bike } from "lucide-react";
 import { Card, Chip } from "./Card";
 import { LinearGauge } from "./Gauge";
-import type { Briefing, DrinkStock } from "@/lib/types";
+import type { Briefing } from "@/lib/types";
 
 const POUSSETTE_PCT: Record<"low" | "medium" | "high", number> = {
   low: 25,
@@ -15,20 +15,8 @@ const POUSSETTE_LABEL: Record<"low" | "medium" | "high", string> = {
   high: "forte"
 };
 
-const DRINK_TIER_LABEL: Record<DrinkStock["tier"], string> = {
-  base: "Charge standard",
-  renforcé: "Charge renforcée",
-  canicule: "Mode canicule"
-};
-
-const DRINK_TIER_TONE: Record<DrinkStock["tier"], "default" | "ok" | "warn" | "danger"> = {
-  base: "default",
-  renforcé: "warn",
-  canicule: "danger"
-};
-
 export function Details({ briefing }: { briefing: Briefing }) {
-  const { lycraCoefficient, poussetteFactor, terrasse, drinks } = briefing;
+  const { lycraCoefficient, poussetteFactor, terrasse } = briefing;
   const lycraPct = Math.min(100, (lycraCoefficient.coefficient / 15) * 100);
   const tablesLit = Math.round((terrasse.expectedFillPct / 100) * terrasse.tables);
 
@@ -63,26 +51,6 @@ export function Details({ briefing }: { briefing: Briefing }) {
             </Chip>
           </div>
           <p className="mt-2 text-xs text-seine-muted">{terrasse.note}</p>
-        </Card>
-
-        <Card title="Stock boissons" subtitle="Rappel avant service" icon={CupSoda} tone="peach">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-seine-ink">{DRINK_TIER_LABEL[drinks.tier]}</p>
-            <Chip tone={DRINK_TIER_TONE[drinks.tier]}>Charge {drinks.loadoutPct}%</Chip>
-          </div>
-          <ul className="mt-3 space-y-1.5">
-            {drinks.priorities.map((p) => (
-              <li
-                key={p.label}
-                className="flex items-center gap-2 rounded-xl bg-seine-bg/40 px-3 py-1.5 text-xs"
-              >
-                <span aria-hidden className="text-base leading-none">{p.emoji}</span>
-                <span className="flex-1 font-medium text-seine-ink">{p.label}</span>
-                <span className="font-mono text-seine-muted">{p.units}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs text-seine-muted">{drinks.note}</p>
         </Card>
 
         <Card title="Coefficient Lycra" subtitle="Dérivé météo" icon={Bike} tone="rose">

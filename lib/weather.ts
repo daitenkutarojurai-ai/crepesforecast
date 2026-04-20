@@ -90,7 +90,7 @@ export async function fetchWeather(target: Date): Promise<{
       hourly,
       source: {
         id: "open-meteo",
-        label: "Open-Meteo (météo dimanche)",
+        label: "Open-Meteo (météo jour de service)",
         confidence: "live",
         fetchedAt: new Date().toISOString()
       }
@@ -100,7 +100,7 @@ export async function fetchWeather(target: Date): Promise<{
       ...mockWeather(target),
       source: {
         id: "open-meteo",
-        label: "Open-Meteo (météo dimanche)",
+        label: "Open-Meteo (météo jour de service)",
         confidence: "unavailable",
         note: err instanceof Error ? err.message : "Erreur réseau",
         fetchedAt: new Date().toISOString()

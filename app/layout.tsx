@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Glaces en Seine · Briefing Dimanche",
-  description: "Briefing du dimanche matin pour la caravane Glaces en Seine.",
+  title: "Glaces en Seine · Briefing",
+  description: "Briefing du prochain service (Sam/Dim/fériés 14h–19h) pour la caravane Glaces en Seine.",
   applicationName: "Glaces en Seine"
 };
 
