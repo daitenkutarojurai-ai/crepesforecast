@@ -6,6 +6,10 @@ const RADIUS_KM = 10;
 
 interface OAEvent {
   uid?: number | string;
+  slug?: string;
+  canonicalUrl?: string;
+  permalink?: string;
+  originAgenda?: { uid?: number | string; slug?: string };
   title?: Record<string, string> | string;
   firstTiming?: { begin?: string; end?: string };
   lastTiming?: { begin?: string; end?: string };
@@ -16,6 +20,17 @@ interface OAEvent {
     name?: string;
     city?: string;
   };
+}
+
+function pickUrl(ev: OAEvent): string | undefined {
+  if (ev.canonicalUrl) return ev.canonicalUrl;
+  if (ev.permalink) return ev.permalink;
+  const agendaSlug = ev.originAgenda?.slug;
+  if (agendaSlug && ev.slug) {
+    return `https://openagenda.com/${agendaSlug}/events/${ev.slug}`;
+  }
+  if (ev.uid) return `https://openagenda.com/events/${ev.uid}`;
+  return undefined;
 }
 
 function pickTitle(t: OAEvent["title"]): string {
@@ -120,6 +135,11 @@ export async function fetchOpenAgendaEvents(
         expectedBump: bumpFor(kind, distanceKm)
       };
       if (timing.end) entry.endISO = timing.end;
+      const url = pickUrl(ev);
+      if (url) {
+        entry.sourceUrl = url;
+        entry.sourceLabel = "OpenAgenda";
+      }
       if (entry.startISO.slice(0, 10) === targetDay) mapped.push(entry);
     }
 

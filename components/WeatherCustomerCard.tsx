@@ -17,7 +17,7 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
 
   return (
-    <Card title="Météo & Clientèle" subtitle="Priorité 1" icon={ThermometerSun} tone="accent">
+    <Card title="Météo & Clientèle" subtitle="Priorité 1" icon={ThermometerSun} tone="peach">
       <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-seine-border bg-gradient-to-r from-seine-header/40 via-seine-bg/30 to-transparent px-4 py-3">
         <Icon className="h-12 w-12 text-seine-accent" strokeWidth={1.5} />
         <div className="flex flex-col">

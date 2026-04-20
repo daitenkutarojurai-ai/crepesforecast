@@ -156,68 +156,68 @@ export function poussetteFactor(target: Date): PoussetteForecast {
 
 const HOROSCOPE_WEEKS: Array<{ headline: string; body: string; roadblock: boolean }> = [
   {
-    headline: "Mise en avant : chantilly-fraise",
-    body: "Les fraises reviennent au marché. Petite ardoise à 4 € pour le combo du dimanche.",
+    headline: "Vénus en cocotte-minute · crêpes qui gonflent",
+    body: "La pâte est d'humeur joyeuse. Un client va sûrement commander quatre Nutella-banane d'affilée. Résiste au fou rire.",
     roadblock: false
   },
   {
-    headline: "Tester un topping saisonnier",
-    body: "Bonne semaine pour essayer un nouveau topping. Garde trois avis clients avant de valider.",
+    headline: "Mercure en chantilly · les langues fondent",
+    body: "Semaine bavarde : les mamies racontent leur vie. Pose trois chaises, distribue des stickers aux petits.",
     roadblock: false
   },
   {
-    headline: "Pré-plier 10 crêpes avant 11h",
-    body: "Les gens sont pressés le matin. Une pile prête coupe la file en deux.",
+    headline: "Mars en spatule · tout se fait vite",
+    body: "Pré-plie 10 beurre-sucre avant 11h, sinon la file va déborder jusqu'au bac.",
     roadblock: true
   },
   {
-    headline: "Soigner le sucré-salé",
-    body: "Propose une crêpe jambon-fromage + un goûter sucré en combo à 7 €.",
+    headline: "Jupiter à volonté · portefeuilles généreux",
+    body: "Les pourboires pleuvent. Lève le menton, propose la grande formule avec chantilly.",
     roadblock: false
   },
   {
-    headline: "Verifier la bonbonne de gaz",
-    body: "Recharge avant dimanche, check la batterie du terminal. Plan B cash si panne.",
+    headline: "Saturne grincheux · patience courte",
+    body: "Un client va se plaindre du temps d'attente. Offre-lui un sucre en poudre supplémentaire, il fondra.",
     roadblock: true
   },
   {
-    headline: "Mettre les classiques en vitrine",
-    body: "Beurre-sucre, Nutella, citron — les valeurs refuge font le chiffre quand il fait frais.",
+    headline: "Soleil en caramel · flambage obligatoire",
+    body: "Les enfants veulent du spectacle. Une crêpe Suzette par heure, même pour les grands.",
     roadblock: false
   },
   {
-    headline: "Crêpe Suzette en démo",
-    body: "Les enfants adorent le flambage. Fais-en une par heure pour attirer les regards.",
+    headline: "Lune gourmande · poussettes en embuscade",
+    body: "Prépare ton stock de formats enfants à 2 €. Fenêtre 16h–17h30 = dessert de dimanche.",
     roadblock: false
   },
   {
-    headline: "Format enfant à 2 €",
-    body: "Entre 16h et 17h30, les petits fatigués. Pré-plie 10 formats enfants au sucre.",
+    headline: "Neptune en fraise · créativité débordante",
+    body: "Un client proposera une combinaison louche (tapenade-banane ?). Teste si tu es d'humeur.",
     roadblock: false
   },
   {
-    headline: "Annoncer les délais à voix haute",
-    body: "Semaine où la patience est courte. Dis le temps d'attente, ça calme la file.",
+    headline: "Pluton au piston · imprévu matériel",
+    body: "Check la bonbonne, check la batterie du terminal. La caravane a ses humeurs aussi.",
     roadblock: true
   },
   {
-    headline: "Duo glace + crêpe à 6 €",
-    body: "Dès qu'il fait plus de 22°, le combo boule-crêpe se vend tout seul.",
+    headline: "Vénus en boule vanille · nostalgie sucrée",
+    body: "Les grands-parents commandent ce qu'ils mangeaient enfants. Mets le classique beurre-sucre en vedette.",
     roadblock: false
   },
   {
-    headline: "Chantilly maison en test",
-    body: "Ajoute une touche vanille Bourbon. Les grands-parents sentent la différence.",
+    headline: "Uranus en fouet · semaine imprévisible",
+    body: "Soit pluie à 11h, soit foule à 15h. Garde une bâche et un sourire sous le coude.",
+    roadblock: true
+  },
+  {
+    headline: "Mercure en sirop d'érable · exotisme qui plaît",
+    body: "Sors le sirop d'érable et les myrtilles. Ardoise « Glace en Seine goes Canada » à 5 €.",
     roadblock: false
   },
   {
-    headline: "Fraîcheur : milkshake banane",
-    body: "Quand il fait chaud, propose un milkshake banane-caramel à 5 €.",
-    roadblock: false
-  },
-  {
-    headline: "Menu brunch 10h–12h",
-    body: "Crêpe œuf-bacon + jus frais à 8 €. Parfait pour la sortie du bac.",
+    headline: "Trigone d'eau · soleil timide, chantilly forte",
+    body: "Parfaite journée pour les crêpes chantilly-fraise. Double la commande de fraises Gariguettes.",
     roadblock: false
   }
 ];

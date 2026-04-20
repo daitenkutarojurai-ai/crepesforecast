@@ -25,7 +25,7 @@ export function Details({ briefing }: { briefing: Briefing }) {
         Détails dérivés de la météo & du calendrier
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
-        <Card title="Coefficient Lycra" subtitle="Dérivé météo" icon={Bike}>
+        <Card title="Coefficient Lycra" subtitle="Dérivé météo" icon={Bike} tone="rose">
           <p className="text-sm font-semibold text-seine-ink">Indice {lycraCoefficient.coefficient}</p>
           <div className="mt-2">
             <LinearGauge
@@ -44,7 +44,7 @@ export function Details({ briefing }: { briefing: Briefing }) {
           <p className="mt-2 text-xs text-seine-muted">{lycraCoefficient.note}</p>
         </Card>
 
-        <Card title="Facteur Poussette" subtitle="Saison & créneau" icon={Baby}>
+        <Card title="Facteur Poussette" subtitle="Saison & créneau" icon={Baby} tone="cream">
           <p className="text-sm font-semibold text-seine-ink">
             Densité {POUSSETTE_LABEL[poussetteFactor.density]} · {poussetteFactor.window}
           </p>

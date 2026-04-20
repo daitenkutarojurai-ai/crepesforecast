@@ -1,13 +1,17 @@
 import type { LucideIcon } from "lucide-react";
 
-type Tone = "default" | "accent" | "warn" | "danger" | "ok";
+type Tone = "default" | "accent" | "warn" | "danger" | "ok" | "peach" | "sage" | "rose" | "cream";
 
 const TONE_HEADER: Record<Tone, string> = {
   default: "bg-seine-header text-seine-headerInk",
   accent: "bg-seine-header text-seine-headerInk",
-  warn: "bg-[#f7e6cc] text-[#7a4b10]",
-  danger: "bg-[#f7d5d5] text-[#7a2a2a]",
-  ok: "bg-seine-chip text-seine-chipInk"
+  warn: "bg-seine-peach text-seine-peachInk",
+  danger: "bg-seine-rose text-seine-roseInk",
+  ok: "bg-seine-chip text-seine-chipInk",
+  peach: "bg-seine-peach text-seine-peachInk",
+  sage: "bg-seine-sage text-seine-sageInk",
+  rose: "bg-seine-rose text-seine-roseInk",
+  cream: "bg-seine-cream text-seine-creamInk"
 };
 
 export function Card({

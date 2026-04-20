@@ -18,6 +18,8 @@ interface KnownEvent {
   kind: LocalEvent["kind"];
   expectedBump: number;
   rule: Rule;
+  sourceUrl: string;
+  sourceLabel: string;
 }
 
 const KNOWN_EVENTS: KnownEvent[] = [
@@ -28,7 +30,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 0.6,
     kind: "market",
     expectedBump: 12,
-    rule: { kind: "weekly", weekday: 0 }
+    rule: { kind: "weekly", weekday: 0 },
+    sourceUrl: "https://www.lafrettesurseine.fr/",
+    sourceLabel: "Mairie La Frette"
   },
   {
     id: "brocante-cormeilles",
@@ -37,7 +41,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 1.1,
     kind: "brocante",
     expectedBump: 30,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 1, months: [4] } // 1er dimanche de mai
+    rule: { kind: "monthly-nth", weekday: 0, nth: 1, months: [4] },
+    sourceUrl: "https://www.ville-cormeilles95.fr/agenda",
+    sourceLabel: "Mairie Cormeilles"
   },
   {
     id: "vide-grenier-lafrette",
@@ -46,7 +52,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 0.4,
     kind: "brocante",
     expectedBump: 28,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 3, months: [5] } // 3e dimanche de juin
+    rule: { kind: "monthly-nth", weekday: 0, nth: 3, months: [5] },
+    sourceUrl: "https://www.lafrettesurseine.fr/agenda",
+    sourceLabel: "Mairie La Frette"
   },
   {
     id: "regate-aviron-herblay",
@@ -55,7 +63,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 0.4,
     kind: "rowing",
     expectedBump: 18,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 2, months: [3, 8] } // avril + septembre
+    rule: { kind: "monthly-nth", weekday: 0, nth: 2, months: [3, 8] },
+    sourceUrl: "https://www.cnherblay.fr/",
+    sourceLabel: "CN Herblay"
   },
   {
     id: "journees-patrimoine",
@@ -64,7 +74,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 2,
     kind: "other",
     expectedBump: 20,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 3, months: [8] } // 3e dim. septembre
+    rule: { kind: "monthly-nth", weekday: 0, nth: 3, months: [8] },
+    sourceUrl: "https://journeesdupatrimoine.culture.gouv.fr/",
+    sourceLabel: "Culture.gouv"
   },
   {
     id: "fete-musique",
@@ -73,7 +85,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 2,
     kind: "theater",
     expectedBump: 15,
-    rule: { kind: "annual", month: 5, day: 21 }
+    rule: { kind: "annual", month: 5, day: 21 },
+    sourceUrl: "https://fetedelamusique.culture.gouv.fr/",
+    sourceLabel: "Culture.gouv"
   },
   {
     id: "fete-nationale",
@@ -82,16 +96,9 @@ const KNOWN_EVENTS: KnownEvent[] = [
     distanceKm: 3,
     kind: "other",
     expectedBump: 18,
-    rule: { kind: "annual", month: 6, day: 14 }
-  },
-  {
-    id: "beaujolais-nouveau",
-    title: "Beaujolais nouveau — animations caves",
-    startHour: [11, 0],
-    distanceKm: 1,
-    kind: "other",
-    expectedBump: 10,
-    rule: { kind: "monthly-nth", weekday: 4, nth: 3, months: [10] } // 3e jeudi novembre
+    rule: { kind: "annual", month: 6, day: 14 },
+    sourceUrl: "https://valparisis.fr/",
+    sourceLabel: "Val Parisis"
   }
 ];
 
@@ -136,7 +143,9 @@ export function getKnownEvents(target: Date): { events: LocalEvent[]; source: So
       startISO: start.toISOString(),
       distanceKm: e.distanceKm,
       kind: e.kind,
-      expectedBump: e.expectedBump
+      expectedBump: e.expectedBump,
+      sourceUrl: e.sourceUrl,
+      sourceLabel: e.sourceLabel
     };
   });
   return {

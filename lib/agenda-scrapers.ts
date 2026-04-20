@@ -94,10 +94,21 @@ function extractCards(html: string): Array<{ title: string; blob: string; href?:
   return cards;
 }
 
+function absolutize(href: string | undefined, base: string): string | undefined {
+  if (!href) return undefined;
+  if (href.startsWith("http")) return href;
+  try {
+    return new URL(href, base).toString();
+  } catch {
+    return undefined;
+  }
+}
+
 async function scrapeList(
   url: string,
   fallbackDistanceKm: number,
-  target: Date
+  target: Date,
+  label: string
 ): Promise<LocalEvent[]> {
   const html = await fetchText(url);
   const cards = extractCards(html);
@@ -117,14 +128,23 @@ async function scrapeList(
       theater: 10,
       other: 8
     };
-    results.push({
+    const entry: LocalEvent = {
       id: `scrape-${Buffer.from(c.title).toString("base64").slice(0, 12)}`,
       title: c.title.slice(0, 80),
       startISO: date.toISOString(),
       distanceKm: fallbackDistanceKm,
       kind,
       expectedBump: bumpBase[kind]
-    });
+    };
+    const absolute = absolutize(c.href, url);
+    if (absolute) {
+      entry.sourceUrl = absolute;
+      entry.sourceLabel = label;
+    } else {
+      entry.sourceUrl = url;
+      entry.sourceLabel = label;
+    }
+    results.push(entry);
   }
   return results;
 }
@@ -141,7 +161,7 @@ export async function fetchAgendaScrapes(
   const outs = await Promise.all(
     targets.map(async (t) => {
       try {
-        const events = await scrapeList(t.url, t.distance, target);
+        const events = await scrapeList(t.url, t.distance, target, t.label);
         return {
           events,
           source: {

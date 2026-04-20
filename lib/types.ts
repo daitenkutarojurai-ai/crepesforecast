@@ -53,6 +53,8 @@ export interface LocalEvent {
   distanceKm: number;
   kind: "brocante" | "marathon" | "rowing" | "religious" | "theater" | "market" | "other";
   expectedBump: number;
+  sourceUrl?: string;
+  sourceLabel?: string;
 }
 
 export interface CardiganResult {

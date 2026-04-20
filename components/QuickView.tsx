@@ -1,4 +1,4 @@
-import { CalendarHeart, Croissant, Sparkles, Waves } from "lucide-react";
+import { CalendarHeart, Croissant, ExternalLink, Sparkles, Waves } from "lucide-react";
 import { Card, Chip } from "./Card";
 import { QuaiScene } from "./Illustration";
 import { describeSky, pickWeatherIcon } from "@/lib/weather-icon";
@@ -70,9 +70,20 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
             </div>
             <div className="text-xs text-seine-muted">{crowd}</div>
             {headline ? (
-              <div className="mt-1 flex flex-wrap gap-1.5">
+              <div className="mt-1 flex flex-wrap items-center gap-1.5">
                 <Chip tone="ok">+{headline.expectedBump}% affluence</Chip>
                 <Chip>{headline.distanceKm} km</Chip>
+                {headline.sourceUrl ? (
+                  <a
+                    href={headline.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full border border-seine-accent/40 bg-seine-header px-2 py-0.5 text-xs font-medium text-seine-headerInk hover:bg-seine-accent hover:text-white"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    {headline.sourceLabel ?? "Voir la source"}
+                  </a>
+                ) : null}
               </div>
             ) : null}
           </div>

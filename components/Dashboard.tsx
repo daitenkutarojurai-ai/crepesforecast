@@ -5,9 +5,7 @@ import { DecorativeBackground } from "./DecorativeBackground";
 import { Details } from "./Details";
 import { EventsCrowdCard } from "./EventsCrowdCard";
 import { Header } from "./Header";
-import { IdealWindowCard } from "./IdealWindowCard";
 import { QuickView } from "./QuickView";
-import { ShoppingListCard } from "./ShoppingListCard";
 import { SourcesPanel } from "./SourcesPanel";
 import { WeatherCustomerCard } from "./WeatherCustomerCard";
 import type { Briefing } from "@/lib/types";
@@ -44,11 +42,6 @@ export function Dashboard({ initial }: { initial: Briefing }) {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <WeatherCustomerCard briefing={briefing} />
           <EventsCrowdCard briefing={briefing} />
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <IdealWindowCard briefing={briefing} />
-          <ShoppingListCard briefing={briefing} />
         </div>
 
         <Details briefing={briefing} />

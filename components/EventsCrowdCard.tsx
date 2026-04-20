@@ -2,6 +2,8 @@ import {
   CalendarHeart,
   Church,
   Clapperboard,
+  ExternalLink,
+  Landmark,
   Ship,
   ShoppingBasket,
   Sparkles,
@@ -24,12 +26,12 @@ const PULSE_ICON: Record<Pulse["kind"], LucideIcon> = {
 };
 
 const PULSE_TINT: Record<Pulse["kind"], string> = {
-  ferry: "bg-[#dceff7] text-[#1a3a52]",
-  church: "bg-[#f7e6cc] text-[#7a4b10]",
-  theater: "bg-[#f7d5d5] text-[#7a2a2a]",
-  sncf: "bg-[#e8e0f5] text-[#3d2a6e]",
-  influencer: "bg-[#fdf2de] text-[#7a4b10]",
-  competitor: "bg-[#f0e0d0] text-[#5a3a1a]"
+  ferry: "bg-seine-header text-seine-headerInk",
+  church: "bg-seine-peach text-seine-peachInk",
+  theater: "bg-seine-rose text-seine-roseInk",
+  sncf: "bg-seine-cream text-seine-creamInk",
+  influencer: "bg-seine-chip text-seine-chipInk",
+  competitor: "bg-seine-sage text-seine-sageInk"
 };
 
 const EVENT_ICON: Record<LocalEvent["kind"], LucideIcon> = {
@@ -39,16 +41,16 @@ const EVENT_ICON: Record<LocalEvent["kind"], LucideIcon> = {
   marathon: Sparkles,
   religious: Church,
   theater: Clapperboard,
-  other: CalendarHeart
+  other: Landmark
 };
 
 const EVENT_TINT: Record<LocalEvent["kind"], string> = {
-  brocante: "bg-[#f5d8b8] text-[#7a4b10]",
-  market: "bg-[#bfe0c8] text-[#2f5d3a]",
-  rowing: "bg-[#dceff7] text-[#1a3a52]",
-  marathon: "bg-[#f7d5d5] text-[#7a2a2a]",
-  religious: "bg-[#f7e6cc] text-[#7a4b10]",
-  theater: "bg-[#e8e0f5] text-[#3d2a6e]",
+  brocante: "bg-seine-peach text-seine-peachInk",
+  market: "bg-seine-sage text-seine-sageInk",
+  rowing: "bg-seine-header text-seine-headerInk",
+  marathon: "bg-seine-rose text-seine-roseInk",
+  religious: "bg-seine-cream text-seine-creamInk",
+  theater: "bg-seine-chip text-seine-chipInk",
   other: "bg-seine-header text-seine-headerInk"
 };
 
@@ -60,11 +62,12 @@ export function EventsCrowdCard({ briefing }: { briefing: Briefing }) {
       title="Événements & Affluence"
       subtitle="Sur 10 km autour du quai"
       icon={CalendarHeart}
+      tone="sage"
     >
-      <div className="mb-3 flex items-center gap-2 rounded-2xl border border-seine-border bg-gradient-to-r from-seine-chip/30 via-seine-bg/20 to-transparent px-3 py-2">
+      <div className="mb-3 flex items-center gap-2 rounded-2xl border border-seine-border bg-gradient-to-r from-seine-sage/40 via-seine-bg/20 to-transparent px-3 py-2">
         <SparkleFleurs className="h-6 w-12" />
         <span className="text-xs text-seine-muted">
-          Données OpenAgenda + mairies — à recouper avec le terrain.
+          Données OpenAgenda + mairies + catalogue local — à recouper avec le terrain.
         </span>
       </div>
 
@@ -90,6 +93,17 @@ export function EventsCrowdCard({ briefing }: { briefing: Briefing }) {
                   <div className="mt-1 flex flex-wrap items-center gap-1.5">
                     <Chip tone="ok">+{e.expectedBump}% affluence</Chip>
                     <Chip>{e.distanceKm} km</Chip>
+                    {e.sourceUrl ? (
+                      <a
+                        href={e.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 rounded-full border border-seine-accent/40 bg-seine-header px-2 py-0.5 text-xs font-medium text-seine-headerInk hover:bg-seine-accent hover:text-white"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                        {e.sourceLabel ?? "source"}
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </li>
