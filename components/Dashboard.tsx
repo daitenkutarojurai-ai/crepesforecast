@@ -91,10 +91,10 @@ export function Dashboard({
         availableDays={availableDays}
         switching={switching}
       />
-      <main className="relative mx-auto max-w-6xl space-y-4 px-4 py-5">
+      <main className="relative mx-auto max-w-6xl space-y-5 px-4 py-6">
         <QuickView briefing={briefing} />
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           <WeatherCustomerCard briefing={briefing} />
           <EventsCrowdCard briefing={briefing} />
         </div>
@@ -103,7 +103,7 @@ export function Dashboard({
 
         <SourcesPanel sources={briefing.sources} />
 
-        <footer className="pb-8 pt-1 text-center text-[11px] text-seine-muted">
+        <footer className="pb-8 pt-2 text-center text-[11px] font-semibold text-seine-muted">
           Glaces en Seine · Quai de Seine · Service 14h–19h · Bon service ⚓
         </footer>
       </main>

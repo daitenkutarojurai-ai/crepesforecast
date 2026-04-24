@@ -64,31 +64,33 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
       <Banner className="mb-4 aspect-[16/6] w-full" />
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        <div className="flex items-center gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/50 to-transparent p-3 sm:p-4">
-          <Icon className="h-9 w-9 shrink-0 text-seine-accent sm:h-10 sm:w-10" strokeWidth={1.5} />
+        <div className="flex items-center gap-4 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/70 via-seine-peach/30 to-transparent p-4">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/60 shadow-sm">
+            <Icon className="h-7 w-7 text-seine-accent" strokeWidth={1.5} />
+          </span>
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
               Météo
             </div>
-            <div className="text-base font-semibold text-seine-ink sm:text-lg">
+            <div className="text-lg font-extrabold text-seine-ink">
               {tempDisplay} · {sky}
             </div>
-            <div className="text-xs text-seine-muted">{vibe}</div>
+            <div className="text-xs font-medium text-seine-muted">{vibe}</div>
           </div>
         </div>
 
-        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-sage/40 to-transparent p-3 sm:p-4">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-seine-card sm:h-12 sm:w-12">
-            <CalendarHeart className="h-5 w-5 text-seine-crepe sm:h-6 sm:w-6" />
+        <div className="flex items-start gap-4 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-sage/50 via-seine-sage/20 to-transparent p-4">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/60 shadow-sm">
+            <CalendarHeart className="h-6 w-6 text-seine-crepe" />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
               Événement phare
             </div>
-            <div className="truncate text-base font-semibold text-seine-ink sm:text-lg">
+            <div className="truncate text-base font-extrabold text-seine-ink">
               {headline ? headline.title : "Pas d'événement majeur ce jour"}
             </div>
-            <div className="text-xs text-seine-muted">{crowd}</div>
+            <div className="text-xs font-medium text-seine-muted">{crowd}</div>
             {headline ? (
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                 <Chip tone="ok">+{headline.expectedBump}% affluence</Chip>
@@ -98,7 +100,7 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
                     href={headline.sourceUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex min-h-[32px] items-center gap-1 rounded-full border border-seine-accent/40 bg-seine-header px-2.5 py-1 text-xs font-medium text-seine-headerInk hover:bg-seine-accent hover:text-white"
+                    className="inline-flex min-h-[32px] cursor-pointer items-center gap-1 rounded-full border border-seine-accent/40 bg-seine-header px-2.5 py-1 text-xs font-semibold text-seine-headerInk transition-colors duration-150 hover:bg-seine-accent/90 hover:text-white"
                   >
                     <ExternalLink className="h-3 w-3" />
                     {headline.sourceLabel ?? "Voir la source"}
@@ -110,53 +112,53 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
-        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/40 to-transparent p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-card text-seine-crepe">
+      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-chip/50 via-seine-chip/20 to-transparent p-3.5">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/70 shadow-sm text-seine-crepe">
             <ChefHat className="h-4 w-4" />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
               Carte du jour · à mettre en avant
             </div>
-            <p className="text-sm font-semibold text-seine-ink">
+            <p className="text-sm font-bold text-seine-ink">
               {recommendation.menuSpotlight.hero}
             </p>
             <p className="text-xs text-seine-muted">{recommendation.menuSpotlight.combo}</p>
             {recommendation.menuSpotlight.avoid ? (
-              <p className="mt-1 text-[11px] text-seine-muted italic">
+              <p className="mt-1 text-[11px] italic text-seine-muted">
                 À retirer : {recommendation.menuSpotlight.avoid}
               </p>
             ) : null}
           </div>
         </div>
 
-        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-peach text-seine-peachInk">
+        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-peach/40 to-seine-bg/20 p-3.5">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-seine-peach shadow-sm text-seine-peachInk">
             <Stars className="h-4 w-4" />
           </span>
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
               Horoscope · clientèle
             </div>
-            <p className="text-sm font-semibold text-seine-ink">{horoscope.headline}</p>
+            <p className="text-sm font-bold text-seine-ink">{horoscope.headline}</p>
             <p className="text-xs text-seine-muted">{horoscope.body}</p>
           </div>
         </div>
       </div>
 
       <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
-        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-seine-bg/40 p-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-sage text-seine-chipInk">
+        <div className="flex items-start gap-3 rounded-2xl border border-seine-border bg-gradient-to-br from-seine-sage/40 to-seine-bg/20 p-3.5">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-seine-sage shadow-sm text-seine-sageInk">
             <Waves className="h-4 w-4" />
           </span>
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
               La Seine
             </div>
             {seineLevel ? (
               <>
-                <p className="text-sm font-semibold text-seine-ink">
+                <p className="text-sm font-bold text-seine-ink">
                   {seineLevel.heightM.toFixed(2)} m ·{" "}
                   {seineLevel.mood === "haut"
                     ? "haute"
@@ -168,22 +170,22 @@ export function QuickView({ briefing }: { briefing: Briefing }) {
               </>
             ) : (
               <>
-                <p className="text-sm font-semibold text-seine-ink">Niveau indisponible</p>
+                <p className="text-sm font-bold text-seine-ink">Niveau indisponible</p>
                 <p className="text-xs text-seine-muted">Hubeau injoignable pour l'instant.</p>
               </>
             )}
           </div>
         </div>
 
-        <div className={`flex items-start gap-3 rounded-2xl border border-seine-border ${pollenStyle.tint} p-3`}>
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-seine-card text-seine-crepe">
+        <div className={`flex items-start gap-3 rounded-2xl border border-seine-border ${pollenStyle.tint} p-3.5`}>
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/70 shadow-sm text-seine-crepe">
             <Flower2 className="h-4 w-4" />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-seine-muted">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
               Pollen · serviettes
             </div>
-            <p className="flex items-center gap-1.5 text-sm font-semibold text-seine-ink">
+            <p className="flex items-center gap-1.5 text-sm font-bold text-seine-ink">
               <span className={`inline-block h-2 w-2 shrink-0 rounded-full ${pollenStyle.dot}`} aria-hidden />
               {pollen.dominant} · {pollenStyle.label}
             </p>

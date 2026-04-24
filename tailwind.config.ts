@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
+          "var(--font-nunito)",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
@@ -23,24 +24,24 @@ const config: Config = {
       },
       colors: {
         seine: {
-          bg: "#fbf1dc",
-          card: "#fffcf5",
-          ink: "#2a2218",
-          muted: "#7a6a58",
-          border: "#ecd9b3",
-          header: "#cfe4f0",
-          headerInk: "#1a3a52",
-          accent: "#3d8ab3",
+          bg: "#fdf3e3",
+          card: "#fffdf8",
+          ink: "#2a1c10",
+          muted: "#8a7060",
+          border: "#e6d0a8",
+          header: "#f5c048",
+          headerInk: "#2c1600",
+          accent: "#c25f1a",
           crepe: "#c98a2a",
-          glace: "#e6a36b",
-          ok: "#6a8f4a",
-          warn: "#c07a2a",
-          danger: "#b84a3a",
-          chip: "#d8e3b8",
-          chipInk: "#4a5a2a",
-          peach: "#f5d8b8",
-          peachInk: "#7a4b10",
-          sage: "#cfe0b8",
+          glace: "#e8703a",
+          ok: "#5a8042",
+          warn: "#b87020",
+          danger: "#b03830",
+          chip: "#d8e3b0",
+          chipInk: "#3a5220",
+          peach: "#f5d5b0",
+          peachInk: "#7a4010",
+          sage: "#cfe0b0",
           sageInk: "#3c5a2a",
           rose: "#f4cfc0",
           roseInk: "#7a2a2a",
@@ -49,13 +50,13 @@ const config: Config = {
         }
       },
       boxShadow: {
-        card: "0 1px 2px rgba(31,42,58,0.04), 0 8px 24px rgba(31,42,58,0.06)"
+        card: "0 1px 3px rgba(42,28,16,0.05), 0 8px 28px rgba(42,28,16,0.09)"
       },
       keyframes: {
         pulseRing: {
-          "0%": { boxShadow: "0 0 0 0 rgba(192,69,69,0.55)" },
-          "70%": { boxShadow: "0 0 0 12px rgba(192,69,69,0)" },
-          "100%": { boxShadow: "0 0 0 0 rgba(192,69,69,0)" }
+          "0%": { boxShadow: "0 0 0 0 rgba(176,56,48,0.55)" },
+          "70%": { boxShadow: "0 0 0 12px rgba(176,56,48,0)" },
+          "100%": { boxShadow: "0 0 0 0 rgba(176,56,48,0)" }
         }
       },
       animation: {

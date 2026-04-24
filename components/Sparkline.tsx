@@ -36,15 +36,15 @@ export function TempSparkline({
       <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" className="block h-24 w-full">
         <defs>
           <linearGradient id="tempArea" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#3d8ab3" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#3d8ab3" stopOpacity="0" />
+            <stop offset="0%" stopColor="#c25f1a" stopOpacity="0.30" />
+            <stop offset="100%" stopColor="#c25f1a" stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d={areaPath} fill="url(#tempArea)" />
-        <path d={linePath} fill="none" stroke="#3d8ab3" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        <path d={linePath} fill="none" stroke="#c25f1a" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         {xy.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x} cy={p.y} r={p.rain > 50 ? 3 : 2.2} fill={p.t >= 18 ? "#d98e46" : "#7ec1de"} />
+            <circle cx={p.x} cy={p.y} r={p.rain > 50 ? 3 : 2.2} fill={p.t >= 18 ? "#c98a2a" : "#8a7060"} />
             {i % labelEvery === 0 ? (
               <>
                 <text x={p.x} y={p.y - 6} fontSize={9} textAnchor="middle" fill="#1f2a3a" fontWeight={600}>

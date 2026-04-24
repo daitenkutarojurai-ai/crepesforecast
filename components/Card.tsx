@@ -35,16 +35,20 @@ export function Card({
     <section
       className={`flex flex-col overflow-hidden rounded-2xl border border-seine-border bg-seine-card shadow-card ${className}`}
     >
-      <header className={`flex items-center gap-2 px-4 py-2.5 ${TONE_HEADER[tone]}`}>
-        {Icon ? <Icon className="h-4 w-4" /> : null}
-        <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
+      <header className={`flex items-center gap-2.5 px-4 py-3 ${TONE_HEADER[tone]}`}>
+        {Icon ? (
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-black/10">
+            <Icon className="h-4 w-4" />
+          </span>
+        ) : null}
+        <h2 className="text-sm font-extrabold tracking-tight">{title}</h2>
         {subtitle ? (
-          <span className="ml-auto text-xs font-medium opacity-80">{subtitle}</span>
+          <span className="ml-auto shrink-0 text-xs font-semibold opacity-70">{subtitle}</span>
         ) : null}
       </header>
       <div className="flex-1 px-4 py-4">{children}</div>
       {footer ? (
-        <footer className="border-t border-seine-border bg-seine-bg/50 px-4 py-2 text-xs text-seine-muted">
+        <footer className="border-t border-seine-border bg-seine-bg/60 px-4 py-2 text-xs text-seine-muted">
           {footer}
         </footer>
       ) : null}
@@ -68,7 +72,7 @@ export function Chip({
   };
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${cls[tone]}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${cls[tone]}`}
     >
       {children}
     </span>
@@ -87,11 +91,11 @@ export function Stat({
   hint?: string;
 }) {
   return (
-    <div className="flex flex-col gap-1 rounded-xl border border-seine-border bg-seine-bg/40 px-3 py-2.5">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-seine-muted">
+    <div className="flex flex-col gap-1 rounded-xl border border-seine-border bg-seine-bg/60 px-3 py-2.5">
+      <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-seine-muted">
         {label}
       </span>
-      <span className="flex items-baseline gap-1 font-mono text-xl font-semibold text-seine-ink">
+      <span className="flex items-baseline gap-1 font-mono text-xl font-bold text-seine-ink">
         {value}
         {unit ? <span className="text-xs font-normal text-seine-muted">{unit}</span> : null}
       </span>
