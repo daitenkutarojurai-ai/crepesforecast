@@ -38,7 +38,7 @@ export async function GET(req: Request) {
   } catch (err) {
     console.error("buildBriefing failed", err);
     return NextResponse.json(
-      { error: "briefing_unavailable", message: err instanceof Error ? err.message : "unknown" },
+      { error: "briefing_unavailable" },
       { status: 500 }
     );
   }

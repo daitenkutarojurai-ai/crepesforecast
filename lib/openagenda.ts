@@ -1,7 +1,7 @@
 import { LOCATION } from "./engine";
 import type { LocalEvent, SourceStatus } from "./types";
 
-const KEY = "08b058313d04488086059187a8a1cd4c";
+const KEY = process.env.OPENAGENDA_KEY ?? "08b058313d04488086059187a8a1cd4c";
 const LAT_LNG = `${LOCATION.lat},${LOCATION.lon}`;
 const RADIUS_KM = 10;
 
@@ -112,11 +112,14 @@ export async function fetchOpenAgendaEvents(
       signal: AbortSignal.timeout(5000)
     });
     if (!res.ok) throw new Error(`OpenAgenda ${res.status}`);
-    const data = (await res.json()) as { events?: OAEvent[] };
+    const raw: unknown = await res.json();
+    if (!raw || typeof raw !== "object") throw new Error("OpenAgenda: réponse invalide");
+    const data = raw as { events?: OAEvent[] };
+    const events = Array.isArray(data.events) ? data.events : [];
     const origin: [number, number] = [LOCATION.lat, LOCATION.lon];
     const mapped: LocalEvent[] = [];
-    for (let idx = 0; idx < (data.events?.length ?? 0); idx++) {
-      const ev = data.events![idx];
+    for (let idx = 0; idx < events.length; idx++) {
+      const ev = events[idx];
       const timing = pickTiming(ev, target);
       if (!timing?.begin) continue;
       const title = pickTitle(ev.title);

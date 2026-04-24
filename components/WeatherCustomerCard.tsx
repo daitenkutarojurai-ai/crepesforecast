@@ -11,8 +11,8 @@ export function WeatherCustomerCard({ briefing }: { briefing: Briefing }) {
     const d = new Date(h.time).getHours();
     return d >= 12 && d <= 20;
   });
-  const minT = Math.min(...window.map((h) => h.tempC));
-  const maxT = Math.max(...window.map((h) => h.tempC));
+  const minT = window.length ? Math.min(...window.map((h) => h.tempC)) : weather.tempC;
+  const maxT = window.length ? Math.max(...window.map((h) => h.tempC)) : weather.tempC;
   const Icon = pickWeatherIcon(weather.cloudCoverPct, weather.precipProbPct);
   const sky = describeSky(weather.cloudCoverPct, weather.precipProbPct);
 

@@ -22,7 +22,9 @@ export async function fetchSeineLevel(): Promise<{
       signal: AbortSignal.timeout(4000)
     });
     if (!res.ok) throw new Error(`Hubeau ${res.status}`);
-    const data = (await res.json()) as {
+    const raw: unknown = await res.json();
+    if (!raw || typeof raw !== "object") throw new Error("Hubeau: réponse invalide");
+    const data = raw as {
       data?: Array<{
         resultat_obs?: number;
         date_obs?: string;

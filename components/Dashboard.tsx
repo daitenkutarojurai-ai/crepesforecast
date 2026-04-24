@@ -23,6 +23,7 @@ export function Dashboard({
   const [switching, setSwitching] = useState(false);
   const cache = useRef<Partial<Record<TargetKind, Briefing>>>({ [initial.targetKind]: initial });
   const reqId = useRef(0);
+  const selectedKindRef = useRef<TargetKind>(initial.targetKind);
 
   const fetchFor = useCallback(async (kind: TargetKind): Promise<Briefing | null> => {
     try {
@@ -61,18 +62,23 @@ export function Dashboard({
     [selectedKind, availableDays, fetchFor]
   );
 
+  // keep ref in sync so the stable `refresh` always targets the current tab
+  useEffect(() => { selectedKindRef.current = selectedKind; }, [selectedKind]);
+
+  // refresh is stable (no selectedKind dep) so the 5-min interval never resets on tab switch
   const refresh = useCallback(async () => {
+    const kind = selectedKindRef.current;
     setRefreshing(true);
-    const fresh = await fetchFor(selectedKind);
+    const fresh = await fetchFor(kind);
     if (fresh) {
-      cache.current[selectedKind] = fresh;
+      cache.current[kind] = fresh;
       setBriefing(fresh);
       for (const other of ["saturday", "sunday", "holiday"] as TargetKind[]) {
-        if (other !== selectedKind && cache.current[other]) delete cache.current[other];
+        if (other !== kind && cache.current[other]) delete cache.current[other];
       }
     }
     setRefreshing(false);
-  }, [fetchFor, selectedKind]);
+  }, [fetchFor]);
 
   useEffect(() => {
     const id = setInterval(refresh, 5 * 60 * 1000);
