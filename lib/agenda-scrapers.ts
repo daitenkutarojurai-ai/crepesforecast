@@ -64,7 +64,7 @@ async function fetchText(url: string): Promise<string> {
     next: { revalidate: 3600 },
     signal: AbortSignal.timeout(6000),
     headers: { "User-Agent": "GlacesEnSeineBriefing/1.0" }
-  });
+  } as unknown as RequestInit);
   if (!res.ok) throw new Error(`${url} ${res.status}`);
   return res.text();
 }

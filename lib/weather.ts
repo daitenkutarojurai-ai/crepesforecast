@@ -39,7 +39,7 @@ export async function fetchWeather(target: Date): Promise<{
     const res = await fetch(endpointFor(target), {
       next: { revalidate: 1800 },
       signal: AbortSignal.timeout(6000)
-    });
+    } as unknown as RequestInit);
     if (!res.ok) throw new Error(`Open-Meteo ${res.status}`);
     const data = (await res.json()) as OpenMeteoResponse;
     if (!data.daily?.sunrise?.length || !data.hourly?.time?.length) {

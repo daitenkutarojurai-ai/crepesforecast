@@ -20,7 +20,7 @@ export async function fetchSeineLevel(): Promise<{
     const res = await fetch(url, {
       next: { revalidate: 1800 },
       signal: AbortSignal.timeout(4000)
-    });
+    } as unknown as RequestInit);
     if (!res.ok) throw new Error(`Hubeau ${res.status}`);
     const raw: unknown = await res.json();
     if (!raw || typeof raw !== "object") throw new Error("Hubeau: réponse invalide");

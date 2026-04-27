@@ -110,7 +110,7 @@ export async function fetchOpenAgendaEvents(
     const res = await fetch(url, {
       next: { revalidate: 3600 },
       signal: AbortSignal.timeout(5000)
-    });
+    } as unknown as RequestInit);
     if (!res.ok) throw new Error(`OpenAgenda ${res.status}`);
     const raw: unknown = await res.json();
     if (!raw || typeof raw !== "object") throw new Error("OpenAgenda: réponse invalide");

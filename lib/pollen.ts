@@ -68,7 +68,7 @@ export async function fetchPollen(target: Date): Promise<{ pollen: PollenView; s
     const res = await fetch(endpointFor(target), {
       next: { revalidate: 3600 },
       signal: AbortSignal.timeout(5000)
-    });
+    } as unknown as RequestInit);
     if (!res.ok) throw new Error(`Open-Meteo AQ ${res.status}`);
     const data = (await res.json()) as OpenMeteoAirQuality;
     if (!data.hourly?.time?.length) throw new Error("Open-Meteo AQ: empty payload");
