@@ -1,5 +1,6 @@
 "use client";
 
+import { Anchor } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DecorativeBackground } from "./DecorativeBackground";
 import { Details } from "./Details";
@@ -109,8 +110,9 @@ export function Dashboard({
 
         <SourcesPanel sources={briefing.sources} />
 
-        <footer className="pb-8 pt-2 text-center text-[11px] font-semibold text-seine-muted">
-          Glaces en Seine · Quai de Seine · Service 14h–19h · Bon service ⚓
+        <footer className="flex items-center justify-center gap-1.5 pb-8 pt-2 text-center text-[11px] font-semibold text-seine-muted">
+          <span>Glaces en Seine · Quai de Seine · Service 14h–19h · Bon service</span>
+          <Anchor className="h-3 w-3" aria-hidden />
         </footer>
       </main>
     </div>

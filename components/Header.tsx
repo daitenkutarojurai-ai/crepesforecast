@@ -43,7 +43,7 @@ export function Header({
         <div className="flex items-center gap-3">
           <BrandLogo className="h-10 w-auto drop-shadow-sm" />
           <div className="leading-tight border-l-2 border-seine-headerInk/20 pl-3">
-            <h1 className="text-sm font-extrabold tracking-tight text-seine-headerInk">{title}</h1>
+            <h1 className="font-display text-base font-bold tracking-tight text-seine-headerInk">{title}</h1>
             <p className="text-[11px] font-semibold text-seine-headerInk/70">{subtitle}</p>
           </div>
         </div>
@@ -53,12 +53,14 @@ export function Header({
             type="button"
             onClick={onRefresh}
             disabled={refreshing}
-            className="inline-flex min-h-[40px] cursor-pointer items-center gap-2 rounded-full border border-seine-headerInk/20 bg-white/30 px-3 py-2 text-xs font-semibold text-seine-headerInk transition-colors duration-150 hover:bg-white/50 disabled:opacity-60"
+            className="inline-flex min-h-[40px] cursor-pointer items-center gap-2 rounded-full border border-seine-headerInk/20 bg-white/30 px-3 py-2 text-xs font-semibold text-seine-headerInk transition-colors duration-200 hover:bg-white/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-seine-headerInk/60 focus-visible:ring-offset-2 focus-visible:ring-offset-seine-header disabled:opacity-60 disabled:cursor-wait"
             title="Rafraîchir le briefing"
           >
             <RefreshCcw className={`h-3 w-3 ${refreshing ? "animate-spin" : ""}`} />
             <span className="hidden sm:inline">Mis à jour :</span>
-            <span>{refreshing ? "…" : refreshedAt}</span>
+            <span className="inline-block min-w-[3.25rem] text-right tabular-nums">
+              {refreshing ? "…" : refreshedAt}
+            </span>
           </button>
           <Anchor className="hidden h-4 w-4 text-seine-headerInk/50 sm:block" aria-hidden />
         </div>
@@ -132,7 +134,7 @@ function DayButton({
       aria-selected={selected}
       disabled={!available || switching}
       onClick={() => onSelect(kind)}
-      className={`min-h-[44px] flex-1 rounded-xl border px-2.5 py-1.5 text-left transition-all duration-150 sm:px-3 sm:py-2 ${cls}`}
+      className={`min-h-[44px] flex-1 rounded-xl border px-2.5 py-1.5 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-seine-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-seine-header sm:px-3 sm:py-2 ${cls}`}
       title={available ? `Voir le briefing ${baseName.toLowerCase()}` : subtitle}
     >
       <div className="flex items-center gap-2">

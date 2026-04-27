@@ -98,7 +98,7 @@ export function EventsCrowdCard({ briefing }: { briefing: Briefing }) {
                         href={e.sourceUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 rounded-full border border-seine-accent/40 bg-seine-header px-2 py-0.5 text-xs font-medium text-seine-headerInk hover:bg-seine-accent hover:text-white"
+                        className="inline-flex min-h-[28px] cursor-pointer items-center gap-1 rounded-full border border-seine-accent/40 bg-seine-header px-2.5 py-1 text-xs font-semibold text-seine-headerInk transition-colors duration-200 hover:bg-seine-accent/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-seine-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-seine-card"
                       >
                         <ExternalLink className="h-3 w-3" />
                         {e.sourceLabel ?? "source"}

@@ -1,31 +1,32 @@
+import { Flame, Leaf, type LucideIcon, Smile, TrendingUp } from "lucide-react";
 import type { Briefing } from "@/lib/types";
 
-type Tier = { emoji: string; label: string; chip: string; text: string; dot: string };
+type Tier = { Icon: LucideIcon; label: string; chip: string; text: string; dot: string };
 
 const TIERS = {
   peak: {
-    emoji: "🔥",
+    Icon: Flame,
     label: "Pic d'affluence",
     chip: "bg-[#f7d5d5] border-[#f0b9b9]",
     text: "text-[#7a2a2a]",
     dot: "bg-seine-danger"
   },
   high: {
-    emoji: "😀",
+    Icon: TrendingUp,
     label: "Forte affluence",
     chip: "bg-[#f7e6cc] border-[#f0d9ad]",
     text: "text-[#7a4b10]",
     dot: "bg-seine-warn"
   },
   steady: {
-    emoji: "🙂",
+    Icon: Smile,
     label: "Affluence stable",
     chip: "bg-seine-chip border-seine-chip",
     text: "text-seine-chipInk",
     dot: "bg-seine-ok"
   },
   quiet: {
-    emoji: "😌",
+    Icon: Leaf,
     label: "Quai calme",
     chip: "bg-seine-bg border-seine-border",
     text: "text-seine-ink",
@@ -54,14 +55,15 @@ function tierOf(score: number): Tier {
 
 export function AffluenceLight({ briefing }: { briefing: Briefing }) {
   const tier = tierOf(scoreOf(briefing));
+  const Icon = tier.Icon;
   return (
     <div
       className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 ${tier.chip}`}
       title={`Indicateur d'affluence attendue — ${tier.label}`}
     >
       <span className={`h-2.5 w-2.5 rounded-full ${tier.dot}`} aria-hidden />
-      <span className={`inline-flex items-center gap-1 text-xs font-semibold ${tier.text}`}>
-        <span aria-hidden>{tier.emoji}</span>
+      <span className={`inline-flex items-center gap-1.5 text-xs font-semibold ${tier.text}`}>
+        <Icon className="h-3.5 w-3.5" aria-hidden />
         {tier.label}
       </span>
     </div>

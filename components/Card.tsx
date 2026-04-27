@@ -41,7 +41,7 @@ export function Card({
             <Icon className="h-4 w-4" />
           </span>
         ) : null}
-        <h2 className="text-sm font-extrabold tracking-tight">{title}</h2>
+        <h2 className="font-display text-base font-bold tracking-tight">{title}</h2>
         {subtitle ? (
           <span className="ml-auto shrink-0 text-xs font-semibold opacity-70">{subtitle}</span>
         ) : null}

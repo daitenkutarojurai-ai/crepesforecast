@@ -20,6 +20,13 @@ const config: Config = {
           "Arial",
           "sans-serif"
         ],
+        display: [
+          "var(--font-fredoka)",
+          "var(--font-nunito)",
+          "ui-rounded",
+          "system-ui",
+          "sans-serif"
+        ],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
       },
       colors: {
