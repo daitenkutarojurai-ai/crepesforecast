@@ -62,7 +62,7 @@ function parseFrenchDate(raw: string, fallbackYear: number): Date | undefined {
 async function fetchText(url: string): Promise<string> {
   const res = await fetch(url, {
     next: { revalidate: 3600 },
-    signal: AbortSignal.timeout(6000),
+    signal: AbortSignal.timeout(3000),
     headers: { "User-Agent": "GlacesEnSeineBriefing/1.0" }
   } as unknown as RequestInit);
   if (!res.ok) throw new Error(`${url} ${res.status}`);

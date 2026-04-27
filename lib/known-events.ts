@@ -22,6 +22,10 @@ interface KnownEvent {
   sourceLabel: string;
 }
 
+// Only keep entries we can actually vouch for. Recurring brocantes,
+// vide-greniers and régates rotate every year — guessing them from a fixed
+// nth-Sunday rule produced false positives, so those now come exclusively
+// from OpenAgenda + municipal scrapers (lib/openagenda.ts, lib/agenda-scrapers.ts).
 const KNOWN_EVENTS: KnownEvent[] = [
   {
     id: "marche-lafrette",
@@ -33,50 +37,6 @@ const KNOWN_EVENTS: KnownEvent[] = [
     rule: { kind: "weekly", weekday: 0 },
     sourceUrl: "https://www.lafrettesurseine.fr/",
     sourceLabel: "Mairie La Frette"
-  },
-  {
-    id: "brocante-cormeilles",
-    title: "Brocante de Cormeilles-en-Parisis",
-    startHour: [8, 0],
-    distanceKm: 1.1,
-    kind: "brocante",
-    expectedBump: 30,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 1, months: [4] },
-    sourceUrl: "https://www.ville-cormeilles95.fr/agenda",
-    sourceLabel: "Mairie Cormeilles"
-  },
-  {
-    id: "vide-grenier-lafrette",
-    title: "Vide-greniers — La Frette-sur-Seine",
-    startHour: [8, 30],
-    distanceKm: 0.4,
-    kind: "brocante",
-    expectedBump: 28,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 3, months: [5] },
-    sourceUrl: "https://www.lafrettesurseine.fr/agenda",
-    sourceLabel: "Mairie La Frette"
-  },
-  {
-    id: "regate-aviron-herblay",
-    title: "Régate aviron — Seine (CN Herblay)",
-    startHour: [10, 0],
-    distanceKm: 0.4,
-    kind: "rowing",
-    expectedBump: 18,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 2, months: [3, 8] },
-    sourceUrl: "https://www.cnherblay.fr/",
-    sourceLabel: "CN Herblay"
-  },
-  {
-    id: "journees-patrimoine",
-    title: "Journées européennes du patrimoine",
-    startHour: [10, 0],
-    distanceKm: 2,
-    kind: "other",
-    expectedBump: 20,
-    rule: { kind: "monthly-nth", weekday: 0, nth: 3, months: [8] },
-    sourceUrl: "https://journeesdupatrimoine.culture.gouv.fr/",
-    sourceLabel: "Culture.gouv"
   },
   {
     id: "fete-musique",
