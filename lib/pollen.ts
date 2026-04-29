@@ -110,8 +110,8 @@ export async function fetchPollen(target: Date): Promise<{ pollen: PollenView; s
       source: {
         id: "open-meteo-pollen",
         label: "Open-Meteo Air Quality (pollen)",
-        confidence: "unavailable",
-        note: err instanceof Error ? err.message : "Erreur réseau",
+        confidence: "simulated",
+        note: `Estimation saisonnière (${err instanceof Error ? err.message : "Erreur réseau"})`,
         fetchedAt: new Date().toISOString()
       }
     };

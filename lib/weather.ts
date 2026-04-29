@@ -101,8 +101,8 @@ export async function fetchWeather(target: Date): Promise<{
       source: {
         id: "open-meteo",
         label: "Open-Meteo (météo jour de service)",
-        confidence: "unavailable",
-        note: err instanceof Error ? err.message : "Erreur réseau",
+        confidence: "simulated",
+        note: `Fallback estimé (${err instanceof Error ? err.message : "Erreur réseau"})`,
         fetchedAt: new Date().toISOString()
       }
     };
