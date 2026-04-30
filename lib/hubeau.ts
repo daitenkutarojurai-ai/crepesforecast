@@ -50,15 +50,31 @@ export async function fetchSeineLevel(): Promise<{
       }
     };
   } catch (err) {
+    const estimated = estimateSeineLevel();
     return {
-      level: undefined,
+      level: estimated,
       source: {
         id: "hubeau-seine",
         label: "Hubeau — niveau Seine",
-        confidence: "unavailable",
-        note: err instanceof Error ? err.message : "Hubeau injoignable",
+        confidence: "simulated",
+        note: `Estimation saisonnière (${err instanceof Error ? err.message : "Hubeau injoignable"})`,
         fetchedAt: new Date().toISOString()
       }
     };
   }
+}
+
+// Seasonal Seine level estimate for station H300000201 (La Frette / Herblay area)
+// Based on typical annual profile: higher in winter/spring, lower in summer
+function estimateSeineLevel(): SeineLevel {
+  const month = new Date().getMonth() + 1; // 1–12
+  const monthlyAvg: Record<number, number> = {
+    1: 2.0, 2: 2.2, 3: 2.0, 4: 1.8, 5: 1.5, 6: 1.0,
+    7: 0.8, 8: 0.8, 9: 1.0, 10: 1.2, 11: 1.5, 12: 1.8
+  };
+  return {
+    heightM: monthlyAvg[month] ?? 1.2,
+    timestamp: new Date().toISOString(),
+    stationCode: STATION
+  };
 }
