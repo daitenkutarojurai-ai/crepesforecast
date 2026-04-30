@@ -4,9 +4,9 @@
   "private": true,
   "description": "Sunday Morning Mission Briefing dashboard for the Glaces en Seine caravan on the Quai de Seine.",
   "scripts": {
-    "dev": "next dev",
+    "dev": "TZ=Europe/Paris next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "TZ=Europe/Paris next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
