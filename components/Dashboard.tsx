@@ -134,9 +134,20 @@ export function Dashboard({
 
         <SourcesPanel sources={briefing.sources} />
 
-        <footer className="flex items-center justify-center gap-1.5 pb-8 pt-2 text-center text-[11px] font-semibold text-seine-muted">
-          <span>Glaces en Seine · Quai de Seine · Service 14h–19h · Bon service</span>
-          <Anchor className="h-3 w-3" aria-hidden />
+        <footer className="flex flex-col items-center gap-1.5 pb-8 pt-2 text-center text-seine-muted">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold">
+            <span>Glaces en Seine · Quai de Seine · 14h–19h</span>
+            <Anchor className="h-3 w-3" aria-hidden />
+          </div>
+          <a
+            href="https://diyfunproject.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] font-semibold underline-offset-2 hover:text-seine-ink hover:underline"
+          >
+            diyfunproject.com
+          </a>
+          <span className="text-[9px] opacity-60">Merci à Anaït pour la revue</span>
         </footer>
       </main>
     </div>
