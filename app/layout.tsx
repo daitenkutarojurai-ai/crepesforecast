@@ -15,10 +15,45 @@ const fredoka = Fredoka({
   weight: ["500", "600", "700"]
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://crepesforecast.vercel.app";
+
 export const metadata = {
-  title: "Glaces en Seine · Briefing",
-  description: "Briefing du prochain service (Sam/Dim/fériés 14h–19h) pour la caravane Glaces en Seine.",
-  applicationName: "Glaces en Seine"
+  metadataBase: new URL(SITE_URL),
+  title: "Glaces en Seine · Briefing du prochain service",
+  description:
+    "Briefing météo, affluence et menu pour la caravane Glaces en Seine sur le Quai de Seine (La Frette / Cormeilles-en-Parisis). Service Samedi, Dimanche et jours fériés de 14h à 19h.",
+  applicationName: "Glaces en Seine",
+  alternates: {
+    canonical: "/"
+  },
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: SITE_URL,
+    siteName: "Glaces en Seine",
+    title: "Glaces en Seine · Briefing du prochain service",
+    description:
+      "Briefing météo, affluence et menu pour la caravane Glaces en Seine sur le Quai de Seine (La Frette / Cormeilles-en-Parisis).",
+    images: [
+      {
+        url: "/bannerup.webp",
+        width: 1200,
+        height: 630,
+        alt: "Caravane Glaces en Seine sur le quai"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Glaces en Seine · Briefing du prochain service",
+    description:
+      "Briefing météo, affluence et menu pour la caravane Glaces en Seine sur le Quai de Seine.",
+    images: ["/bannerup.webp"]
+  },
+  robots: {
+    index: true,
+    follow: true
+  }
 };
 
 export const viewport = {
