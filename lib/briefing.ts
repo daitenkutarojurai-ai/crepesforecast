@@ -18,6 +18,7 @@ import {
 import { fetchExternals } from "./externals";
 import { fetchSeineLevel } from "./hubeau";
 import { fetchPollen } from "./pollen";
+import { buildShoppingList } from "./shopping";
 import {
   availableWorkingDays,
   formatWorkingDayLabel,
@@ -109,6 +110,8 @@ export async function buildBriefing(
 
   const terrasse = computeTerrasse(weather, pivot, externals.localEvents);
   const drinks = computeDrinkStock(weather, pivot, terrasse.expectedFillPct);
+  const napkin = napkinForecast(pollenBundle.pollen.level);
+  const shoppingList = buildShoppingList(recommendation.batterVolumePct, pivot.mode, napkin, drinks);
 
   const seineLevel = seine.level
     ? seineView(seine.level.heightM, seine.level.timestamp)
@@ -141,7 +144,7 @@ export async function buildBriefing(
     pulses,
     events: externals.localEvents,
     horoscope: horoscope(target),
-    napkinForecast: napkinForecast(pollenBundle.pollen.level),
+    napkinForecast: napkin,
     lycraCoefficient: lycraCoefficient(weather.tempC, weather.windKmh, weather.isSunny, weather.precipProbPct),
     poussetteFactor: poussetteFactor(target),
     nutellaIndex: nutellaIndex(target),
@@ -152,6 +155,7 @@ export async function buildBriefing(
     drinks,
     seineLevel,
     pollen: pollenBundle.pollen,
+    shoppingList,
     sources
   };
 }

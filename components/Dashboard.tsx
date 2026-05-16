@@ -7,6 +7,7 @@ import { Details } from "./Details";
 import { EventsCrowdCard } from "./EventsCrowdCard";
 import { Header } from "./Header";
 import { QuickView } from "./QuickView";
+import { ShoppingListCard } from "./ShoppingListCard";
 import { SourcesPanel } from "./SourcesPanel";
 import { WeatherCustomerCard } from "./WeatherCustomerCard";
 import type { AvailableDaysSummary, Briefing, TargetKind } from "@/lib/types";
@@ -131,6 +132,8 @@ export function Dashboard({
         </div>
 
         <Details briefing={briefing} />
+
+        <ShoppingListCard list={briefing.shoppingList} />
 
         <SourcesPanel sources={briefing.sources} />
 

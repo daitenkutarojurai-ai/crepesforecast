@@ -38,6 +38,7 @@ components/
   EventsCrowdCard.tsx       # Événements & Affluence (pulses + agenda + social)
   MenuSpecialsCard.tsx      # Menu & Specials (topping, bribe, horoscope)
   Details.tsx               # Below-the-fold grid: napkin / lycra / poussette / nutella / Vigicrues
+  ShoppingListCard.tsx      # Liste de courses scaled by batter % + mode + pollen + drinks tier
   GrandMereLight.tsx        # Chip with pulsing red indicator when Ct > 15
   ModeToggle.tsx            # Crêpe / Glace pill toggle
   SourcesPanel.tsx          # Data confidence badges
@@ -48,6 +49,7 @@ lib/
   weather.ts                # Open-Meteo fetch for the target Sunday
   externals.ts              # Vigicrues fetch + stubs for non-free APIs
   briefing.ts               # Composes the full Briefing object (target-Sunday)
+  shopping.ts               # Builds the shopping list scaled by batter % / mode / pollen / drinks
 ```
 
 ## Logic engine (implemented)
@@ -164,8 +166,9 @@ mistakes a guess for a live signal.
       signals. Show "prediction vs. actual" on Monday morning.
 - [ ] Offline PWA manifest + install prompt (she'll check this with spotty 4G
       on the quai).
-- [ ] Add a "Shopping List" generator (butter, eggs, nutella jars, cream,
-      sugar, cones) scaled by the recipe-scaler batter %.
+- [x] Add a "Shopping List" generator (butter, eggs, nutella jars, cream,
+      sugar, cones) scaled by the recipe-scaler batter %, mode (crêpe/glace),
+      pollen risk (serviettes) and drinks tier. Copy-to-clipboard button.
 
 ### Polish
 

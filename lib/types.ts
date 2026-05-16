@@ -175,7 +175,26 @@ export interface Briefing {
   drinks: DrinkStock;
   seineLevel?: SeineLevelView;
   pollen: PollenView;
+  shoppingList: ShoppingList;
   sources: SourceStatus[];
+}
+
+export type ShoppingCategory = "pâte" | "topping" | "glace" | "boisson" | "conso";
+
+export interface ShoppingItem {
+  emoji: string;
+  label: string;
+  qty: string;
+  category: ShoppingCategory;
+  note?: string;
+}
+
+export interface ShoppingList {
+  batterRatio: number;
+  napkinMultiplier: number;
+  drinkTier: DrinkStock["tier"];
+  items: ShoppingItem[];
+  summary: string;
 }
 
 export interface AvailableDaySummary {
