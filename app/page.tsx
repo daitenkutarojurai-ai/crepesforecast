@@ -1,8 +1,7 @@
 import { Dashboard } from "@/components/Dashboard";
 import { buildBriefing, summarizeAvailableDays } from "@/lib/briefing";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 1800;
 
 export default async function HomePage() {
   const now = new Date();

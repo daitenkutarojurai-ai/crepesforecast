@@ -67,7 +67,6 @@ export function Dashboard({
   // keep ref in sync so the stable `refresh` always targets the current tab
   useEffect(() => { selectedKindRef.current = selectedKind; }, [selectedKind]);
 
-  // refresh is stable (no selectedKind dep) so the 5-min interval never resets on tab switch
   const refresh = useCallback(async () => {
     const kind = selectedKindRef.current;
     setRefreshing(true);
@@ -77,39 +76,12 @@ export function Dashboard({
       setBriefing(fresh);
     }
     setRefreshing(false);
-    // Refresh the inactive tabs too so the cache stays warm for instant switches
-    for (const other of ["saturday", "sunday", "holiday"] as TargetKind[]) {
-      if (other === kind) continue;
-      if (!availableDays[other]) continue;
-      const next = await fetchFor(other);
-      if (next) cache.current[other] = next;
-    }
-  }, [fetchFor, availableDays]);
+  }, [fetchFor]);
 
   useEffect(() => {
-    const id = setInterval(refresh, 5 * 60 * 1000);
+    const id = setInterval(refresh, 24 * 60 * 60 * 1000);
     return () => clearInterval(id);
   }, [refresh]);
-
-  // Warm the other available tabs on first paint so the first switch is instant
-  useEffect(() => {
-    let cancelled = false;
-    const warm = async () => {
-      for (const other of ["saturday", "sunday", "holiday"] as TargetKind[]) {
-        if (cancelled) return;
-        if (other === initial.targetKind) continue;
-        if (!availableDays[other]) continue;
-        if (cache.current[other]) continue;
-        const fresh = await fetchFor(other);
-        if (cancelled) return;
-        if (fresh) cache.current[other] = fresh;
-      }
-    };
-    void warm();
-    return () => {
-      cancelled = true;
-    };
-  }, [availableDays, fetchFor, initial.targetKind]);
 
   return (
     <div className="relative min-h-screen">
